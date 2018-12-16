@@ -1,15 +1,14 @@
 package com.es.ccisapp;
 
-import android.graphics.Movie;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.es.adapter.TaxInvoiceAdapter;
 import com.es.model.Bill_TaxInvoice;
-import com.es.model.Bill_TaxInvoiceList;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 
@@ -48,6 +47,13 @@ public class CCISActivity extends AppCompatActivity {
             public void onFailure(Call<List<Bill_TaxInvoice>>call, Throwable t) {
                 // Log error here since request failed
                 Log.e(TAG, t.toString());
+            }
+        });
+
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

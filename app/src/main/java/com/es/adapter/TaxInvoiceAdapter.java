@@ -1,6 +1,7 @@
 package com.es.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.es.ccisapp.HomeNavActivity;
 import com.es.ccisapp.R;
 import com.es.model.Bill_TaxInvoice;
 
@@ -31,6 +33,15 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
             movieTitle = (TextView) v.findViewById(R.id.title);
             data = (TextView) v.findViewById(R.id.subtitle);
             movieDescription = (TextView) v.findViewById(R.id.description);
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, HomeNavActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 
@@ -53,6 +64,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
         holder.movieTitle.setText(movies.get(position).getCustomerCode() + " - " + movies.get(position).getCustomerName());
         holder.data.setText("Đơn giá: " + movies.get(position).getSubTotal() + " VAT: " + movies.get(position).getVAT());
         holder.movieDescription.setText(movies.get(position).getTaxInvoiceAddress());
+
     }
 
     @Override
