@@ -21,11 +21,19 @@
         <activity
             android:name=".HomeNavActivity"
             android:label="@string/title_activity_home_nav"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".MainTabActivity"
-            android:label="@string/title_activity_main_tab"></activity>
+            android:label="@string/title_activity_main_tab" />
+        <activity
+            android:name=".TaxInvoiceDetailActivity"
+            android:label="@string/title_activity_tax_invoice_detail"
+            android:parentActivityName=".CCISActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.es.ccisapp.CCISActivity" />
+        </activity>
     </application>
 
 </manifest>
