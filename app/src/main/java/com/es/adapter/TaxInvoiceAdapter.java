@@ -2,6 +2,7 @@ package com.es.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +18,11 @@ import java.util.List;
 
 public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.TaxInvoiceHolder> {
 
-    private List<Bill_TaxInvoice> movies;
+    private List<Bill_TaxInvoice> lstTaxInvoice;
     private int rowLayout;
     private Context context;
 
-    public static class TaxInvoiceHolder extends RecyclerView.ViewHolder {
+    public class TaxInvoiceHolder extends RecyclerView.ViewHolder {
         LinearLayout moviesLayout;
         TextView movieTitle;
         TextView data;
@@ -38,7 +39,12 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("DATA", "123");
+                    bundle.putString("IMAGE", lstTaxInvoice.get(getAdapterPosition()).getBankName());
+                    bundle.putSerializable("TAX", lstTaxInvoice.get(getAdapterPosition()));
                     Intent intent = new Intent(context, HomeNavActivity.class);
+                    intent.putExtras(bundle);
                     context.startActivity(intent);
                 }
             });
@@ -46,7 +52,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
     }
 
     public TaxInvoiceAdapter(List<Bill_TaxInvoice> movies, int rowLayout, Context context) {
-        this.movies = movies;
+        this.lstTaxInvoice = movies;
         this.rowLayout = rowLayout;
         this.context = context;
     }
@@ -61,14 +67,14 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
 
     @Override
     public void onBindViewHolder(TaxInvoiceHolder holder, final int position) {
-        holder.movieTitle.setText(movies.get(position).getCustomerCode() + " - " + movies.get(position).getCustomerName());
-        holder.data.setText("Đơn giá: " + movies.get(position).getSubTotal() + " VAT: " + movies.get(position).getVAT());
-        holder.movieDescription.setText(movies.get(position).getTaxInvoiceAddress());
+        holder.movieTitle.setText(lstTaxInvoice.get(position).getCustomerCode() + " - " + lstTaxInvoice.get(position).getCustomerName());
+        holder.data.setText("Đơn giá: " + lstTaxInvoice.get(position).getSubTotal() + " VAT: " + lstTaxInvoice.get(position).getVAT());
+        holder.movieDescription.setText(lstTaxInvoice.get(position).getTaxInvoiceAddress());
 
     }
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return lstTaxInvoice.size();
     }
 }

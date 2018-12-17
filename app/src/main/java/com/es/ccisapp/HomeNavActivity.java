@@ -1,5 +1,6 @@
 package com.es.ccisapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,12 +13,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.es.model.Bill_TaxInvoice;
+
 public class HomeNavActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    Bill_TaxInvoice taxInvoice;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,15 @@ public class HomeNavActivity extends AppCompatActivity
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 //        Utils.startFragment(getSupportFragmentManager(), TaxInvoiceDetailFragment.newInstance("ONE"));
-        switchFragment(new TaxInvoiceDetailFragment(), "ABC");
+
+        Intent intent = this.getIntent();
+        Bundle bundle = intent.getExtras();
+
+        taxInvoice =
+                (Bill_TaxInvoice) bundle.getSerializable("TAX");
+        Log.e("taxInvoice", taxInvoice.toString());
+
+        switchFragment(buildFragment_TaxInvoiceDetail(), "ABC");
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -89,10 +103,10 @@ public class HomeNavActivity extends AppCompatActivity
 //        fragments.add(tripsFragment);
 //    }
 
-    private TaxInvoiceDetailFragment buildFragment(String title) {
+    private TaxInvoiceDetailFragment buildFragment_TaxInvoiceDetail() {
         TaxInvoiceDetailFragment fragment = new TaxInvoiceDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("THANH", title);
+        bundle.putSerializable("TAX", taxInvoice);
         fragment.setArguments(bundle);
         return fragment;
     }

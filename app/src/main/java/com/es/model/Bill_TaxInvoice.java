@@ -1,6 +1,8 @@
 package com.es.model;
 
-public class Bill_TaxInvoice {
+import java.io.Serializable;
+
+public class Bill_TaxInvoice implements Serializable {
     private String TaxCode;
 
     private String CustomerCode;
