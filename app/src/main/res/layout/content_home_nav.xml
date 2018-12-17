@@ -8,6 +8,10 @@
     tools:context=".HomeNavActivity"
     tools:showIn="@layout/app_bar_home_nav">
 
+    <FrameLayout
+        android:id="@+id/frame_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"

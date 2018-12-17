@@ -1,10 +1,12 @@
 package com.es.ccisapp;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class HomeNavActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +43,58 @@ public class HomeNavActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        Utils.startFragment(getSupportFragmentManager(), TaxInvoiceDetailFragment.newInstance("ONE"));
+        switchFragment(new TaxInvoiceDetailFragment(), "ABC");
+    }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+//                    Utils.startFragment(getSupportFragmentManager(), TaxInvoiceDetailFragment.newInstance("ONE"));
+                    switchFragment(new TaxInvoiceDetailFragment(), "ABC");
+                    return true;
+                case R.id.navigation_dashboard:
+                    switchFragment(new AdjustInformationsFragment(), "ABC");
+                    return true;
+                case R.id.navigation_notifications:
+//                    Utils.startFragment(getSupportFragmentManager(), TaxInvoiceDetailFragment.newInstance("ONE"));
+                    switchFragment(new NanFragment(), "ABC");
+                    return true;
+            }
+            return false;
+        }
+    };
+
+    private void switchFragment(Fragment pos, String tag) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_body, pos, tag)
+                .commit();
+    }
+
+//    private void buildFragmentsList() {
+//        TaxInvoiceDetailFragment callsFragment = buildFragment("Calls");
+//        TaxInvoiceDetailFragment recentsFragment = buildFragment("Recents");
+//        TaxInvoiceDetailFragment tripsFragment = buildFragment("Trips");
+//
+//        fragments.add(callsFragment);
+//        fragments.add(recentsFragment);
+//        fragments.add(tripsFragment);
+//    }
+
+    private TaxInvoiceDetailFragment buildFragment(String title) {
+        TaxInvoiceDetailFragment fragment = new TaxInvoiceDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("THANH", title);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
