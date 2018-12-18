@@ -23,7 +23,7 @@ public class Bill_TaxInvoice implements Serializable {
 
     private String TaxInvoiceAddress;
 
-    private String TaxInvoiceId;
+    private int TaxInvoiceId;
 
     private int IdDevice;
 
@@ -155,12 +155,12 @@ public class Bill_TaxInvoice implements Serializable {
         this.TaxInvoiceAddress = TaxInvoiceAddress;
     }
 
-    public String getTaxInvoiceId ()
+    public int getTaxInvoiceId()
     {
         return TaxInvoiceId;
     }
 
-    public void setTaxInvoiceId (String TaxInvoiceId)
+    public void setTaxInvoiceId(int TaxInvoiceId)
     {
         this.TaxInvoiceId = TaxInvoiceId;
     }

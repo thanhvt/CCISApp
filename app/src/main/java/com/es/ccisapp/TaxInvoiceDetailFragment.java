@@ -8,15 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.es.model.Bill_TaxInvoice;
+import com.es.network.CCISDataService;
+import com.es.network.RetrofitInstance;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -40,7 +47,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
     String TAG = "TaxInvoiceDetailFragment";
 
     public static final String EXTRA_DATA = "DATA_CONTENT";
-
+    Bill_TaxInvoice taxInvoice;
     private String content;
 
     public static TaxInvoiceDetailFragment newInstance(String data) {
@@ -75,19 +82,41 @@ public class TaxInvoiceDetailFragment extends Fragment {
 
         if (getArguments() != null) {
             content = getArguments().getString(EXTRA_DATA);
-            Bill_TaxInvoice taxInvoice =
+            taxInvoice =
                     (Bill_TaxInvoice) getArguments().getSerializable("TAX");
             Log.e(TAG, "taxInvoice: " + taxInvoice.toString());
             txtMaKH.setText(taxInvoice.getCustomerCode());
             txtTenKH.setText(taxInvoice.getCustomerName());
             NumberFormat format = NumberFormat.getCurrencyInstance();
-            txtVAT.setText(formatNumber(Long.parseLong(taxInvoice.getVAT().substring(0, taxInvoice.getVAT().indexOf(".")))));
-            txtTotal.setText(formatNumber(Long.parseLong(taxInvoice.getTotal().substring(0, taxInvoice.getTotal().indexOf(".")))));
-            txtSubTotal.setText(formatNumber(Long.parseLong(taxInvoice.getSubTotal().substring(0, taxInvoice.getSubTotal().indexOf(".")))));
+            txtVAT.setText(formatNumber(Long.parseLong(taxInvoice.getVAT().substring(0, taxInvoice.getVAT().indexOf(".")))) + " (VNĐ)");
+            txtTotal.setText(formatNumber(Long.parseLong(taxInvoice.getTotal().substring(0, taxInvoice.getTotal().indexOf(".")))) + " (VNĐ)");
+            txtSubTotal.setText(formatNumber(Long.parseLong(taxInvoice.getSubTotal().substring(0, taxInvoice.getSubTotal().indexOf(".")))) + " (VNĐ)");
             txtTaxCode.setText(taxInvoice.getTaxCode());
         }
 
         return rootView;
+    }
+
+    @OnClick(R.id.btnThuTien)
+    public void btnThuTien() {
+        CCISDataService apiService =
+                RetrofitInstance.getRetrofitInstance().create(CCISDataService.class);
+        Call<Integer> call = apiService.ThuTien((taxInvoice.getTaxInvoiceId()));
+        call.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                Integer movies = response.body();
+                Log.d(TAG, "movies: " + movies);
+                Toast.makeText(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " thành công !", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+            }
+        });
+
     }
 
     public String formatNumber(long number) {

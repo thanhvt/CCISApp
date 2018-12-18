@@ -72,10 +72,10 @@ public class HomeNavActivity extends AppCompatActivity
             switch (item.getItemId()) {
                 case R.id.navigation_home:
 //                    Utils.startFragment(getSupportFragmentManager(), TaxInvoiceDetailFragment.newInstance("ONE"));
-                    switchFragment(new TaxInvoiceDetailFragment(), "ABC");
+                    switchFragment(buildFragment_TaxInvoiceDetail(), "ABC");
                     return true;
                 case R.id.navigation_dashboard:
-                    switchFragment(new AdjustInformationsFragment(), "ABC");
+                    switchFragment(buildFragment_AdjustInformations(), "ABC");
                     return true;
                 case R.id.navigation_notifications:
 //                    Utils.startFragment(getSupportFragmentManager(), TaxInvoiceDetailFragment.newInstance("ONE"));
@@ -102,6 +102,14 @@ public class HomeNavActivity extends AppCompatActivity
 //        fragments.add(recentsFragment);
 //        fragments.add(tripsFragment);
 //    }
+
+    private AdjustInformationsFragment buildFragment_AdjustInformations() {
+        AdjustInformationsFragment fragment = new AdjustInformationsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("TAX", taxInvoice);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     private TaxInvoiceDetailFragment buildFragment_TaxInvoiceDetail() {
         TaxInvoiceDetailFragment fragment = new TaxInvoiceDetailFragment();
