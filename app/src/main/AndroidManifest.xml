@@ -23,14 +23,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CCISActivity"></activity>
+        <activity android:name=".CCISActivity" />
         <activity
             android:name=".HomeNavActivity"
             android:label="@string/title_activity_home_nav"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MainTabActivity"
-            android:label="@string/title_activity_main_tab" />
+        <activity android:name=".CauHinhActivity"></activity>
     </application>
 
 </manifest>
