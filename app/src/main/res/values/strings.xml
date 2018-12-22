@@ -12,4 +12,36 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_tax_invoice_detail">TaxInvoiceDetail</string>
+    <string name="email">TÊN ĐĂNG NHẬP</string>
+    <string name="passowrd">MẬT KHẨU</string>
+    <string name="login">ĐĂNG NHẬP</string>
+    <string name="tit">HỆ THỐNG QUẢN LÝ VỆ SINH MÔI TRƯỜNG</string>
+    <string name="show_pwd">Hiển thị mật khẩu</string>
+    <string name="hide_pwd">Ẩn mật khẩu</string>
+    <string name="forgot">Quên mật khẩu?</string>
+    <string name="closebutton">Close Button for Activity</string>
+    <string name="newUser">Đăng ký tài khoản.</string>
+    <string name="fullName">Full Name</string>
+    <string name="mobileNumber">Mobile Number</string>
+    <string name="location">Location</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="terms_conditions">By clicking SignUp you agree all the Terms and Conditions.</string>
+    <string name="signUp">SIGN UP</string>
+    <string name="already_user">Already have Account? Login here.</string>
+    <string name="registered_emailid">Please enter your Registered Email Id below:</string>
+    <string name="submit">SUBMIT</string>
+    <string name="back">BACK</string>
+    <string name="title_activity_login">Đăng nhập</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 </resources>
