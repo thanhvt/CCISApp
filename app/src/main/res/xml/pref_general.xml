@@ -3,12 +3,12 @@
     <android.support.v7.preference.PreferenceCategory android:title="Cấu hình hệ thống">
 
         <android.support.v7.preference.EditTextPreference
-            android:summary="EditText Summary"
-            android:dialogMessage="@string/pref_title_display_name"
+            android:summary="Xin mời cung cấp địa chỉ máy chủ publish web service"
+            android:dialogMessage="Xin mời cung cấp địa chỉ máy chủ publish web service"
             android:capitalize="words"
             android:defaultValue="@string/pref_default_ipservice"
             android:inputType="textCapWords"
-            android:key="example_text"
+            android:key="IP_SERVICE"
             android:maxLines="1"
             android:selectAllOnFocus="true"
             android:singleLine="true"
