@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,10 +27,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.es.network.CCISDataService;
+import com.es.network.RetrofitInstance;
 import com.es.utils.Utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Login_Fragment extends Fragment implements View.OnClickListener {
     private static View view;
@@ -172,9 +179,38 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.loginBtn:
-                // checkValidation();
-                Intent m = new Intent(getActivity(), CCISActivity.class);
-                startActivity(m);
+                if (checkValidation()) {
+                    try {
+                        String getEmailId = emailid.getText().toString();
+                        String getPassword = password.getText().toString();
+                        CCISDataService service = RetrofitInstance.getRetrofitInstance(getContext()).create(CCISDataService.class);
+                        Call<Boolean> call = service.CheckLogin(getEmailId, getPassword);
+                        Log.wtf("URL Called", call.request().url() + "");
+                        call.enqueue(new Callback<Boolean>() {
+                            @Override
+                            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                                Boolean postCheck = response.body().booleanValue();
+                                Log.e("CHECK PUT", postCheck + "");
+                                if (postCheck) {
+                                    Intent m = new Intent(getActivity(), CCISActivity.class);
+                                    startActivity(m);
+                                } else {
+                                    loginLayout.startAnimation(shakeAnimation);
+                                    Toast.makeText(getActivity(), "Sai tên đăng nhập hoặc mật khẩu !", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Boolean> call, Throwable t) {
+                                Log.e("USERDEVICE", t.getMessage() + "");
+                            }
+
+                        });
+                    } catch (Exception e) {
+
+                    }
+                }
+
                 break;
 
             case R.id.forgot_password:
@@ -201,7 +237,7 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
     }
 
     // Check Validation before login
-    private void checkValidation() {
+    private boolean checkValidation() {
         // Get email id and password
         String getEmailId = emailid.getText().toString();
         String getPassword = password.getText().toString();
@@ -216,14 +252,16 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
                 || getPassword.equals("") || getPassword.length() == 0) {
             loginLayout.startAnimation(shakeAnimation);
             Toast.makeText(getActivity().getApplicationContext(), "Cần điền đầy đủ thông tin !!!", Toast.LENGTH_LONG).show();
+            return false;
         }
+        return true;
         // Check if email id is valid or not
-        else if (!m.find())
-            Toast.makeText(getActivity().getApplicationContext(), "Email không đúng định dạng !!!", Toast.LENGTH_LONG).show();
-            // Else do login and do your stuff
-        else
-            Toast.makeText(getActivity(), "Do Login.", Toast.LENGTH_SHORT)
-                    .show();
+//        else if (!m.find())
+//            Toast.makeText(getActivity().getApplicationContext(), "Email không đúng định dạng !!!", Toast.LENGTH_LONG).show();
+//            // Else do login and do your stuff
+//        else
+//            Toast.makeText(getActivity(), "Do Login.", Toast.LENGTH_SHORT)
+//                    .show();
 
     }
 }
