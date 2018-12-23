@@ -36,7 +36,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
     TextView txtSubTotal;
     @BindView(R.id.txtTaxCode)
     TextView txtTaxCode;
-    @BindView(R.id.txtTenKH)
+    @BindView(R.id.edTenKH)
     TextView txtTenKH;
     @BindView(R.id.txtTotal)
     TextView txtTotal;

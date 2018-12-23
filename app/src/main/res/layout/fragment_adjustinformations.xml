@@ -3,108 +3,126 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:layout_margin="3dp"
     android:gravity="top|center"
     android:orientation="vertical"
     tools:context=".AdjustInformationsFragment">
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="3px"
-        android:orientation="horizontal">
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="3px"
-        android:orientation="horizontal">
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView41"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Thông tin khách hàng"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/txtTenKH"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Tên KH"
-        android:inputType="textPersonName" />
-
-    <EditText
-        android:id="@+id/txtDC"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:gravity="top"
-        android:hint="Địa chỉ"
-        android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/textView42"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Amount"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/edBinancePub"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Số lượng mới"
-        android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/textView46"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Đơn giá điều chỉnh"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/edBinancePri"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/textView50"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="Số thứ tự trong sổ" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/edBTC"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="numberDecimal"
-            android:text="1" />
+            android:gravity="top|center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView41"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thông tin khách hàng"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edTenKH"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Tên KH"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/edDC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="Địa chỉ"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/textView42"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Amount"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edSL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Số lượng mới"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/textView46"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đơn giá điều chỉnh"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edDonGia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:id="@+id/textView50"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Số thứ tự trong sổ" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edSTT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:text="1" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:id="@+id/rgTN"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rdTT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Tiếp nhận thông thường" />
+
+            <RadioButton
+                android:id="@+id/rdDC"
+                android:layout_weight="1"
+                android:text="Tiếp nhận đã điều chỉnh hóa đơn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
     </LinearLayout>
 
     <Button

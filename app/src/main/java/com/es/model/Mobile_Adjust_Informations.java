@@ -3,7 +3,7 @@ package com.es.model;
 import java.io.Serializable;
 
 public class Mobile_Adjust_Informations implements Serializable {
-    private String Status;
+    private boolean Status;
 
     private String Index;
 
@@ -27,11 +27,11 @@ public class Mobile_Adjust_Informations implements Serializable {
 
     private String AdjustID;
 
-    public String getStatus() {
+    public boolean getStatus() {
         return Status;
     }
 
-    public void setStatus(String Status) {
+    public void setStatus(boolean Status) {
         this.Status = Status;
     }
 
