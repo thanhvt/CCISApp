@@ -31,7 +31,7 @@ public class CCISActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         CCISDataService apiService =
-                RetrofitInstance.getRetrofitInstance().create(CCISDataService.class);
+                RetrofitInstance.getRetrofitInstance(getApplicationContext()).create(CCISDataService.class);
 
         Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice();
         call.enqueue(new Callback<List<Bill_TaxInvoice>>() {

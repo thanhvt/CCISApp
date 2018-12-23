@@ -1,6 +1,7 @@
 package com.es.network;
 
 import com.es.model.Bill_TaxInvoice;
+import com.es.model.Mobile_Adjust_Informations;
 
 import java.util.List;
 
@@ -15,4 +16,7 @@ public interface CCISDataService {
 
     @GET("ThuTien/{id}")
     Call<Integer> ThuTien(@Path("id") int id);
+
+    @GET("Mobile_Adjust_Informations/{id}")
+    Call<List<Mobile_Adjust_Informations>> getMobile_Adjust_Informations(@Path("id") int id);
 }

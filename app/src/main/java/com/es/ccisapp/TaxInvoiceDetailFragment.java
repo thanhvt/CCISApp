@@ -100,14 +100,18 @@ public class TaxInvoiceDetailFragment extends Fragment {
     @OnClick(R.id.btnThuTien)
     public void btnThuTien() {
         CCISDataService apiService =
-                RetrofitInstance.getRetrofitInstance().create(CCISDataService.class);
+                RetrofitInstance.getRetrofitInstance(getActivity().getApplicationContext()).create(CCISDataService.class);
         Call<Integer> call = apiService.ThuTien((taxInvoice.getTaxInvoiceId()));
         call.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 Integer movies = response.body();
                 Log.d(TAG, "movies: " + movies);
-                Toast.makeText(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " thành công !", Toast.LENGTH_SHORT).show();
+                if (movies == 1) {
+                    Toast.makeText(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " thành công !", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
