@@ -1,5 +1,6 @@
 package com.es.ccisapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.es.model.Bill_TaxInvoice;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
+import com.es.printer.BluetoothPrinterActivity;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -120,7 +122,12 @@ public class TaxInvoiceDetailFragment extends Fragment {
                 Log.e(TAG, t.toString());
             }
         });
+    }
 
+    @OnClick(R.id.btnInHD)
+    public void btnInHD() {
+        Intent intent = new Intent(getActivity().getApplicationContext(), BluetoothPrinterActivity.class);
+        startActivity(intent);
     }
 
     public String formatNumber(long number) {

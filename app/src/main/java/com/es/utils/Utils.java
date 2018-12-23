@@ -6,6 +6,10 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.es.ccisapp.R;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class Utils {
     public static void startFragment(FragmentManager manager, Fragment fragment) {
         final FragmentTransaction transaction = manager.beginTransaction();
@@ -18,4 +22,16 @@ public class Utils {
     public static final String Login_Fragment = "Login_Fragment";
     public static final String SignUp_Fragment = "SignUp_Fragment";
     public static final String ForgotPassword_Fragment = "ForgotPassword_Fragment";
+
+    public static String doubleFormatter(double number) {
+        Locale locale = new Locale("en");
+        Locale.setDefault(locale);
+
+        NumberFormat formatter = new DecimalFormat("#0.00");
+
+        String formattedNumber = formatter.format(number);
+
+        return formattedNumber;
+
+    }
 }
