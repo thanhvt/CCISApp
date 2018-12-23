@@ -18,6 +18,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"
@@ -44,12 +46,12 @@
         </activity>
         <activity
             android:name="com.es.printer.BluetoothPrinterActivity"
-            android:label="@string/title_activity_home_nav"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="Cấu hình in và in">
+
+        </activity>
         <activity
             android:name="com.es.printer.DeviceListActivity"
-            android:label="@string/title_activity_home_nav"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_home_nav" />
     </application>
 
 </manifest>

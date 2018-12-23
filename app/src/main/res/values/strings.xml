@@ -126,7 +126,7 @@
     <string name="title_other_devices">Other Available Devices</string>
     <string name="button_scan">Search for devices</string>
     <string name="connect_bluetooth_device_btn">Connect a Bluetooth Printer</string>
-    <string name="print_btn">Print Receipt</string>
+    <string name="print_btn">Test Page</string>
     <string name="option_btn">Print Option</string>
     <string name="bt_inquiry_btn">Inquiry Status</string>
     <string name="quit_btn">Quit</string>

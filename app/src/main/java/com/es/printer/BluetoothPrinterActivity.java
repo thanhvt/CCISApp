@@ -10,8 +10,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -51,6 +53,12 @@ public class BluetoothPrinterActivity extends AppCompatActivity {
         Log.e(TAG, "+++ ON CREATE +++");
 
         setContentView(R.layout.bluetooth_printer_activity);
+
+        ActionBar actionBar = this.getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         CONTEXT = getApplicationContext();
         alertDlgBuilder = new AlertDialog.Builder(BluetoothPrinterActivity.this);
@@ -257,9 +265,6 @@ public class BluetoothPrinterActivity extends AppCompatActivity {
             }
 
         }
-
-        ;
-
     };
 
     @Override
@@ -267,5 +272,15 @@ public class BluetoothPrinterActivity extends AppCompatActivity {
         super.onDestroy();
         if (BLUETOOTH_PRINTER.IsNoConnection())
             BLUETOOTH_PRINTER.stop();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

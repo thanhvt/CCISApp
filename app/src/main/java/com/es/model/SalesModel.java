@@ -23,11 +23,11 @@ public class SalesModel {
     }
 
     public static void generatedMoneyReceipt() {
-        SalesModel salesModel = new SalesModel("Vegetable Noodle", 1, 3);
-        StaticValue.arrayListSalesModel.add(salesModel);
-        SalesModel salesModel1 = new SalesModel("Chicken Fry", 1, 5);
+//        SalesModel salesModel = new SalesModel("Vegetable Noodle", 10, 3);
+//        StaticValue.arrayListSalesModel.add(salesModel);
+        SalesModel salesModel1 = new SalesModel("Số khối", 15, 20000);
         StaticValue.arrayListSalesModel.add(salesModel1);
-        SalesModel salesModel2 = new SalesModel("Coke-Small", 1, 1);
+        SalesModel salesModel2 = new SalesModel("Số người", 3, 50000);
         StaticValue.arrayListSalesModel.add(salesModel2);
 
     }

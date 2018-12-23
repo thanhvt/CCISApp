@@ -6,6 +6,8 @@ import com.es.ccisapp.R;
 import com.es.model.SalesModel;
 import com.es.utils.Utils;
 
+import java.util.Calendar;
+
 
 /**
  * This class is responsible to generate a static sales receipt and to print that receipt
@@ -32,13 +34,15 @@ public class PrintReceipt {
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);
+        Calendar cal = Calendar.getInstance();
+        String time = cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.YEAR);
 
         //BT_Write() method will initiate the printer to start printing.
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Branch Name: " + "Stuttgart Branch" +
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Công ty Điện Lực " + "Hoàn Kiếm" +
                 "\nOrder No: " + "1245784256454" +
                 "\nBill No: " + "554741254854" +
-                "\nTrn. Date:" + "29/12/2015" +
-                "\nSalesman:" + "Mr. Salesman");
+                "\nTrn. Date:" + time +
+                "\nSalesman:" + "Administrator");
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
@@ -111,7 +115,7 @@ public class PrintReceipt {
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//Center
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("\n\nThank You\nPOWERED By SIAS ERP");
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("\n\nThank You\nPOWERED By ....");
 
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();

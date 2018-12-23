@@ -1,58 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="fill_vertical">
+    android:layout_height="match_parent"
+    android:layout_gravity="fill_vertical"
+    android:padding="2dp">
 
-    <RelativeLayout
-        android:id="@+id/printer_rl"
+    <TextView
+        android:id="@+id/txtPrinerStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/no_printer_connected" />
+
+    <Button
+        android:id="@+id/btn_connect_bluetooth_device"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtPrinerStatus"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/connect_bluetooth_device_btn" />
+
+    <Button
+        android:id="@+id/btn_print"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_connect_bluetooth_device"
+        android:layout_alignStart="@+id/btn_connect_bluetooth_device"
+        android:layout_alignLeft="@id/btn_connect_bluetooth_device"
+        android:layout_marginTop="17dp"
+        android:text="@string/print_btn" />
+
+    <Button
+        android:id="@+id/btn_inhd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_connect_bluetooth_device"
+        android:layout_alignEnd="@+id/btn_connect_bluetooth_device"
+        android:layout_alignRight="@id/btn_connect_bluetooth_device"
+        android:layout_marginTop="17dp"
+        android:text="In hóa đơn" />
+
+    <EditText
+        android:id="@+id/edIn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="2dp">
-
-        <TextView
-            android:id="@+id/txtPrinerStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="5dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="@string/no_printer_connected" />
-
-        <Button
-            android:id="@+id/btn_connect_bluetooth_device"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtPrinerStatus"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/connect_bluetooth_device_btn" />
-
-        <Button
-            android:id="@+id/btn_print"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_connect_bluetooth_device"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/print_btn" />
-        android:text="@string/bt_inquiry_btn" />
-
-        <!--<ImageView-->
-        <!--android:id="@+id/printer_imgPOSPrinter"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:scaleType="fitXY"-->
-        <!--android:src="@drawable/pos_printer_offliine" -->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:layout_below="@+id/btn_test"-->
-        <!--android:contentDescription="@string/contentdesctiption"/>-->
-    </RelativeLayout>
-
+        android:layout_below="@+id/btn_print"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="top"
+        android:text="Print text" />
 
 </RelativeLayout>
