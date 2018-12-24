@@ -93,16 +93,6 @@ public class HomeNavActivity extends AppCompatActivity
                 .commit();
     }
 
-//    private void buildFragmentsList() {
-//        TaxInvoiceDetailFragment callsFragment = buildFragment("Calls");
-//        TaxInvoiceDetailFragment recentsFragment = buildFragment("Recents");
-//        TaxInvoiceDetailFragment tripsFragment = buildFragment("Trips");
-//
-//        fragments.add(callsFragment);
-//        fragments.add(recentsFragment);
-//        fragments.add(tripsFragment);
-//    }
-
     private AdjustInformationsFragment buildFragment_AdjustInformations() {
         AdjustInformationsFragment fragment = new AdjustInformationsFragment();
         Bundle bundle = new Bundle();

@@ -223,7 +223,6 @@ Bill_TaxInvoice taxInvoice;
             if (!PrintReceipt.printBillFromOrder(getApplicationContext(), taxInvoice)) {
                 Toast.makeText(BluetoothPrinterActivity.this, "No printer is connected!!", Toast.LENGTH_LONG).show();
             }
-
         }
 
         ;
