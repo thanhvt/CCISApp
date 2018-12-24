@@ -2,6 +2,7 @@ package com.es.ccisapp;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
@@ -29,13 +30,13 @@ import android.widget.Toast;
 
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
+import com.es.utils.CustomCallBack;
 import com.es.utils.Utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Login_Fragment extends Fragment implements View.OnClickListener {
@@ -132,6 +133,12 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
             signUp.setTextColor(csl);
         } catch (Exception e) {
         }
+
+        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+        String getEmailId = pref.getString("USERNAME", "");
+        String getPassword = pref.getString("PASSWORD", "");
+        emailid.setText(getEmailId);
+        password.setText(getPassword);
     }
 
     // Set Listeners
@@ -181,12 +188,12 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
             case R.id.loginBtn:
                 if (checkValidation()) {
                     try {
-                        String getEmailId = emailid.getText().toString();
-                        String getPassword = password.getText().toString();
+                        final String getEmailId = emailid.getText().toString();
+                        final String getPassword = password.getText().toString();
                         CCISDataService service = RetrofitInstance.getRetrofitInstance(getContext()).create(CCISDataService.class);
                         Call<Boolean> call = service.CheckLogin(getEmailId, getPassword);
                         Log.wtf("URL Called", call.request().url() + "");
-                        call.enqueue(new Callback<Boolean>() {
+                        call.enqueue(new CustomCallBack<Boolean>(getActivity()) {
                             @Override
                             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                                 Boolean postCheck = response.body().booleanValue();
@@ -194,15 +201,24 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
                                 if (postCheck) {
                                     Intent m = new Intent(getActivity(), CCISActivity.class);
                                     startActivity(m);
+                                    SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+                                    SharedPreferences.Editor editor = pref.edit();
+                                    editor.putString("USERNAME", getEmailId);
+                                    editor.putString("PASSWORD", getPassword);
+                                    editor.commit();
+
                                 } else {
                                     loginLayout.startAnimation(shakeAnimation);
                                     Toast.makeText(getActivity(), "Sai tên đăng nhập hoặc mật khẩu !", Toast.LENGTH_SHORT).show();
                                 }
+
+                                this.mProgressDialog.dismiss();
                             }
 
                             @Override
                             public void onFailure(Call<Boolean> call, Throwable t) {
                                 Log.e("USERDEVICE", t.getMessage() + "");
+                                this.mProgressDialog.dismiss();
                             }
 
                         });

@@ -124,12 +124,18 @@ public class AdjustInformationsFragment extends Fragment {
             call.enqueue(new Callback<Boolean>() {
                 @Override
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                    Boolean postCheck = response.body().booleanValue();
-                    Log.e("CHECK PUT", postCheck + "");
-                    if (postCheck) {
-                        Toast.makeText(getActivity(), "Lưu thông tin khách hàng thành công !", Toast.LENGTH_SHORT).show();
-                    } else {
+                    try {
+                        Log.e(TAG, response.message());
+                        Boolean postCheck = response.body().booleanValue();
+                        Log.e("CHECK PUT", postCheck + "");
+                        if (postCheck) {
+                            Toast.makeText(getActivity(), "Lưu thông tin khách hàng thành công !", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "Lưu thông tin khách hàng không thành công !", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
                         Toast.makeText(getActivity(), "Lưu thông tin khách hàng không thành công !", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, e.getMessage());
                     }
                 }
 

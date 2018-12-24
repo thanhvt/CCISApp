@@ -15,6 +15,7 @@ import com.es.model.Bill_TaxInvoice;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 import com.es.printer.BluetoothPrinterActivity;
+import com.es.utils.CustomCallBack;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -24,7 +25,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -104,9 +104,10 @@ public class TaxInvoiceDetailFragment extends Fragment {
         CCISDataService apiService =
                 RetrofitInstance.getRetrofitInstance(getActivity().getApplicationContext()).create(CCISDataService.class);
         Call<Integer> call = apiService.ThuTien((taxInvoice.getTaxInvoiceId()));
-        call.enqueue(new Callback<Integer>() {
+        call.enqueue(new CustomCallBack<Integer>(getActivity()) {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
+                this.mProgressDialog.dismiss();
                 Integer movies = response.body();
                 Log.d(TAG, "movies: " + movies);
                 if (movies == 1) {
@@ -118,6 +119,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
+                this.mProgressDialog.dismiss();
                 // Log error here since request failed
                 Log.e(TAG, t.toString());
             }

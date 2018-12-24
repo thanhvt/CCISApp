@@ -14,11 +14,11 @@ import com.es.adapter.TaxInvoiceAdapter;
 import com.es.model.Bill_TaxInvoice;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
+import com.es.utils.CustomCallBack;
 
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CCISActivity extends AppCompatActivity {
@@ -37,19 +37,20 @@ public class CCISActivity extends AppCompatActivity {
                 RetrofitInstance.getRetrofitInstance(getApplicationContext()).create(CCISDataService.class);
 
         Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice();
-        call.enqueue(new Callback<List<Bill_TaxInvoice>>() {
+        call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(this) {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoice>>call, Response<List<Bill_TaxInvoice>> response) {
                 List<Bill_TaxInvoice> movies = response.body();
                 Log.d(TAG, "Number of movies received: " + movies.get(0).toString());
                 recyclerView.setAdapter(new TaxInvoiceAdapter(movies, R.layout.list_taxinvoice, getApplicationContext()));
-
+                this.mProgressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<List<Bill_TaxInvoice>>call, Throwable t) {
                 // Log error here since request failed
                 Log.e(TAG, t.toString());
+                this.mProgressDialog.dismiss();
             }
         });
 
