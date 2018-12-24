@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.es.ccisapp.R;
+import com.es.model.Bill_TaxInvoice;
 import com.mocoo.hang.rtprinter.driver.Contants;
 import com.mocoo.hang.rtprinter.driver.HsBluetoothPrintDriver;
 
@@ -45,8 +46,9 @@ public class BluetoothPrinterActivity extends AppCompatActivity {
     private static Button mBtnPrint = null;
     private static TextView txtPrinterStatus = null;
 //    private static ImageView mImgPosPrinter = null;
+Bill_TaxInvoice taxInvoice;
 
-
+    Button btnPrintInHD;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,11 @@ public class BluetoothPrinterActivity extends AppCompatActivity {
         }
         //Initialize widgets
         InitUIControl();
+
+        if (getIntent().getExtras() != null) {
+            taxInvoice =
+                    (Bill_TaxInvoice) getIntent().getExtras().getSerializable("TAX");
+        }
     }
 
     private void InitUIControl() {
@@ -82,8 +89,9 @@ public class BluetoothPrinterActivity extends AppCompatActivity {
         mBtnConnetBluetoothDevice = (Button) findViewById(R.id.btn_connect_bluetooth_device);
         mBtnConnetBluetoothDevice.setOnClickListener(mBtnConnetBluetoothDeviceOnClickListener);
         mBtnPrint = (Button) findViewById(R.id.btn_print);
-        mBtnPrint.setOnClickListener(mBtnPrintOnClickListener);
-
+        mBtnPrint.setOnClickListener(mBtnPrintTestOnClickListener);
+        btnPrintInHD = (Button) findViewById(R.id.btn_inhd);
+        btnPrintInHD.setOnClickListener(mBtnPrintOnClickListener);
 //        mImgPosPrinter = (ImageView)findViewById(R.id.printer_imgPOSPrinter);
     }
 
@@ -212,7 +220,7 @@ public class BluetoothPrinterActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             // Stop the Bluetooth chat services
-            if (!PrintReceipt.printBillFromOrder(getApplicationContext())) {
+            if (!PrintReceipt.printBillFromOrder(getApplicationContext(), taxInvoice)) {
                 Toast.makeText(BluetoothPrinterActivity.this, "No printer is connected!!", Toast.LENGTH_LONG).show();
             }
 
@@ -223,7 +231,13 @@ public class BluetoothPrinterActivity extends AppCompatActivity {
 
     OnClickListener mBtnPrintOnClickListener = new OnClickListener() {
         public void onClick(View arg0) {
-            PrintReceipt.printBillFromOrder(BluetoothPrinterActivity.this);
+            PrintReceipt.printBillFromOrder(BluetoothPrinterActivity.this, taxInvoice);
+        }
+    };
+
+    OnClickListener mBtnPrintTestOnClickListener = new OnClickListener() {
+        public void onClick(View arg0) {
+            PrintReceipt.printTest(BluetoothPrinterActivity.this);
         }
     };
 

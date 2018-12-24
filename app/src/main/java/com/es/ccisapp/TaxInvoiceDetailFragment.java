@@ -129,6 +129,9 @@ public class TaxInvoiceDetailFragment extends Fragment {
     @OnClick(R.id.btnInHD)
     public void btnInHD() {
         Intent intent = new Intent(getActivity().getApplicationContext(), BluetoothPrinterActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("TAX", taxInvoice);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
