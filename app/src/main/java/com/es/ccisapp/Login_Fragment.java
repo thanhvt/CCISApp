@@ -50,6 +50,7 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
     private static Animation shakeAnimation;
     private static FragmentManager fragmentManager;
 
+    private static String TAG = "Login_Fragment msg ";
     public Login_Fragment() {
 
     }
@@ -60,6 +61,7 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
         setHasOptionsMenu(true);
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -196,21 +198,27 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
                         call.enqueue(new CustomCallBack<Boolean>(getActivity()) {
                             @Override
                             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                                Boolean postCheck = response.body().booleanValue();
-                                Log.e("CHECK PUT", postCheck + "");
-                                if (postCheck) {
-                                    Intent m = new Intent(getActivity(), MainActivity.class);
-                                    startActivity(m);
-                                    SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
-                                    SharedPreferences.Editor editor = pref.edit();
-                                    editor.putString("USERNAME", getEmailId);
-                                    editor.putString("PASSWORD", getPassword);
-                                    editor.commit();
-
+                                if (response == null || response.body() == null || response.errorBody() != null) {
+                                    Log.e(TAG, response.errorBody().toString());
+                                    Toast.makeText(getActivity(), "Đăng nhập thất bại. Kiểm tra lại kết nối !", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    loginLayout.startAnimation(shakeAnimation);
-                                    Toast.makeText(getActivity(), "Sai tên đăng nhập hoặc mật khẩu !", Toast.LENGTH_SHORT).show();
+                                    Boolean postCheck = response.body().booleanValue();
+                                    Log.e("CHECK PUT", postCheck + "");
+                                    if (postCheck) {
+                                        Intent m = new Intent(getActivity(), MainActivity.class);
+                                        startActivity(m);
+                                        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+                                        SharedPreferences.Editor editor = pref.edit();
+                                        editor.putString("USERNAME", getEmailId);
+                                        editor.putString("PASSWORD", getPassword);
+                                        editor.commit();
+
+                                    } else {
+                                        loginLayout.startAnimation(shakeAnimation);
+                                        Toast.makeText(getActivity(), "Sai tên đăng nhập hoặc mật khẩu !", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
+
 
                                 this.mProgressDialog.dismiss();
                             }
@@ -218,6 +226,7 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
                             @Override
                             public void onFailure(Call<Boolean> call, Throwable t) {
                                 Log.e("USERDEVICE", t.getMessage() + "");
+                                Toast.makeText(getActivity(), "Đăng nhập thất bại. Kiểm tra lại kết nối !", Toast.LENGTH_SHORT).show();
                                 this.mProgressDialog.dismiss();
                             }
 

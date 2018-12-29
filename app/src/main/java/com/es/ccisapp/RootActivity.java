@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.activeandroid.ActiveAndroid;
 import com.es.utils.Utils;
 
 import java.lang.reflect.Method;
@@ -40,6 +41,9 @@ public class RootActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_root);
+
+        ActiveAndroid.initialize(getApplication());
+
         ButterKnife.bind(this);
         fragmentManager = getSupportFragmentManager();
 

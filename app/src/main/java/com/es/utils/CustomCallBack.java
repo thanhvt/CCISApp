@@ -15,10 +15,18 @@ public class CustomCallBack<T> implements Callback<T> {
     public CustomCallBack(Context context) {
         this.context = context;
         mProgressDialog = new ProgressDialog(context);
-//        ((Activity) context).getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-//                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setMessage("Loading...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+
+    }
+
+    public CustomCallBack(Context context, String strMess) {
+        this.context = context;
+        mProgressDialog = new ProgressDialog(context);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setMessage(strMess);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
 

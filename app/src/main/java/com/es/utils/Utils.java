@@ -1,5 +1,8 @@
 package com.es.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -34,6 +37,14 @@ public class Utils {
         return formattedNumber;
 
     }
+
+    public static boolean isOnline(Context m) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) m.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 
     public static String formatNumber(long number) {
         if (number < 1000) {

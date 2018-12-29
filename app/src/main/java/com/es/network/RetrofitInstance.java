@@ -18,17 +18,24 @@ public class RetrofitInstance {
      * Create an instance of Retrofit object
      */
     public static Retrofit getRetrofitInstance(Context mContext) {
-        if (retrofit == null) {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-            String IP_SERVICE = sharedPrefs.getString("IP_SERVICE", "0");
-            String def = BASE_URL;
-            if (!IP_SERVICE.equals("0")) {
-                def = "http://" + IP_SERVICE + "/";
-            }
+        String root = BASE_URL;
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String IP_SERVICE = sharedPrefs.getString("IP_SERVICE", "0");
+        String def = BASE_URL;
+        if (!IP_SERVICE.equals("0")) {
+            def = "http://" + IP_SERVICE + "/";
+        }
+        if (retrofit == null || !def.equals(root)) {
+
             retrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl(def)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
+
+//            retrofit = new retrofit2.Retrofit.Builder()
+//                    .baseUrl(def)
+//                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create())).build();
+
         }
         return retrofit;
     }

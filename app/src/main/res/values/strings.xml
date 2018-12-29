@@ -45,6 +45,7 @@
         completions."
     </string>
     <string name="title_activity_cau_hinh">Cấu hình hệ thống</string>
+    <string name="no_data_available">Chưa có dữ liệu trên máy. Đề nghị lấy dữ liệu từ Server !</string>
 
     <!-- Strings related to Settings -->
 

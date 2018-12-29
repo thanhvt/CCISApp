@@ -37,7 +37,7 @@ public class CCISActivity extends AppCompatActivity {
         apiService =
                 RetrofitInstance.getRetrofitInstance(getApplicationContext()).create(CCISDataService.class);
 
-        Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice();
+        Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(1);
         call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(this) {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {

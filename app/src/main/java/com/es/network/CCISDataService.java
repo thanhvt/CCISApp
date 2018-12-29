@@ -13,8 +13,8 @@ import retrofit2.http.Path;
 
 public interface CCISDataService {
 
-    @GET("api/CCIS/getBill_TaxInvoice")
-    Call<List<Bill_TaxInvoice>> getBill_TaxInvoice();
+    @GET("getBill_TaxInvoice/{status}")
+    Call<List<Bill_TaxInvoice>> getBill_TaxInvoice(@Path("status") int status);
 
     @GET("ThuTien/{id}")
     Call<Integer> ThuTien(@Path("id") int id);

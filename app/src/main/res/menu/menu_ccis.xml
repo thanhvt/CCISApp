@@ -21,13 +21,13 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/sortTime"
+                    android:id="@+id/action_all"
                     android:title="Tất cả" />
                 <item
-                    android:id="@+id/sortCoin"
+                    android:id="@+id/action_dathu"
                     android:title="Đã thu tiền" />
                 <item
-                    android:id="@+id/sortGain"
+                    android:id="@+id/action_chuathu"
                     android:title="Chưa thu tiền" />
             </group>
         </menu>

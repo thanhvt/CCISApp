@@ -6,11 +6,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_down"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/down"
             android:title="Lấy số liệu từ Server" />
         <item
             android:id="@+id/nav_up"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/up"
             android:title="Gửi số liệu về Server" />
         <!--<item-->
         <!--android:id="@+id/nav_slideshow"-->
@@ -18,7 +18,7 @@
         <!--android:title="Slideshow" />-->
         <item
             android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/del"
             android:title="Xóa dữ liệu trên máy" />
     </group>
 

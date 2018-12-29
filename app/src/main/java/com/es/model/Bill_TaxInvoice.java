@@ -57,6 +57,39 @@ public class Bill_TaxInvoice implements Serializable {
 
     private boolean IsChecked;
 
+    public Bill_TaxInvoice() {
+    }
+
+    public Bill_TaxInvoice(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String $id, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked) {
+        TaxCode = taxCode;
+        CustomerCode = customerCode;
+        BankName = bankName;
+        Month = month;
+        SerialNumber = serialNumber;
+        Year = year;
+        CustomerId = customerId;
+        DepartmentId = departmentId;
+        this.$id = $id;
+        TaxInvoiceAddress = taxInvoiceAddress;
+        TaxInvoiceId = taxInvoiceId;
+        IdDevice = idDevice;
+        ContractId = contractId;
+        FigureBookId = figureBookId;
+        SerialCode = serialCode;
+        CustomerName = customerName;
+        CustomerCode_Pay = customerCode_Pay;
+        SubTotal = subTotal;
+        Address_Pay = address_Pay;
+        BankAccount = bankAccount;
+        this.VAT = VAT;
+        TaxRatio = taxRatio;
+        CustomerId_Pay = customerId_Pay;
+        BillType = billType;
+        CustomerName_Pay = customerName_Pay;
+        Total = total;
+        IsChecked = isChecked;
+    }
+
     public boolean isChecked() {
         return IsChecked;
     }
