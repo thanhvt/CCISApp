@@ -42,6 +42,8 @@ public class AdjustInformationsFragment extends Fragment {
     RadioButton rdDC;
     @BindView(R.id.rdTT)
     RadioButton rdTT;
+    @BindView(R.id.rdDCHD)
+    RadioButton rdDCHD;
 
     // constant
     String TAG = "AdjustInformationsFragment";
@@ -109,7 +111,7 @@ public class AdjustInformationsFragment extends Fragment {
         m.setEmployeeCode("2");
         m.setIndex(edSTT.getText().toString());
         m.setPrice(edDonGia.getText().toString());
-        m.setType(rdTT.isChecked() ? "0" : "1");
+        m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
         Log.e("Adjust_Informations", m.toString());

@@ -151,7 +151,7 @@ public class HomeNavActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_up) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_duyet) {
 
         } else if (id == R.id.nav_manage) {
 

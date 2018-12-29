@@ -117,21 +117,30 @@ public class CCISFragment extends Fragment {
         call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(getActivity()) {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
-                lstTaxInvoiceData = response.body();
-                for (Bill_TaxInvoice b : lstTaxInvoiceData) {
-                    b.setChecked(false);
+                try {
+                    lstTaxInvoiceData = response.body();
+                    if (lstTaxInvoiceData.size() > 0) {
+                        for (Bill_TaxInvoice b : lstTaxInvoiceData) {
+                            b.setChecked(false);
+                        }
+                        Log.e(TAG, "Bill_TaxInvoice[0] received: " + lstTaxInvoiceData.get(0).toString());
+                        taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
+                        recyclerView.setAdapter(taxInvoiceAdapter);
+                        taxInvoiceAdapter.notifyDataSetChanged();
+                        recyclerView.setVisibility(View.VISIBLE);
+                        txtEmpty.setVisibility(View.GONE);
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                } finally {
+                    this.mProgressDialog.dismiss();
                 }
-                Log.e(TAG, "Bill_TaxInvoice[0] received: " + lstTaxInvoiceData.get(0).toString());
-                taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
-                recyclerView.setAdapter(taxInvoiceAdapter);
-                taxInvoiceAdapter.notifyDataSetChanged();
-                this.mProgressDialog.dismiss();
-
             }
 
             @Override
             public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
                 // Log error here since request failed
+                Toast.makeText(getActivity(), "Không có dữ liệu hoặc xảy ra lỗi quá trình lấy dữ liệu ! ", Toast.LENGTH_LONG).show();
                 Log.e(TAG, t.toString());
                 this.mProgressDialog.dismiss();
             }
@@ -175,9 +184,9 @@ public class CCISFragment extends Fragment {
                                         Integer movies = response.body();
                                         Log.d(TAG, "movies: " + movies);
                                         if (movies == 1) {
-                                            Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toast.LENGTH_LONG).show();
                                         } else {
-                                            Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toast.LENGTH_LONG).show();
                                         }
                                     }
 
@@ -219,21 +228,21 @@ public class CCISFragment extends Fragment {
         }
         if (id == R.id.action_all) {
             if (!Utils.isOnline(getContext())) {
-                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_LONG).show();
             } else {
                 getDataTaxInvoice(-1);
             }
         }
         if (id == R.id.action_dathu) {
             if (!Utils.isOnline(getContext())) {
-                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_LONG).show();
             } else {
                 getDataTaxInvoice(1);
             }
         }
         if (id == R.id.action_chuathu) {
             if (!Utils.isOnline(getContext())) {
-                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_LONG).show();
             } else {
                 getDataTaxInvoice(0);
             }

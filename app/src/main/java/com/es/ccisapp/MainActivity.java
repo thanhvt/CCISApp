@@ -1,6 +1,7 @@
 package com.es.ccisapp;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -33,7 +34,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     CCISDataService apiService;
-
+    Context mContext = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,44 +117,64 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_down) {
-            Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(0);
-            call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(this, "Đang lấy số liệu chưa thu tiền từ Server") {
-                @Override
-                public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
-                    List<Bill_TaxInvoice> movies = response.body();
-                    if (movies.size() > 0) {
-                        ActiveAndroid.beginTransaction();
-                        try {
-                            for (Bill_TaxInvoice b : movies) {
-                                Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
-                                        b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
-                                        b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
-                                        b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked());
-                                c.save();
-                            }
-                            Toast.makeText(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toast.LENGTH_LONG).show();
-                            switchFragment(buildFragment_CCIS(), "ABC");
-                            ActiveAndroid.setTransactionSuccessful();
-                        } finally {
-                            ActiveAndroid.endTransaction();
-                        }
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Không có dữ liệu chưa thu tiền !", Toast.LENGTH_LONG).show();
-                    }
-                    this.mProgressDialog.dismiss();
-                }
 
-                @Override
-                public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
-                    // Log error here since request failed
-                    Toast.makeText(getApplicationContext(), "Lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
-                    this.mProgressDialog.dismiss();
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle(R.string.app_name);
+            builder.setMessage("Chương trình sẽ xóa dữ liệu chưa thu tiền cũ đang có trên máy điện thoại này để lấy dữ liệu mới. Anh/Chị muốn thực hiện ?");
+            builder.setIcon(R.drawable.logo);
+            builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(0);
+                    call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(mContext, "Đang lấy số liệu chưa thu tiền từ Server") {
+                        @Override
+                        public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
+                            List<Bill_TaxInvoice> movies = response.body();
+                            if (movies.size() > 0) {
+                                List<Bill_TaxInvoiceModel> tmp = new Delete().from(Bill_TaxInvoiceModel.class).execute();
+                                ActiveAndroid.beginTransaction();
+                                try {
+                                    for (Bill_TaxInvoice b : movies) {
+                                        Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
+                                                b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
+                                                b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
+                                                b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
+                                                b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked());
+                                        c.save();
+                                    }
+                                    Toast.makeText(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toast.LENGTH_LONG).show();
+                                    switchFragment(buildFragment_CCIS(), "ABC");
+                                    ActiveAndroid.setTransactionSuccessful();
+                                } finally {
+                                    ActiveAndroid.endTransaction();
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Không có dữ liệu chưa thu tiền !", Toast.LENGTH_LONG).show();
+                            }
+                            this.mProgressDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
+                            // Log error here since request failed
+                            Toast.makeText(getApplicationContext(), "Lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+                            this.mProgressDialog.dismiss();
+                        }
+                    });
                 }
             });
+            builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Toast.makeText(getApplicationContext(), "Hủy thao tác lấy dữ liệu chưa thu tiền từ Server !", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+
         } else if (id == R.id.nav_up) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_duyet) {
 
         } else if (id == R.id.nav_manage) {
 

@@ -12,10 +12,10 @@
             android:id="@+id/nav_up"
             android:icon="@drawable/up"
             android:title="Gửi số liệu về Server" />
-        <!--<item-->
-        <!--android:id="@+id/nav_slideshow"-->
-        <!--android:icon="@drawable/ic_menu_slideshow"-->
-        <!--android:title="Slideshow" />-->
+        <item
+            android:id="@+id/nav_duyet"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Duyệt thay đổi thông tin KH" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/del"
