@@ -19,6 +19,9 @@ public interface CCISDataService {
     @GET("ThuTien/{id}")
     Call<Integer> ThuTien(@Path("id") int id);
 
+    @GET("ThuTienLo/{ids}")
+    Call<Integer> ThuTienLo(@Path("ids") String ids);
+
     @GET("Mobile_Adjust_Informations/{id}")
     Call<List<Mobile_Adjust_Informations>> getMobile_Adjust_Informations(@Path("id") int id);
 

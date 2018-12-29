@@ -140,4 +140,5 @@
     <string name="alert_btn_negative">No</string>
     <string name="contentdesctiption">content description</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="title_activity_main">CCIS</string>
 </resources>

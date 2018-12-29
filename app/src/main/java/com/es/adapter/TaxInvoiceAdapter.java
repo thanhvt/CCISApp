@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
         TextView movieTitle;
         TextView data;
         TextView movieDescription;
+        CheckBox isChecked;
 
         public TaxInvoiceHolder(View v) {
             super(v);
@@ -34,6 +36,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
             movieTitle = (TextView) v.findViewById(R.id.title);
             data = (TextView) v.findViewById(R.id.subtitle);
             movieDescription = (TextView) v.findViewById(R.id.description);
+            isChecked = (CheckBox) v.findViewById(R.id.checkBox);
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -64,13 +67,27 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
         return new TaxInvoiceHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(TaxInvoiceHolder holder, final int position) {
         holder.movieTitle.setText(lstTaxInvoice.get(position).getCustomerCode() + " - " + lstTaxInvoice.get(position).getCustomerName());
         holder.data.setText("Đơn giá: " + lstTaxInvoice.get(position).getSubTotal() + " VAT: " + lstTaxInvoice.get(position).getVAT());
         holder.movieDescription.setText(lstTaxInvoice.get(position).getTaxInvoiceAddress());
+        holder.isChecked.setChecked(lstTaxInvoice.get(position).isChecked());
+        holder.isChecked.setTag(lstTaxInvoice.get(position));
+        holder.isChecked.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                CheckBox cb = (CheckBox) v;
+                Bill_TaxInvoice contact = (Bill_TaxInvoice) cb.getTag();
 
+                contact.setChecked(cb.isChecked());
+                lstTaxInvoice.get(position).setChecked(cb.isChecked());
+
+            }
+        });
+    }
+
+    public List<Bill_TaxInvoice> getLstTaxInvoice() {
+        return lstTaxInvoice;
     }
 
     @Override

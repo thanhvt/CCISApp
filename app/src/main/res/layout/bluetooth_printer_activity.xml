@@ -46,19 +46,19 @@
         android:layout_marginTop="17dp"
         android:text="In hóa đơn" />
 
-    <EditText
-        android:id="@+id/edIn"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/btn_print"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="top"
-        android:text="Print text" />
+    <!--<EditText-->
+    <!--android:id="@+id/edIn"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_below="@+id/btn_print"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginStart="10dp"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:layout_marginEnd="10dp"-->
+    <!--android:layout_marginRight="10dp"-->
+    <!--android:layout_marginBottom="10dp"-->
+    <!--android:gravity="top"-->
+    <!--android:text="Print text" />-->
 
 </RelativeLayout>

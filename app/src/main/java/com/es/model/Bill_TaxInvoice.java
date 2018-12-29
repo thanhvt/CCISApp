@@ -55,6 +55,16 @@ public class Bill_TaxInvoice implements Serializable {
 
     private String Total;
 
+    private boolean IsChecked;
+
+    public boolean isChecked() {
+        return IsChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        IsChecked = checked;
+    }
+
     public String getTaxCode ()
     {
         return TaxCode;

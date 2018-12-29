@@ -199,7 +199,7 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
                                 Boolean postCheck = response.body().booleanValue();
                                 Log.e("CHECK PUT", postCheck + "");
                                 if (postCheck) {
-                                    Intent m = new Intent(getActivity(), CCISActivity.class);
+                                    Intent m = new Intent(getActivity(), MainActivity.class);
                                     startActivity(m);
                                     SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
                                     SharedPreferences.Editor editor = pref.edit();
