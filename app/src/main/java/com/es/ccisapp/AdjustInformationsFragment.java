@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.es.model.Bill_TaxInvoice;
+import com.es.model.Mobile_Adjust_DB;
 import com.es.model.Mobile_Adjust_Informations;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
@@ -99,6 +100,24 @@ public class AdjustInformationsFragment extends Fragment {
 
         }
         return rootView;
+    }
+
+    @OnClick(R.id.btnAdjOffline)
+    public void btnAdjOffline() {
+        Mobile_Adjust_DB m = new Mobile_Adjust_DB();
+        m.setAmout(edSL.getText().toString());
+        m.setCustomerAdd(edDC.getText().toString());
+        m.setCustomerID(taxInvoice.getCustomerId());
+        m.setCustomerName(edTenKH.getText().toString());
+        m.setEmployeeCode("2");
+        m.setIndexSo(edSTT.getText().toString());
+        m.setPrice(edDonGia.getText().toString());
+        m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
+        m.setStatus(false);
+        m.setDepartmentId(taxInvoice.getDepartmentId());
+        m.save();
+        Toast.makeText(getActivity(), "Lưu thông tin offline thành công. Duyệt thông tin để đẩy dữ liệu lên Server !", Toast.LENGTH_SHORT).show();
+        Log.e("Adjust_Informations", m.toString());
     }
 
     @OnClick(R.id.btnAdjInformation)

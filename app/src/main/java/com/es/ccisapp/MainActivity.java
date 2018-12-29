@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,12 +21,16 @@ import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceModel;
+import com.es.model.Mobile_Adjust_DB;
+import com.es.model.Mobile_Adjust_Informations;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 import com.es.utils.CustomCallBack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     CCISDataService apiService;
     Context mContext = this;
+    public static final String TAG = "MainActivity msg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +181,49 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_up) {
 
         } else if (id == R.id.nav_duyet) {
+            List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).execute();
+            Log.e(TAG, tmp.size() + "");
+            List<Mobile_Adjust_Informations> lstInsert = new ArrayList<>();
+            if (tmp.size() > 0) {
+                for (Mobile_Adjust_DB mo : tmp) {
+                    lstInsert.add(new Mobile_Adjust_Informations(mo.getStatus(), mo.getIndexSo(), mo.getType(), mo.getPrice(), mo.getCustomerID(), mo.getCustomerAdd(),
+                            mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(), "1", mo.getAmout(), mo.getAdjustID()));
+                }
+                try {
+                    Call<Boolean> call = apiService.Post_List(lstInsert);
+                    Log.wtf("URL Called", call.request().url() + "");
+                    call.enqueue(new CustomCallBack<Boolean>(mContext, "Đang đẩy thông tin ...") {
+                        @Override
+                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                            try {
+                                Log.e(TAG, response.message());
+                                Boolean postCheck = response.body().booleanValue();
+                                Log.e("CHECK PUT", postCheck + "");
+                                if (postCheck) {
+                                    Toast.makeText(getApplicationContext(), "Đẩy thông tin thay đổi thành công !", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Đẩy thông tin thay đổi không thành công !", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), "Đẩy thông tin thay đổi không thành công !", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, e.getMessage());
+                            } finally {
+                                this.mProgressDialog.dismiss();
+                            }
+                        }
 
+                        @Override
+                        public void onFailure(Call<Boolean> call, Throwable t) {
+                            Log.e("USERDEVICE", t.getMessage() + "");
+                        }
+
+                    });
+                } catch (Exception e) {
+
+                }
+            } else {
+
+            }
         } else if (id == R.id.nav_manage) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -185,8 +233,9 @@ public class MainActivity extends AppCompatActivity
             builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.dismiss();
-                    List<Bill_TaxInvoiceModel> tmp = new Delete().from(Bill_TaxInvoiceModel.class).execute();
-                    if (tmp == null) {
+                    List<Bill_TaxInvoiceModel> bill = new Delete().from(Bill_TaxInvoiceModel.class).execute();
+                    List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).execute();
+                    if (bill == null && info == null) {
                         Toast.makeText(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thành công !", Toast.LENGTH_LONG).show();
                         switchFragment(buildFragment_CCIS(), "ABC");
                     } else {

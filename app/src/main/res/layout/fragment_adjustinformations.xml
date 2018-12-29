@@ -132,11 +132,25 @@
         </RadioGroup>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnAdjInformation"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lưu lại" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnAdjOffline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Lưu lại offline" />
+
+        <Button
+            android:id="@+id/btnAdjInformation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Đẩy lên Server" />
+    </LinearLayout>
 
 
 </LinearLayout>

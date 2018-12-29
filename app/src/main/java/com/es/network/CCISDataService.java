@@ -28,6 +28,9 @@ public interface CCISDataService {
     @POST("Mobile_Adjust_Informations/")
     Call<Boolean> Post(@Body Mobile_Adjust_Informations devices);
 
+    @POST("Mobile_Adjust_Informations_List/")
+    Call<Boolean> Post_List(@Body List<Mobile_Adjust_Informations> devices);
+
     @GET("Account/{username}/{pass}")
     Call<Boolean> CheckLogin(@Path("username") String username, @Path("pass") String pass);
 }

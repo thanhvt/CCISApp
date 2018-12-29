@@ -1,35 +1,52 @@
 package com.es.model;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import java.io.Serializable;
 
-public class Mobile_Adjust_Informations implements Serializable {
+@Table(name = "Mobile_Adjust_DB")
+public class Mobile_Adjust_DB extends Model implements Serializable {
+    @Column(name = "Status")
     private boolean Status;
 
-    private String Index;
+    @Column(name = "IndexSo")
+    private String IndexSo;
 
+    @Column(name = "Type")
     private String Type;
 
+    @Column(name = "Price")
     private String Price;
 
+    @Column(name = "CustomerID")
     private String CustomerID;
 
+    @Column(name = "CustomerAdd")
     private String CustomerAdd;
 
+    @Column(name = "DepartmentId")
     private String DepartmentId;
 
+    @Column(name = "EmployeeCode")
     private String EmployeeCode;
 
+    @Column(name = "CustomerName")
     private String CustomerName;
 
-    private String $id;
-
+    @Column(name = "Amout")
     private String Amout;
 
+    @Column(name = "AdjustID")
     private String AdjustID;
 
-    public Mobile_Adjust_Informations(boolean status, String index, String type, String price, String customerID, String customerAdd, String departmentId, String employeeCode, String customerName, String $id, String amout, String adjustID) {
+    public Mobile_Adjust_DB() {
+    }
+
+    public Mobile_Adjust_DB(boolean status, String indexSo, String type, String price, String customerID, String customerAdd, String departmentId, String employeeCode, String customerName, String amout, String adjustID) {
         Status = status;
-        Index = index;
+        IndexSo = indexSo;
         Type = type;
         Price = price;
         CustomerID = customerID;
@@ -37,13 +54,8 @@ public class Mobile_Adjust_Informations implements Serializable {
         DepartmentId = departmentId;
         EmployeeCode = employeeCode;
         CustomerName = customerName;
-        this.$id = $id;
         Amout = amout;
         AdjustID = adjustID;
-    }
-
-    public Mobile_Adjust_Informations() {
-
     }
 
     public boolean getStatus() {
@@ -54,12 +66,12 @@ public class Mobile_Adjust_Informations implements Serializable {
         this.Status = Status;
     }
 
-    public String getIndex() {
-        return Index;
+    public String getIndexSo() {
+        return IndexSo;
     }
 
-    public void setIndex(String Index) {
-        this.Index = Index;
+    public void setIndexSo(String Index) {
+        this.IndexSo = Index;
     }
 
     public String getType() {
@@ -118,14 +130,6 @@ public class Mobile_Adjust_Informations implements Serializable {
         this.CustomerName = CustomerName;
     }
 
-    public String get$id() {
-        return $id;
-    }
-
-    public void set$id(String $id) {
-        this.$id = $id;
-    }
-
     public String getAmout() {
         return Amout;
     }
@@ -144,6 +148,6 @@ public class Mobile_Adjust_Informations implements Serializable {
 
     @Override
     public String toString() {
-        return "ClassPojo [Status = " + Status + ", Index = " + Index + ", Type = " + Type + ", Price = " + Price + ", CustomerID = " + CustomerID + ", CustomerAdd = " + CustomerAdd + ", DepartmentId = " + DepartmentId + ", EmployeeCode = " + EmployeeCode + ", CustomerName = " + CustomerName + ", $id = " + $id + ", Amout = " + Amout + ", AdjustID = " + AdjustID + "]";
+        return "ClassPojo [Status = " + Status + ", IndexSo = " + IndexSo + ", Type = " + Type + ", Price = " + Price + ", CustomerID = " + CustomerID + ", CustomerAdd = " + CustomerAdd + ", DepartmentId = " + DepartmentId + ", EmployeeCode = " + EmployeeCode + ", CustomerName = " + CustomerName + ", Amout = " + Amout + ", AdjustID = " + AdjustID + "]";
     }
 }
