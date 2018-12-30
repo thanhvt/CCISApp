@@ -78,7 +78,6 @@ public class CCISFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         List<Bill_TaxInvoiceModel> lstDB = new Select().all().from(Bill_TaxInvoiceModel.class).execute();
-        Log.e(TAG, lstDB.size() + "");
         if (lstDB.size() == 0) {
             recyclerView.setVisibility(View.GONE);
             txtEmpty.setVisibility(View.VISIBLE);
@@ -164,50 +163,64 @@ public class CCISFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_thutien) {
             if (taxInvoiceAdapter != null) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(R.string.app_name);
-                builder.setMessage("Anh/Chị muốn thu tiền theo lô ?");
-                builder.setIcon(R.drawable.logo);
-                builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
+                boolean isChon = false;
+                List<Bill_TaxInvoice> stList = taxInvoiceAdapter.getLstTaxInvoice();
+                for (Bill_TaxInvoice b : stList) {
+                    if (b.isChecked()) {
+                        isChon = true;
+                        break;
+                    }
+                }
+                if (!isChon) {
+                    Toast.makeText(getActivity(), "Yêu cầu chọn ít nhất 1 KH để thực hiện !", Toast.LENGTH_LONG).show();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(R.string.app_name);
+                    builder.setMessage("Anh/Chị muốn thu tiền theo lô ?");
+                    builder.setIcon(R.drawable.logo);
+                    builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
 
-                        List<Bill_TaxInvoice> stList = taxInvoiceAdapter.getLstTaxInvoice();
-                        for (final Bill_TaxInvoice b : stList) {
-                            if (b.isChecked()) {
-                                Log.e(TAG, b.toString());
-                                Call<Integer> call = apiService.ThuTien((b.getTaxInvoiceId()));
-                                call.enqueue(new CustomCallBack<Integer>(getActivity()) {
-                                    @Override
-                                    public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                        this.mProgressDialog.dismiss();
-                                        Integer movies = response.body();
-                                        Log.d(TAG, "movies: " + movies);
-                                        if (movies == 1) {
-                                            Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toast.LENGTH_LONG).show();
+                            List<Bill_TaxInvoice> stList = taxInvoiceAdapter.getLstTaxInvoice();
+                            for (final Bill_TaxInvoice b : stList) {
+                                if (b.isChecked()) {
+                                    Log.e(TAG, b.toString());
+                                    Call<Integer> call = apiService.ThuTien((b.getTaxInvoiceId()));
+                                    call.enqueue(new CustomCallBack<Integer>(getActivity()) {
+                                        @Override
+                                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                            this.mProgressDialog.dismiss();
+                                            Integer movies = response.body();
+                                            Log.d(TAG, "movies: " + movies);
+                                            if (movies == 1) {
+                                                Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toast.LENGTH_LONG).show();
+                                            }
                                         }
-                                    }
 
-                                    @Override
-                                    public void onFailure(Call<Integer> call, Throwable t) {
-                                        this.mProgressDialog.dismiss();
-                                        // Log error here since request failed
-                                        Log.e(TAG, t.toString());
-                                    }
-                                });
+                                        @Override
+                                        public void onFailure(Call<Integer> call, Throwable t) {
+                                            this.mProgressDialog.dismiss();
+                                            // Log error here since request failed
+                                            Log.e(TAG, t.toString());
+                                        }
+                                    });
+                                }
                             }
                         }
-                    }
-                });
-                builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
+                    });
+                    builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+
+
 
             }
             return true;

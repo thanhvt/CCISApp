@@ -27,6 +27,7 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         android:name="com.activeandroid.app.Application">
         <activity android:name=".RootActivity">
             <intent-filter>

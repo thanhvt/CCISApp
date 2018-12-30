@@ -11,11 +11,15 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.Mobile_Adjust_Informations;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
+
+import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -104,7 +108,15 @@ public class AdjustInformationsFragment extends Fragment {
 
     @OnClick(R.id.btnAdjOffline)
     public void btnAdjOffline() {
+        int ran = new Random().nextInt();
+        List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
+        while (tmp.size() > 0) {
+            ran = new Random().nextInt();
+            tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
+        }
+
         Mobile_Adjust_DB m = new Mobile_Adjust_DB();
+        m.setAdjustID(ran + "");
         m.setAmout(edSL.getText().toString());
         m.setCustomerAdd(edDC.getText().toString());
         m.setCustomerID(taxInvoice.getCustomerId());

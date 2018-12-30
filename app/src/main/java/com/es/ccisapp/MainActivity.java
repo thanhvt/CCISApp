@@ -182,47 +182,50 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_duyet) {
             List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).execute();
-            Log.e(TAG, tmp.size() + "");
+
             List<Mobile_Adjust_Informations> lstInsert = new ArrayList<>();
             if (tmp.size() > 0) {
                 for (Mobile_Adjust_DB mo : tmp) {
-                    lstInsert.add(new Mobile_Adjust_Informations(mo.getStatus(), mo.getIndexSo(), mo.getType(), mo.getPrice(), mo.getCustomerID(), mo.getCustomerAdd(),
-                            mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(), "1", mo.getAmout(), mo.getAdjustID()));
-                }
-                try {
-                    Call<Boolean> call = apiService.Post_List(lstInsert);
-                    Log.wtf("URL Called", call.request().url() + "");
-                    call.enqueue(new CustomCallBack<Boolean>(mContext, "Đang đẩy thông tin ...") {
-                        @Override
-                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                            try {
-                                Log.e(TAG, response.message());
-                                Boolean postCheck = response.body().booleanValue();
-                                Log.e("CHECK PUT", postCheck + "");
-                                if (postCheck) {
-                                    Toast.makeText(getApplicationContext(), "Đẩy thông tin thay đổi thành công !", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Đẩy thông tin thay đổi không thành công !", Toast.LENGTH_SHORT).show();
+                    final Mobile_Adjust_Informations mobile = new Mobile_Adjust_Informations(mo.getStatus(), mo.getIndexSo(), mo.getType(), mo.getPrice(), mo.getCustomerID(), mo.getCustomerAdd(),
+                            mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(), "1", mo.getAmout(), mo.getAdjustID());
+                    lstInsert.add(mobile);
+                    try {
+                        Call<Boolean> call = apiService.Post(mobile);
+                        Log.e(TAG, "lstInsert " + lstInsert.size() + "");
+                        call.enqueue(new CustomCallBack<Boolean>(mContext, "Đang đẩy thông tin ...") {
+                            @Override
+                            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                                try {
+                                    Log.e(TAG, response.message());
+                                    Boolean postCheck = response.body();
+                                    Log.e("CHECK PUT", postCheck + "");
+                                    if (postCheck) {
+                                        Toast.makeText(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " thành công !", Toast.LENGTH_SHORT).show();
+                                        List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).where("AdjustID = ?", mobile.getAdjustID()).execute();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " không thành công !", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (Exception e) {
+                                    Toast.makeText(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " lỗi !", Toast.LENGTH_SHORT).show();
+                                    Log.e(TAG, e.getMessage());
+                                } finally {
+                                    this.mProgressDialog.dismiss();
                                 }
-                            } catch (Exception e) {
-                                Toast.makeText(getApplicationContext(), "Đẩy thông tin thay đổi không thành công !", Toast.LENGTH_SHORT).show();
-                                Log.e(TAG, e.getMessage());
-                            } finally {
-                                this.mProgressDialog.dismiss();
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<Boolean> call, Throwable t) {
-                            Log.e("USERDEVICE", t.getMessage() + "");
-                        }
+                            @Override
+                            public void onFailure(Call<Boolean> call, Throwable t) {
+                                Log.e("USERDEVICE", t.getMessage() + "");
+                                Toast.makeText(getApplicationContext(), "Đẩy thông tin thất bại. Kiểm tra lại kết nối !", Toast.LENGTH_SHORT).show();
+                            }
 
-                    });
-                } catch (Exception e) {
+                        });
+                    } catch (Exception e) {
 
+                    }
                 }
             } else {
-
+                Toast.makeText(getApplicationContext(), "Không có thông tin cần duyệt đẩy Server !", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.nav_manage) {
 
