@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
                             // Log error here since request failed
-                            Toast.makeText(getApplicationContext(), "Lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
                             this.mProgressDialog.dismiss();
                         }
                     });
@@ -179,6 +179,34 @@ public class MainActivity extends AppCompatActivity
             alert.show();
 
         } else if (id == R.id.nav_up) {
+            List<Bill_TaxInvoiceModel> tmp = new Select().all().from(Bill_TaxInvoiceModel.class).execute();
+            for (final Bill_TaxInvoiceModel b : tmp) {
+                if (b.isThuOffline()) {
+                    Log.e(TAG, b.toString());
+                    Call<Integer> call = apiService.ThuTien((b.getTaxInvoiceId()));
+                    call.enqueue(new CustomCallBack<Integer>(mContext) {
+                        @Override
+                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                            this.mProgressDialog.dismiss();
+                            Integer movies = response.body();
+                            Log.d(TAG, "movies: " + movies);
+                            if (movies == 1) {
+                                List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
+                                Toast.makeText(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Integer> call, Throwable t) {
+                            this.mProgressDialog.dismiss();
+                            // Log error here since request failed
+                            Log.e(TAG, t.toString());
+                        }
+                    });
+                }
+            }
 
         } else if (id == R.id.nav_duyet) {
             List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).execute();

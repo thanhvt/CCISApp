@@ -3,12 +3,15 @@ package com.es.printer;
 import android.content.Context;
 import android.util.Log;
 
+import com.activeandroid.query.Select;
 import com.es.ccisapp.R;
 import com.es.model.Bill_TaxInvoice;
+import com.es.model.Mobile_Adjust_DB;
 import com.es.model.SalesModel;
 import com.es.utils.Utils;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static com.es.utils.Utils.formatNumber;
 
@@ -135,6 +138,19 @@ public class PrintReceipt {
     }
 
     public static boolean printBillFromOrder(Context context, Bill_TaxInvoice bill_taxInvoice) {
+
+        List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID = ?", bill_taxInvoice.getCustomerId()).execute();
+        if (lstDB != null && lstDB.size() > 0) {
+            Mobile_Adjust_DB m = lstDB.get(0);
+            bill_taxInvoice.setCustomerName(m.getCustomerName());
+            bill_taxInvoice.setAddress_Pay(m.getCustomerAdd());
+//            if (!m.getPrice().equals("")){
+//                bill_taxInvoice.setSubTotal(m.getPrice());
+//                Double d = Double.parseDouble(m.getPrice());
+//                Double total = d * 1.01;
+//            }
+
+        }
         Log.e("PrintReceipt", bill_taxInvoice.toString());
         if (BluetoothPrinterActivity.BLUETOOTH_PRINTER.IsNoConnection()) {
             return false;
@@ -161,7 +177,7 @@ public class PrintReceipt {
         //BT_Write() method will initiate the printer to start printing.
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("BIEN NHAN TIEN" +
                 "\nQuy khach: " + bill_taxInvoice.getCustomerName() +
-                "\nDia chi: " + bill_taxInvoice.getCustomerName_Pay() +
+                "\nDia chi: " + bill_taxInvoice.getAddress_Pay() +
                 "\nNgay: " + time +
                 "\nNhan vien: " + "Administrator" +
                 "\nNoi dung: Thu PVS thang " + bill_taxInvoice.getMonth() + "/" + bill_taxInvoice.getYear());
