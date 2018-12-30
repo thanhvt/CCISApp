@@ -7,12 +7,12 @@
     android:gravity="center_vertical"
     android:minHeight="72dp"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="6dp">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="10"
         android:orientation="vertical">
 
         <TextView
@@ -43,32 +43,52 @@
 
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/checkBox"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtThu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Đã thu offline"
+            android:textColor="#1500FF"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <!--<LinearLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="35dp"-->
-        <!--android:orientation="horizontal">-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="35dp"-->
+    <!--android:orientation="horizontal">-->
 
-        <!--<ImageView-->
-            <!--android:id="@+id/rating_image"-->
-            <!--android:layout_width="15dp"-->
-            <!--android:layout_height="15dp"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:scaleType="centerCrop"-->
-            <!--android:src="@drawable/star"-->
-            <!--android:tint="@color/colorAccent" />-->
+    <!--<ImageView-->
+    <!--android:id="@+id/rating_image"-->
+    <!--android:layout_width="15dp"-->
+    <!--android:layout_height="15dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--android:src="@drawable/star"-->
+    <!--android:tint="@color/colorAccent" />-->
 
 
-        <!--<TextView-->
-            <!--android:id="@+id/rating"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="8dp"-->
-            <!--android:text="5.0" />-->
+    <!--<TextView-->
+    <!--android:id="@+id/rating"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="8dp"-->
+    <!--android:text="5.0" />-->
     <!--</LinearLayout>-->
 
 </LinearLayout>

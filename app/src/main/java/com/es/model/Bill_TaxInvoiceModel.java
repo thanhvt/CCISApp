@@ -86,6 +86,9 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
     @Column(name = "IsChecked")
     private boolean IsChecked;
 
+    @Column(name = "IsThuOffline")
+    private boolean IsThuOffline;
+
     public Bill_TaxInvoiceModel() {
     }
 
@@ -116,6 +119,15 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
         CustomerName_Pay = customerName_Pay;
         Total = total;
         IsChecked = isChecked;
+        IsThuOffline = false;
+    }
+
+    public boolean isThuOffline() {
+        return IsThuOffline;
+    }
+
+    public void setThuOffline(boolean thuOffline) {
+        IsThuOffline = thuOffline;
     }
 
     public boolean isChecked() {

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.es.adapter.TaxInvoiceAdapter;
 import com.es.model.Bill_TaxInvoice;
@@ -90,7 +91,7 @@ public class CCISFragment extends Fragment {
                         b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(), "1",
                         b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
                         b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked()));
+                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), b.isThuOffline()));
             }
             taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
             recyclerView.setAdapter(taxInvoiceAdapter);
@@ -147,6 +148,31 @@ public class CCISFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        lstTaxInvoiceData.clear();  //Reset before update adapter to avoid duplication of list
+        List<Bill_TaxInvoiceModel> lstDB = new Select().all().from(Bill_TaxInvoiceModel.class).execute();
+        if (lstDB.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            txtEmpty.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            txtEmpty.setVisibility(View.GONE);
+            for (Bill_TaxInvoiceModel b : lstDB) {
+                b.setChecked(false);
+                lstTaxInvoiceData.add(new Bill_TaxInvoice(b.getTaxCode(), b.getCustomerCode(),
+                        b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(), "1",
+                        b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
+                        b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
+                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), b.isThuOffline()));
+            }
+            taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
+            recyclerView.setAdapter(taxInvoiceAdapter);
+            taxInvoiceAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.menu_ccis, menu);
@@ -176,9 +202,37 @@ public class CCISFragment extends Fragment {
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle(R.string.app_name);
-                    builder.setMessage("Anh/Chị muốn thu tiền theo lô ?");
+                    builder.setMessage("Anh/Chị muốn thu tiền offline hay online ?");
                     builder.setIcon(R.drawable.logo);
-                    builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton("Thu offline", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            List<Bill_TaxInvoice> stList = taxInvoiceAdapter.getLstTaxInvoice();
+                            for (final Bill_TaxInvoice b : stList) {
+                                if (b.isChecked()) {
+                                    Bill_TaxInvoiceModel details = new Select().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).executeSingle();
+                                    if (details != null) {
+                                        details.setThuOffline(true);
+                                        details.save();
+                                        Log.e(TAG + " update ", "1");
+                                    } else {
+                                        Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
+                                                b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
+                                                b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
+                                                b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
+                                                b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked());
+                                        c.save();
+                                        Log.e(TAG + " insert ", "2");
+                                    }
+                                    b.setThuOffline(true);
+                                    taxInvoiceAdapter.notifyDataSetChanged();
+                                    Toast.makeText(getActivity(), "Thu tiền offline khách hàng " + b.getCustomerName() + " thành công !", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            // Update Data
+                        }
+                    });
+                    builder.setNegativeButton("Thu online", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
 
@@ -194,6 +248,7 @@ public class CCISFragment extends Fragment {
                                             Integer movies = response.body();
                                             Log.d(TAG, "movies: " + movies);
                                             if (movies == 1) {
+                                                List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
                                                 Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toast.LENGTH_LONG).show();
                                             } else {
                                                 Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toast.LENGTH_LONG).show();
@@ -211,15 +266,9 @@ public class CCISFragment extends Fragment {
                             }
                         }
                     });
-                    builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    });
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
-
 
 
             }

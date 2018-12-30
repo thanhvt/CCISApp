@@ -154,13 +154,29 @@
                 android:text="TextView" />
         </TableRow>
 
+
     </TableLayout>
 
-    <Button
-        android:id="@+id/btnThuTien"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="THU TIỀN" />
+        android:layout_height="match_parent"
+        android:layout_margin="2px">
+
+        <Button
+            android:id="@+id/btnThuOff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="THU TIỀN OFFLINE" />
+
+        <Button
+            android:id="@+id/btnThuTien"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="THU TIỀN ONLINE" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnInHD"

@@ -29,12 +29,14 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
         TextView data;
         TextView movieDescription;
         CheckBox isChecked;
+        TextView txtOffline;
 
         public TaxInvoiceHolder(View v) {
             super(v);
             moviesLayout = (LinearLayout) v.findViewById(R.id.movies_layout);
             movieTitle = (TextView) v.findViewById(R.id.title);
             data = (TextView) v.findViewById(R.id.subtitle);
+            txtOffline = (TextView) v.findViewById(R.id.txtThu);
             movieDescription = (TextView) v.findViewById(R.id.description);
             isChecked = (CheckBox) v.findViewById(R.id.checkBox);
 
@@ -73,6 +75,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
         holder.data.setText("Đơn giá: " + lstTaxInvoice.get(position).getSubTotal() + " VAT: " + lstTaxInvoice.get(position).getVAT());
         holder.movieDescription.setText(lstTaxInvoice.get(position).getTaxInvoiceAddress());
         holder.isChecked.setChecked(lstTaxInvoice.get(position).isChecked());
+        holder.txtOffline.setVisibility(lstTaxInvoice.get(position).isThuOffline() ? View.VISIBLE : View.INVISIBLE);
         holder.isChecked.setTag(lstTaxInvoice.get(position));
         holder.isChecked.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
+import com.es.model.Bill_TaxInvoiceModel;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 import com.es.printer.BluetoothPrinterActivity;
@@ -19,6 +22,7 @@ import com.es.utils.CustomCallBack;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,6 +103,25 @@ public class TaxInvoiceDetailFragment extends Fragment {
         return rootView;
     }
 
+    @OnClick(R.id.btnThuOff)
+    public void btnThuOff() {
+        Bill_TaxInvoiceModel details = new Select().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).executeSingle();
+        if (details != null) {
+            details.setThuOffline(true);
+            details.save();
+            Log.e(TAG + " update ", "1");
+        } else {
+            Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(taxInvoice.getTaxCode(), taxInvoice.getCustomerCode(),
+                    taxInvoice.getBankName(), taxInvoice.getMonth(), taxInvoice.getSerialNumber(), taxInvoice.getYear(), taxInvoice.getCustomerId(), taxInvoice.getDepartmentId(),
+                    taxInvoice.getTaxInvoiceAddress(), taxInvoice.getTaxInvoiceId(), taxInvoice.getIdDevice(), taxInvoice.getContractId(), taxInvoice.getFigureBookId(), taxInvoice.getSerialCode(),
+                    taxInvoice.getCustomerName(), taxInvoice.getCustomerCode_Pay(), taxInvoice.getSubTotal(), taxInvoice.getAddress_Pay(), taxInvoice.getBankAccount(), taxInvoice.getVAT(),
+                    taxInvoice.getTaxRatio(), taxInvoice.getCustomerId_Pay(), taxInvoice.getBillType(), taxInvoice.getCustomerName_Pay(), taxInvoice.getTotal(), taxInvoice.isChecked());
+            c.save();
+            Log.e(TAG + " insert ", "2");
+        }
+        Toast.makeText(getActivity(), "Thu tiền offline khách hàng " + taxInvoice.getCustomerName() + " thành công !", Toast.LENGTH_LONG).show();
+    }
+
     @OnClick(R.id.btnThuTien)
     public void btnThuTien() {
         CCISDataService apiService =
@@ -111,6 +134,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                 Integer movies = response.body();
                 Log.d(TAG, "movies: " + movies);
                 if (movies == 1) {
+                    List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
                     Toast.makeText(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " thành công !", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toast.LENGTH_SHORT).show();
