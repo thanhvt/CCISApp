@@ -32,7 +32,6 @@
         <activity android:name=".RootActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -40,7 +39,11 @@
         <activity
             android:name=".HomeNavActivity"
             android:label="@string/title_activity_home_nav"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.es.ccisapp.CCISActivity" />
+        </activity>
         <activity android:name=".CauHinhActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

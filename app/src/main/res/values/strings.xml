@@ -9,8 +9,8 @@
     <string name="action_settings">Cấu hình</string>
     <string name="title_activity_main_tab">MainTabActivity</string>
     <string name="title_home">CCIS</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_dashboard">Thay đổi thông tin</string>
+    <string name="title_notifications">Thông báo</string>
     <string name="title_activity_tax_invoice_detail">TaxInvoiceDetail</string>
     <string name="email">TÊN ĐĂNG NHẬP</string>
     <string name="passowrd">MẬT KHẨU</string>
@@ -18,7 +18,7 @@
     <string name="tit">HỆ THỐNG QUẢN LÝ VỆ SINH MÔI TRƯỜNG</string>
     <string name="show_pwd">Hiển thị mật khẩu</string>
     <string name="hide_pwd">Ẩn mật khẩu</string>
-    <string name="forgot">Quên mật khẩu?</string>
+    <string name="loginoff">Đăng nhập offline</string>
     <string name="closebutton">Close Button for Activity</string>
     <string name="newUser">Đăng ký tài khoản.</string>
     <string name="fullName">Full Name</string>

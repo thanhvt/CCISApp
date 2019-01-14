@@ -25,7 +25,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.es.network.CCISDataService;
@@ -44,13 +43,16 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
 
     private static EditText emailid, password;
     private static Button loginButton;
-    private static TextView forgotPassword, signUp;
+    //    private static TextView signUp;
     private static CheckBox show_hide_password;
     private static LinearLayout loginLayout;
     private static Animation shakeAnimation;
     private static FragmentManager fragmentManager;
 
+    private static CheckBox cbLoginOffline;
+
     private static String TAG = "Login_Fragment msg ";
+
     public Login_Fragment() {
 
     }
@@ -114,8 +116,8 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
         emailid = (EditText) view.findViewById(R.id.login_emailid);
         password = (EditText) view.findViewById(R.id.login_password);
         loginButton = (Button) view.findViewById(R.id.loginBtn);
-        forgotPassword = (TextView) view.findViewById(R.id.forgot_password);
-        signUp = (TextView) view.findViewById(R.id.createAccount);
+        cbLoginOffline = (CheckBox) view.findViewById(R.id.cbLoginOffline);
+//        signUp = (TextView) view.findViewById(R.id.createAccount);
         show_hide_password = (CheckBox) view
                 .findViewById(R.id.show_hide_password);
         loginLayout = (LinearLayout) view.findViewById(R.id.login_layout);
@@ -130,9 +132,9 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
             ColorStateList csl = ColorStateList.createFromXml(getResources(),
                     xrp);
 
-            forgotPassword.setTextColor(csl);
+            cbLoginOffline.setTextColor(csl);
             show_hide_password.setTextColor(csl);
-            signUp.setTextColor(csl);
+//            signUp.setTextColor(csl);
         } catch (Exception e) {
         }
 
@@ -146,8 +148,8 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
     // Set Listeners
     private void setListeners() {
         loginButton.setOnClickListener(this);
-        forgotPassword.setOnClickListener(this);
-        signUp.setOnClickListener(this);
+//        cbLoginOffline.setOnClickListener(this);
+//        signUp.setOnClickListener(this);
 
         // Set check listener over checkbox for showing and hiding password
         show_hide_password
@@ -192,45 +194,57 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
                     try {
                         final String getEmailId = emailid.getText().toString();
                         final String getPassword = password.getText().toString();
-                        CCISDataService service = RetrofitInstance.getRetrofitInstance(getContext()).create(CCISDataService.class);
-                        Call<Boolean> call = service.CheckLogin(getEmailId, getPassword);
-                        Log.wtf("URL Called", call.request().url() + "");
-                        call.enqueue(new CustomCallBack<Boolean>(getActivity()) {
-                            @Override
-                            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                                if (response == null || response.body() == null || response.errorBody() != null) {
-                                    Log.e(TAG, response.errorBody().toString());
-                                    Toast.makeText(getActivity(), "Đăng nhập thất bại. Kiểm tra lại kết nối !", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Boolean postCheck = response.body().booleanValue();
-                                    Log.e("CHECK PUT", postCheck + "");
-                                    if (postCheck) {
-                                        Intent m = new Intent(getActivity(), MainActivity.class);
-                                        startActivity(m);
-                                        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
-                                        SharedPreferences.Editor editor = pref.edit();
-                                        editor.putString("USERNAME", getEmailId);
-                                        editor.putString("PASSWORD", getPassword);
-                                        editor.commit();
-
+                        if (!cbLoginOffline.isChecked()) {
+                            CCISDataService service = RetrofitInstance.getRetrofitInstance(getContext()).create(CCISDataService.class);
+                            Call<Boolean> call = service.CheckLogin(getEmailId, getPassword);
+                            Log.wtf("URL Called", call.request().url() + "");
+                            call.enqueue(new CustomCallBack<Boolean>(getActivity()) {
+                                @Override
+                                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                                    if (response == null || response.body() == null || response.errorBody() != null) {
+                                        Log.e(TAG, response.errorBody().toString());
+                                        Toast.makeText(getActivity(), "Đăng nhập thất bại. Kiểm tra lại kết nối !", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        loginLayout.startAnimation(shakeAnimation);
-                                        Toast.makeText(getActivity(), "Sai tên đăng nhập hoặc mật khẩu !", Toast.LENGTH_SHORT).show();
+                                        Boolean postCheck = response.body().booleanValue();
+                                        Log.e("CHECK PUT", postCheck + "");
+                                        if (postCheck) {
+                                            Intent m = new Intent(getActivity(), MainActivity.class);
+                                            startActivity(m);
+                                            SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+                                            SharedPreferences.Editor editor = pref.edit();
+                                            editor.putString("USERNAME", getEmailId);
+                                            editor.putString("PASSWORD", getPassword);
+                                            editor.commit();
+
+                                        } else {
+                                            loginLayout.startAnimation(shakeAnimation);
+                                            Toast.makeText(getActivity(), "Sai tên đăng nhập hoặc mật khẩu !", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
+
+
+                                    this.mProgressDialog.dismiss();
                                 }
 
+                                @Override
+                                public void onFailure(Call<Boolean> call, Throwable t) {
+                                    Log.e("USERDEVICE", t.getMessage() + "");
+                                    Toast.makeText(getActivity(), "Đăng nhập thất bại. Kiểm tra lại kết nối !", Toast.LENGTH_SHORT).show();
+                                    this.mProgressDialog.dismiss();
+                                }
 
-                                this.mProgressDialog.dismiss();
+                            });
+                        } else {
+                            SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+                            String strUserSave = pref.getString("USERNAME", "");
+                            String strPassSave = pref.getString("PASSWORD", "");
+                            if (getEmailId.equals(strUserSave) && getPassword.equals(strPassSave)) {
+                                Intent m = new Intent(getActivity(), MainActivity.class);
+                                startActivity(m);
+                            } else {
+                                Toast.makeText(getActivity(), "Đăng nhập thất bại. Kiểm tra lại thông tin đăng nhập hoặc đã từng đăng nhập thành công online hay chưa !", Toast.LENGTH_SHORT).show();
                             }
-
-                            @Override
-                            public void onFailure(Call<Boolean> call, Throwable t) {
-                                Log.e("USERDEVICE", t.getMessage() + "");
-                                Toast.makeText(getActivity(), "Đăng nhập thất bại. Kiểm tra lại kết nối !", Toast.LENGTH_SHORT).show();
-                                this.mProgressDialog.dismiss();
-                            }
-
-                        });
+                        }
                     } catch (Exception e) {
 
                     }
@@ -238,25 +252,24 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
 
                 break;
 
-            case R.id.forgot_password:
-
-                // Replace forgot password fragment with animation
-                fragmentManager
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer,
-                                new ForgotPassword_Fragment(),
-                                Utils.ForgotPassword_Fragment).commit();
-                break;
-            case R.id.createAccount:
-
-                // Replace signup frgament with animation
-                fragmentManager
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer, new SignUp_Fragment(),
-                                Utils.SignUp_Fragment).commit();
-                break;
+//            case R.id.cbLoginOffline:
+//
+//                fragmentManager
+//                        .beginTransaction()
+//                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
+//                        .replace(R.id.frameContainer,
+//                                new ForgotPassword_Fragment(),
+//                                Utils.ForgotPassword_Fragment).commit();
+//                break;
+//            case R.id.createAccount:
+//
+//                // Replace signup frgament with animation
+//                fragmentManager
+//                        .beginTransaction()
+//                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
+//                        .replace(R.id.frameContainer, new SignUp_Fragment(),
+//                                Utils.SignUp_Fragment).commit();
+//                break;
         }
 
     }
