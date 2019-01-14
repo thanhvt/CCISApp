@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tổng tiền "
+                android:text="Tổng tiền"
                 android:textStyle="bold" />
 
             <TextView
@@ -154,7 +154,29 @@
                 android:text="TextView" />
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2px">
 
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tình trạng thu"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTinhTrangThu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="#1500FF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
     </TableLayout>
 
     <LinearLayout
