@@ -1,5 +1,6 @@
 package com.es.ccisapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,13 +32,16 @@ public class CCISActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ccis);
 
+        SharedPreferences pref = getSharedPreferences("LOGIN", 0);
+        int strUserID = pref.getInt("USERID", -1);
+
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.movies_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         apiService =
                 RetrofitInstance.getRetrofitInstance(getApplicationContext()).create(CCISDataService.class);
 
-        Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(1);
+        Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(1, strUserID);
         call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(this) {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {

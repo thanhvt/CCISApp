@@ -2,6 +2,7 @@ package com.es.network;
 
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Mobile_Adjust_Informations;
+import com.es.model.UserProfile;
 
 import java.util.List;
 
@@ -13,8 +14,11 @@ import retrofit2.http.Path;
 
 public interface CCISDataService {
 
-    @GET("getBill_TaxInvoice/{status}")
-    Call<List<Bill_TaxInvoice>> getBill_TaxInvoice(@Path("status") int status);
+    @GET("getUserProfile/{userid}")
+    Call<List<UserProfile>> getUserProfile(@Path("userid") String userid);
+
+    @GET("getBill_TaxInvoice/{status}/{userid}")
+    Call<List<Bill_TaxInvoice>> getBill_TaxInvoice(@Path("status") int status, @Path("userid") int userid);
 
     @GET("ThuTien/{id}")
     Call<Integer> ThuTien(@Path("id") int id);
@@ -32,5 +36,5 @@ public interface CCISDataService {
     Call<String> Post_List(@Body List<Mobile_Adjust_Informations> devices);
 
     @GET("Account/{username}/{pass}")
-    Call<Boolean> CheckLogin(@Path("username") String username, @Path("pass") String pass);
+    Call<List<UserProfile>> CheckLogin(@Path("username") String username, @Path("pass") String pass);
 }

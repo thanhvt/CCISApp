@@ -2,6 +2,7 @@ package com.es.ccisapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -112,8 +113,9 @@ public class CCISFragment extends Fragment {
     }
 
     public void getDataTaxInvoice(int trangThai) {
-
-        Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(trangThai);
+        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+        int strUserID = pref.getInt("USERID", -1);
+        Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(trangThai, strUserID);
         call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(getActivity()) {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {

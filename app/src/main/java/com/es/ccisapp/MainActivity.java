@@ -3,6 +3,7 @@ package com.es.ccisapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -123,7 +124,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_down) {
-
+            SharedPreferences pref = getSharedPreferences("LOGIN", 0);
+            final int strUserID = pref.getInt("USERID", -1);
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(R.string.app_name);
             builder.setMessage("Chương trình sẽ xóa dữ liệu chưa thu tiền cũ đang có trên máy điện thoại này để lấy dữ liệu mới. Anh/Chị muốn thực hiện ?");
@@ -131,7 +133,8 @@ public class MainActivity extends AppCompatActivity
             builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.dismiss();
-                    Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(0);
+                    Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(0, strUserID);
+                    Log.wtf("URL Called", call.request().url() + "");
                     call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(mContext, "Đang lấy số liệu chưa thu tiền từ Server") {
                         @Override
                         public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
@@ -163,6 +166,7 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
                             // Log error here since request failed
+                            Log.e(TAG, t.getMessage());
                             Toast.makeText(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
                             this.mProgressDialog.dismiss();
                         }

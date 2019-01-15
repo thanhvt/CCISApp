@@ -27,11 +27,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.es.model.UserProfile;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 import com.es.utils.CustomCallBack;
 import com.es.utils.Utils;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -195,24 +197,26 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
                         final String getPassword = password.getText().toString();
                         if (!cbLoginOffline.isChecked()) {
                             CCISDataService service = RetrofitInstance.getRetrofitInstance(getContext()).create(CCISDataService.class);
-                            Call<Boolean> call = service.CheckLogin(getEmailId, getPassword);
-                            Log.wtf("URL Called", call.request().url() + "");
-                            call.enqueue(new CustomCallBack<Boolean>(getActivity()) {
+                            Call<List<UserProfile>> call = service.CheckLogin(getEmailId, getPassword);
+
+                            call.enqueue(new CustomCallBack<List<UserProfile>>(getActivity()) {
                                 @Override
-                                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                                public void onResponse(Call<List<UserProfile>> call, Response<List<UserProfile>> response) {
                                     if (response == null || response.body() == null || response.errorBody() != null) {
-                                        Log.e(TAG, response.errorBody().toString());
-                                        Toast.makeText(getActivity(), "Đăng nhập thất bại. Kiểm tra lại kết nối !", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "Đăng nhập thất bại. Kiểm tra thông tin !", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Boolean postCheck = response.body().booleanValue();
-                                        Log.e("CHECK PUT", postCheck + "");
-                                        if (postCheck) {
+                                        List<UserProfile> pUserProfile = response.body();
+//                                        Boolean postCheck = response.body().booleanValue();
+//
+                                        if (pUserProfile != null) {
+                                            Log.e("CHECK PUT", pUserProfile.get(0).toString());
                                             Intent m = new Intent(getActivity(), MainActivity.class);
                                             startActivity(m);
                                             SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
                                             SharedPreferences.Editor editor = pref.edit();
                                             editor.putString("USERNAME", getEmailId);
                                             editor.putString("PASSWORD", getPassword);
+                                            editor.putInt("USERID", pUserProfile.get(0).getUserId());
                                             editor.commit();
 
                                         } else {
@@ -226,7 +230,7 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
                                 }
 
                                 @Override
-                                public void onFailure(Call<Boolean> call, Throwable t) {
+                                public void onFailure(Call<List<UserProfile>> call, Throwable t) {
                                     Log.e("USERDEVICE", t.getMessage() + "");
                                     Toast.makeText(getActivity(), "Đăng nhập thất bại. Kiểm tra lại kết nối !", Toast.LENGTH_SHORT).show();
                                     this.mProgressDialog.dismiss();

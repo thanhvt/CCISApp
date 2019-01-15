@@ -90,7 +90,7 @@ public class CauHinhActivity extends AppCompatActivity {
             }
             if (key.equals("TEN_CHINHANH")) {
                 EditTextPreference etp = (EditTextPreference) findPreference("TEN_CHINHANH");
-                etp.setSummary(sharedPreferences.getString("TEN_CHINHANH", ""));
+                etp.setSummary(sharedPreferences.getString("TEN_CHINHANH", "Chưa xác định"));
             }
         }
 
