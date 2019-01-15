@@ -49,9 +49,18 @@ public class CauHinhActivity extends AppCompatActivity {
             // Load the Preferences from the XML file
             addPreferencesFromResource(R.xml.pref_general);
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+
             String IP_SERVICE = sharedPrefs.getString("IP_SERVICE", "0");
             EditTextPreference etp = (EditTextPreference) findPreference("IP_SERVICE");
             etp.setSummary(IP_SERVICE);
+
+            String TEN_CTY = sharedPrefs.getString("TEN_CTY", "");
+            EditTextPreference etpTEN_CTY = (EditTextPreference) findPreference("TEN_CTY");
+            etpTEN_CTY.setSummary(TEN_CTY);
+
+            String TEN_CHINHANH = sharedPrefs.getString("TEN_CHINHANH", "");
+            EditTextPreference etpTEN_CHINHANH = (EditTextPreference) findPreference("TEN_CHINHANH");
+            etpTEN_CHINHANH.setSummary(TEN_CHINHANH);
         }
 
         @Override
@@ -74,6 +83,14 @@ public class CauHinhActivity extends AppCompatActivity {
             if (key.equals("IP_SERVICE")) {
                 EditTextPreference etp = (EditTextPreference) findPreference("IP_SERVICE");
                 etp.setSummary(sharedPreferences.getString("IP_SERVICE", ""));
+            }
+            if (key.equals("TEN_CTY")) {
+                EditTextPreference etp = (EditTextPreference) findPreference("TEN_CTY");
+                etp.setSummary(sharedPreferences.getString("TEN_CTY", ""));
+            }
+            if (key.equals("TEN_CHINHANH")) {
+                EditTextPreference etp = (EditTextPreference) findPreference("TEN_CHINHANH");
+                etp.setSummary(sharedPreferences.getString("TEN_CHINHANH", ""));
             }
         }
 

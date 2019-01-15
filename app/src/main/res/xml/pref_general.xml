@@ -14,6 +14,29 @@
             android:singleLine="true"
             android:title="@string/pref_title_display_name" />
 
+        <android.support.v7.preference.EditTextPreference
+            android:summary="Xin mời cung cấp tên công ty để hiển thị trên phiếu in biên nhận"
+            android:dialogMessage="Xin mời cung cấp tên công ty để hiển thị trên phiếu in biên nhận"
+            android:capitalize="words"
+            android:defaultValue="@string/pref_default_tencty"
+            android:inputType="textCapWords"
+            android:key="TEN_CTY"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Công ty" />
+
+        <android.support.v7.preference.EditTextPreference
+            android:summary="Xin mời cung cấp tên chi nhánh để hiển thị trên phiếu in biên nhận"
+            android:dialogMessage="Xin mời cung cấp tên chi nhánh để hiển thị trên phiếu in biên nhận"
+            android:capitalize="words"
+            android:inputType="textCapWords"
+            android:key="TEN_CHINHANH"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Chi nhánh" />
+
     </android.support.v7.preference.PreferenceCategory>
 
 </android.support.v7.preference.PreferenceScreen><!--<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">-->

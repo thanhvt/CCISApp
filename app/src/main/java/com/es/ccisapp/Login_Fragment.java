@@ -82,7 +82,6 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(getActivity().getApplicationContext(), "Cấu hình địa chỉ IP service", Toast.LENGTH_LONG).show();
             Intent m = new Intent(getActivity(), CauHinhActivity.class);
             startActivity(m);
             return true;
