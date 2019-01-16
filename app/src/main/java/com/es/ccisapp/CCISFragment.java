@@ -116,6 +116,7 @@ public class CCISFragment extends Fragment {
         SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
         int strUserID = pref.getInt("USERID", -1);
         Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(trangThai, strUserID);
+        Log.wtf("URL Called", call.request().url() + "");
         call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(getActivity()) {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
@@ -148,7 +149,7 @@ public class CCISFragment extends Fragment {
             public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
                 // Log error here since request failed
                 if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
-                    Toast.makeText(getActivity(), "Không có dữ liệu chưa thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Không có dữ liệu. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
                 } else
                     Toast.makeText(getActivity(), "Xảy ra lỗi quá trình lấy dữ liệu ! ", Toast.LENGTH_LONG).show();
                 Log.e(TAG, t.toString());

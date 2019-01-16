@@ -9,7 +9,7 @@
     <string name="action_settings">Cấu hình</string>
     <string name="title_activity_main_tab">MainTabActivity</string>
     <string name="title_home">CCIS</string>
-    <string name="title_dashboard">Thay đổi thông tin</string>
+    <string name="title_dashboard">Khách hàng</string>
     <string name="title_notifications">Thông báo</string>
     <string name="title_activity_tax_invoice_detail">TaxInvoiceDetail</string>
     <string name="email">TÊN ĐĂNG NHẬP</string>
