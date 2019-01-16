@@ -175,12 +175,19 @@ public class PrintReceipt {
         String time = cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.YEAR);
 
         //BT_Write() method will initiate the printer to start printing.
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("BIEN NHAN TIEN" +
-                "\nQuy khach: " + bill_taxInvoice.getCustomerName() +
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("BIEN NHAN THU TIEN DICH VU VSMT" +
+                "\nLoai: KD" +
+                "\nIn HĐ: " + bill_taxInvoice.getContractId() +
+                "\nTen KH: " + bill_taxInvoice.getCustomerName() +
                 "\nDia chi: " + bill_taxInvoice.getAddress_Pay() +
-                "\nNgay: " + time +
-                "\nNhan vien: " + "Administrator" +
-                "\nNoi dung: Thu PVS thang " + bill_taxInvoice.getMonth() + "/" + bill_taxInvoice.getYear());
+                "\nMa KH: " + bill_taxInvoice.getCustomerCode() +
+                "\nKy: " +
+                "\nTu: " +
+                "\nDen: ");
+//                +
+//                "\nNgay: " + time +
+//                "\nNhan vien: " + "Administrator" +
+//                "\nNoi dung: Thu PVS thang " + bill_taxInvoice.getMonth() + "/" + bill_taxInvoice.getYear());
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
@@ -220,7 +227,7 @@ public class PrintReceipt {
                 .substring(0, bill_taxInvoice.getSubTotal().indexOf(".")))) + " (VNĐ)");
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(Double.toString(StaticValue.VAT) + "% VAT:" + Utils.doubleFormatter(totalVat) + "" +
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Thue GTGT " + Double.toString(StaticValue.VAT) + "%: " + Utils.doubleFormatter(totalVat) + "" +
                 StaticValue.CURRENCY);
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
@@ -249,6 +256,18 @@ public class PrintReceipt {
 //        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
 //        BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);//left
 //        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(StaticValue.BRANCH_ADDRESS);
+
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//Center
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("\n\nNV thu");
+
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//Center
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("\n\nSDT");
+
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//Center
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("\n\nSDT CSKH");
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();

@@ -37,6 +37,39 @@
             android:singleLine="true"
             android:title="Chi nhánh" />
 
+        <android.support.v7.preference.EditTextPreference
+            android:summary="Nhân viên thu"
+            android:dialogMessage="Xin mời cung cấp tên nhân viên thu để hiển thị trên phiếu in biên nhận"
+            android:capitalize="words"
+            android:inputType="textCapWords"
+            android:key="TEN_NVTHU"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Nhân viên thu" />
+
+        <android.support.v7.preference.EditTextPreference
+            android:summary="Số điện thoại"
+            android:dialogMessage="Xin mời cung cấp số điện thoại để hiển thị trên phiếu in biên nhận"
+            android:capitalize="words"
+            android:inputType="textCapWords"
+            android:key="SDT"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Số điện thoại" />
+
+        <android.support.v7.preference.EditTextPreference
+            android:summary="Số điện thoại CSKH"
+            android:dialogMessage="Xin mời cung cấp số điện thoại CSKH để hiển thị trên phiếu in biên nhận"
+            android:capitalize="words"
+            android:inputType="textCapWords"
+            android:key="SDT_CSKH"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Số điện thoại CSKH" />
+
     </android.support.v7.preference.PreferenceCategory>
 
 </android.support.v7.preference.PreferenceScreen><!--<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">-->
