@@ -138,27 +138,33 @@ public class MainActivity extends AppCompatActivity
                     call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(mContext, "Đang lấy số liệu chưa thu tiền từ Server") {
                         @Override
                         public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
-                            List<Bill_TaxInvoice> movies = response.body();
-                            if (movies.size() > 0) {
-                                List<Bill_TaxInvoiceModel> tmp = new Delete().from(Bill_TaxInvoiceModel.class).execute();
-                                ActiveAndroid.beginTransaction();
-                                try {
-                                    for (Bill_TaxInvoice b : movies) {
-                                        Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
-                                                b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
-                                                b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
-                                                b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                                                b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked());
-                                        c.save();
+
+                            if (response != null && response.body() != null) {
+                                List<Bill_TaxInvoice> movies = response.body();
+                                if (movies.size() > 0) {
+                                    List<Bill_TaxInvoiceModel> tmp = new Delete().from(Bill_TaxInvoiceModel.class).execute();
+                                    ActiveAndroid.beginTransaction();
+                                    try {
+                                        for (Bill_TaxInvoice b : movies) {
+                                            Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
+                                                    b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
+                                                    b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
+                                                    b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
+                                                    b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked());
+                                            c.save();
+                                        }
+                                        Toast.makeText(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toast.LENGTH_LONG).show();
+                                        switchFragment(buildFragment_CCIS(), "ABC");
+                                        ActiveAndroid.setTransactionSuccessful();
+                                    } finally {
+                                        ActiveAndroid.endTransaction();
                                     }
-                                    Toast.makeText(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toast.LENGTH_LONG).show();
-                                    switchFragment(buildFragment_CCIS(), "ABC");
-                                    ActiveAndroid.setTransactionSuccessful();
-                                } finally {
-                                    ActiveAndroid.endTransaction();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Không có dữ liệu chưa thu tiền !", Toast.LENGTH_LONG).show();
                                 }
                             } else {
-                                Toast.makeText(getApplicationContext(), "Không có dữ liệu chưa thu tiền !", Toast.LENGTH_LONG).show();
+                                Log.e(TAG, response.message());
+                                Toast.makeText(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
                             }
                             this.mProgressDialog.dismiss();
                         }
@@ -167,7 +173,11 @@ public class MainActivity extends AppCompatActivity
                         public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
                             // Log error here since request failed
                             Log.e(TAG, t.getMessage());
-                            Toast.makeText(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+                            if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+                                Toast.makeText(getApplicationContext(), "Không có dữ liệu chưa thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+                            }
                             this.mProgressDialog.dismiss();
                         }
                     });

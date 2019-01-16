@@ -120,17 +120,22 @@ public class CCISFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
                 try {
-                    lstTaxInvoiceData = response.body();
-                    if (lstTaxInvoiceData.size() > 0) {
-                        for (Bill_TaxInvoice b : lstTaxInvoiceData) {
-                            b.setChecked(false);
+                    if (response != null && response.body() != null) {
+                        lstTaxInvoiceData = response.body();
+                        if (lstTaxInvoiceData.size() > 0) {
+                            for (Bill_TaxInvoice b : lstTaxInvoiceData) {
+                                b.setChecked(false);
+                            }
+                            Log.e(TAG, "Bill_TaxInvoice[0] received: " + lstTaxInvoiceData.get(0).toString());
+                            taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
+                            recyclerView.setAdapter(taxInvoiceAdapter);
+                            taxInvoiceAdapter.notifyDataSetChanged();
+                            recyclerView.setVisibility(View.VISIBLE);
+                            txtEmpty.setVisibility(View.GONE);
                         }
-                        Log.e(TAG, "Bill_TaxInvoice[0] received: " + lstTaxInvoiceData.get(0).toString());
-                        taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
-                        recyclerView.setAdapter(taxInvoiceAdapter);
-                        taxInvoiceAdapter.notifyDataSetChanged();
-                        recyclerView.setVisibility(View.VISIBLE);
-                        txtEmpty.setVisibility(View.GONE);
+                    } else {
+                        Log.e(TAG, response.message());
+                        Toast.makeText(getActivity(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -142,7 +147,10 @@ public class CCISFragment extends Fragment {
             @Override
             public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
                 // Log error here since request failed
-                Toast.makeText(getActivity(), "Không có dữ liệu hoặc xảy ra lỗi quá trình lấy dữ liệu ! ", Toast.LENGTH_LONG).show();
+                if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+                    Toast.makeText(getActivity(), "Không có dữ liệu chưa thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(getActivity(), "Xảy ra lỗi quá trình lấy dữ liệu ! ", Toast.LENGTH_LONG).show();
                 Log.e(TAG, t.toString());
                 this.mProgressDialog.dismiss();
             }

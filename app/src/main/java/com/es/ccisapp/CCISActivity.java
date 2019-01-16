@@ -60,6 +60,11 @@ public class CCISActivity extends AppCompatActivity {
             public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
                 // Log error here since request failed
                 Log.e(TAG, t.toString());
+                if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+                    Toast.makeText(getApplicationContext(), "Không có dữ liệu chưa thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+                }
                 this.mProgressDialog.dismiss();
             }
         });
