@@ -68,11 +68,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tax code"
+                android:text="Địa chỉ"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtTaxCode"
+                android:id="@+id/txtDiaChi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Sub total "
+                android:text="Tiền trước thuế"
                 android:textStyle="bold" />
 
             <TextView

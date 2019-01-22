@@ -3,6 +3,7 @@ package com.es.ccisapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+//        getSupportActionBar().setTitle("CCIS ONLINE");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +130,7 @@ public class MainActivity extends AppCompatActivity
             SharedPreferences pref = getSharedPreferences("LOGIN", 0);
             final int strUserID = pref.getInt("USERID", -1);
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            // , AlertDialog.THEME_HOLO_DARK
             builder.setTitle(R.string.app_name);
             builder.setMessage("Chương trình sẽ xóa dữ liệu chưa thu tiền cũ đang có trên máy điện thoại này để lấy dữ liệu mới. Anh/Chị muốn thực hiện ?");
             builder.setIcon(R.drawable.logo);
@@ -296,7 +300,31 @@ public class MainActivity extends AppCompatActivity
             AlertDialog alert = builder.create();
             alert.show();
         } else if (id == R.id.nav_share) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle(R.string.app_name);
+            builder.setMessage("Anh/Chị muốn đăng xuất khỏi tài khoản này ?");
+            builder.setIcon(R.drawable.logo);
+            builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
 
+                    SharedPreferences pref = getSharedPreferences("LOGIN", 0);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("PASSWORD", "");
+                    editor.putInt("ONLINE", 0);
+                    editor.commit();
+
+                    Intent m = new Intent(MainActivity.this, RootActivity.class);
+                    startActivity(m);
+                }
+            });
+            builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
         } else if (id == R.id.nav_send) {
 
         }

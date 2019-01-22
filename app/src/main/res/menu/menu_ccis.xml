@@ -11,6 +11,12 @@
     <!--android:icon="@drawable/icsort"-->
     <!--android:title="" />-->
     <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Tìm kiếm"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_thutien"
         android:title="Thu tiền"
         app:showAsAction="ifRoom" />

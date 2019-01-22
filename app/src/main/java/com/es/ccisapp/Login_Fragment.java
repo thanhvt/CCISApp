@@ -216,6 +216,7 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
                                             SharedPreferences.Editor editor = pref.edit();
                                             editor.putString("USERNAME", getEmailId);
                                             editor.putString("PASSWORD", getPassword);
+                                            editor.putInt("ONLINE", 1);
                                             editor.putInt("USERID", pUserProfile.get(0).getUserId());
                                             editor.commit();
 
@@ -242,6 +243,11 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
                             String strUserSave = pref.getString("USERNAME", "");
                             String strPassSave = pref.getString("PASSWORD", "");
                             if (getEmailId.equals(strUserSave) && getPassword.equals(strPassSave)) {
+
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putInt("ONLINE", 0);
+                                editor.commit();
+
                                 Intent m = new Intent(getActivity(), MainActivity.class);
                                 startActivity(m);
                             } else {

@@ -40,8 +40,8 @@ public class TaxInvoiceDetailFragment extends Fragment {
     TextView txtMaKH;
     @BindView(R.id.txtSubTotal)
     TextView txtSubTotal;
-    @BindView(R.id.txtTaxCode)
-    TextView txtTaxCode;
+    @BindView(R.id.txtDiaChi)
+    TextView txtDiaChi;
     @BindView(R.id.edTenKH)
     TextView txtTenKH;
     @BindView(R.id.txtTotal)
@@ -100,7 +100,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
             txtVAT.setText(formatNumber(Long.parseLong(taxInvoice.getVAT().substring(0, taxInvoice.getVAT().indexOf(".")))) + " (VNĐ)");
             txtTotal.setText(formatNumber(Long.parseLong(taxInvoice.getTotal().substring(0, taxInvoice.getTotal().indexOf(".")))) + " (VNĐ)");
             txtSubTotal.setText(formatNumber(Long.parseLong(taxInvoice.getSubTotal().substring(0, taxInvoice.getSubTotal().indexOf(".")))) + " (VNĐ)");
-            txtTaxCode.setText(taxInvoice.getTaxCode());
+            txtDiaChi.setText(taxInvoice.getTaxInvoiceAddress());
             txtTinhTrangThu.setText(taxInvoice.isThuOffline() ? "Đã thu offline" : "Chưa thu");
         }
 

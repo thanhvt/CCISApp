@@ -46,7 +46,7 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Amount"
+                android:text="Nhân khẩu"
                 android:textStyle="bold" />
 
             <EditText
@@ -54,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:enabled="false"
                 android:hint="Số lượng mới"
                 android:inputType="number" />
 
@@ -69,6 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="numberDecimal" />
 
             <TextView
@@ -76,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="Số thứ tự trong sổ" />
+                android:text="Số theo lộ trình đi thu" />
 
             <LinearLayout
                 android:layout_width="match_parent"

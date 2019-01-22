@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -183,11 +184,39 @@ public class CCISFragment extends Fragment {
         }
     }
 
+    private SearchView searchView;
+    private MenuItem searchMenuItem;
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_ccis, menu);
-//        return true;
+        // TODO Add your menu entries here
+        //inflater.inflate(R.menu.menu_log, menu);
+        //super.onCreateOptionsMenu(menu, inflater);
+//        getActivity().getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+        searchMenuItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setQueryHint("Tìm kiếm theo tên, địa chỉ, vv...");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                taxInvoiceAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    searchMenuItem.collapseActionView();
+                    searchView.setQuery("", false);
+                    searchView.setIconified(true);
+                }
+            }
+        });
     }
 
     @Override
