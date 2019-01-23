@@ -69,10 +69,20 @@ public class Bill_TaxInvoice implements Serializable {
 
     private int STT;
 
+    private double Amount;
+
+    private int ServiceTypeId;
+
+    private String ServiceName;
+
+//    i.Amount,
+//    i.ServiceTypeId,
+//    i.ServiceName
+
     public Bill_TaxInvoice() {
     }
 
-    public Bill_TaxInvoice(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String $id, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, int STT) {
+    public Bill_TaxInvoice(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String $id, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, int STT, double amount, int serviceTypeId, String serviceName) {
         TaxCode = taxCode;
         CustomerCode = customerCode;
         BankName = bankName;
@@ -102,6 +112,9 @@ public class Bill_TaxInvoice implements Serializable {
         IsChecked = isChecked;
         IsThuOffline = isThuOffline;
         this.STT = STT;
+        Amount = amount;
+        ServiceTypeId = serviceTypeId;
+        ServiceName = serviceName;
     }
 
     public int getSTT() {
@@ -380,9 +393,65 @@ public class Bill_TaxInvoice implements Serializable {
         this.Total = Total;
     }
 
+    public double getAmount() {
+        return Amount;
+    }
+
+    public void setAmount(double amount) {
+        Amount = amount;
+    }
+
+    public int getServiceTypeId() {
+        return ServiceTypeId;
+    }
+
+    public void setServiceTypeId(int serviceTypeId) {
+        ServiceTypeId = serviceTypeId;
+    }
+
+    public String getServiceName() {
+        return ServiceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        ServiceName = serviceName;
+    }
+
     @Override
-    public String toString()
-    {
-        return "ClassPojo [TaxCode = "+TaxCode+", CustomerCode = "+CustomerCode+", BankName = "+BankName+", Month = "+Month+", SerialNumber = "+SerialNumber+", Year = "+Year+", CustomerId = "+CustomerId+", DepartmentId = "+DepartmentId+", $id = "+$id+", TaxInvoiceAddress = "+TaxInvoiceAddress+", TaxInvoiceId = "+TaxInvoiceId+", IdDevice = "+IdDevice+", ContractId = "+ContractId+", FigureBookId = "+FigureBookId+", SerialCode = "+SerialCode+", CustomerName = "+CustomerName+", CustomerCode_Pay = "+CustomerCode_Pay+", SubTotal = "+SubTotal+", Address_Pay = "+Address_Pay+", BankAccount = "+BankAccount+", VAT = "+VAT+", TaxRatio = "+TaxRatio+", CustomerId_Pay = "+CustomerId_Pay+", BillType = "+BillType+", CustomerName_Pay = "+CustomerName_Pay+", Total = "+Total+"]";
+    public String toString() {
+        return "Bill_TaxInvoice{" +
+                "TaxCode='" + TaxCode + '\'' +
+                ", CustomerCode='" + CustomerCode + '\'' +
+                ", BankName='" + BankName + '\'' +
+                ", Month='" + Month + '\'' +
+                ", SerialNumber='" + SerialNumber + '\'' +
+                ", Year='" + Year + '\'' +
+                ", CustomerId='" + CustomerId + '\'' +
+                ", DepartmentId='" + DepartmentId + '\'' +
+                ", $id='" + $id + '\'' +
+                ", TaxInvoiceAddress='" + TaxInvoiceAddress + '\'' +
+                ", TaxInvoiceId=" + TaxInvoiceId +
+                ", IdDevice=" + IdDevice +
+                ", ContractId='" + ContractId + '\'' +
+                ", FigureBookId=" + FigureBookId +
+                ", SerialCode='" + SerialCode + '\'' +
+                ", CustomerName='" + CustomerName + '\'' +
+                ", CustomerCode_Pay='" + CustomerCode_Pay + '\'' +
+                ", SubTotal='" + SubTotal + '\'' +
+                ", Address_Pay='" + Address_Pay + '\'' +
+                ", BankAccount='" + BankAccount + '\'' +
+                ", VAT='" + VAT + '\'' +
+                ", TaxRatio='" + TaxRatio + '\'' +
+                ", CustomerId_Pay='" + CustomerId_Pay + '\'' +
+                ", BillType='" + BillType + '\'' +
+                ", CustomerName_Pay='" + CustomerName_Pay + '\'' +
+                ", Total='" + Total + '\'' +
+                ", IsChecked=" + IsChecked +
+                ", IsThuOffline=" + IsThuOffline +
+                ", STT=" + STT +
+                ", Amount=" + Amount +
+                ", ServiceTypeId=" + ServiceTypeId +
+                ", ServiceName=" + ServiceName +
+                '}';
     }
 }

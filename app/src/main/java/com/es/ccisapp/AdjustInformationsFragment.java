@@ -101,7 +101,8 @@ public class AdjustInformationsFragment extends Fragment {
             Log.e(TAG, "taxInvoice: " + taxInvoice.toString());
             edDC.setText(taxInvoice.getTaxInvoiceAddress());
             edTenKH.setText(taxInvoice.getCustomerName());
-
+            edSL.setText(taxInvoice.getAmount() + "");
+            edDonGia.setText(taxInvoice.getSubTotal());
         }
         return rootView;
     }

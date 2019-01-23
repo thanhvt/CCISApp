@@ -50,7 +50,10 @@ public class TaxInvoiceDetailFragment extends Fragment {
     TextView txtVAT;
     @BindView(R.id.txtTinhTrangThu)
     TextView txtTinhTrangThu;
-
+    @BindView(R.id.txtKy)
+    TextView txtKy;
+    @BindView(R.id.txtSoNhanKhau)
+    TextView txtSoNhanKhau;
     private Unbinder unbinder;
     // constant
     String TAG = "TaxInvoiceDetailFragment";
@@ -102,6 +105,8 @@ public class TaxInvoiceDetailFragment extends Fragment {
             txtSubTotal.setText(formatNumber(Long.parseLong(taxInvoice.getSubTotal().substring(0, taxInvoice.getSubTotal().indexOf(".")))) + " (VNĐ)");
             txtDiaChi.setText(taxInvoice.getTaxInvoiceAddress());
             txtTinhTrangThu.setText(taxInvoice.isThuOffline() ? "Đã thu offline" : "Chưa thu");
+            txtKy.setText(taxInvoice.getMonth() + "/" + taxInvoice.getYear());
+            txtSoNhanKhau.setText(taxInvoice.getAmount() + "");
         }
 
         return rootView;
@@ -119,7 +124,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                     taxInvoice.getBankName(), taxInvoice.getMonth(), taxInvoice.getSerialNumber(), taxInvoice.getYear(), taxInvoice.getCustomerId(), taxInvoice.getDepartmentId(),
                     taxInvoice.getTaxInvoiceAddress(), taxInvoice.getTaxInvoiceId(), taxInvoice.getIdDevice(), taxInvoice.getContractId(), taxInvoice.getFigureBookId(), taxInvoice.getSerialCode(),
                     taxInvoice.getCustomerName(), taxInvoice.getCustomerCode_Pay(), taxInvoice.getSubTotal(), taxInvoice.getAddress_Pay(), taxInvoice.getBankAccount(), taxInvoice.getVAT(),
-                    taxInvoice.getTaxRatio(), taxInvoice.getCustomerId_Pay(), taxInvoice.getBillType(), taxInvoice.getCustomerName_Pay(), taxInvoice.getTotal(), taxInvoice.isChecked());
+                    taxInvoice.getTaxRatio(), taxInvoice.getCustomerId_Pay(), taxInvoice.getBillType(), taxInvoice.getCustomerName_Pay(), taxInvoice.getTotal(), taxInvoice.isChecked(), true, taxInvoice.getAmount(), taxInvoice.getServiceTypeId(), taxInvoice.getServiceName());
             c.save();
             Log.e(TAG + " insert ", "2");
         }

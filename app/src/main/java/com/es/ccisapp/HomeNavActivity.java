@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -108,7 +109,7 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
         }
 
         Log.e("taxInvoice", lstTaxInvoice.size() + " " + INDEX);
-        switchFragment(buildFragment_TaxInvoiceDetail(), "ABC");
+        switchFragment(buildFragment_TaxInvoiceDetail(), "TAX");
 
         Toast.makeText(getApplicationContext(), "Vuốt màn hình sang trái hoặc phải để thao tác với khách hàng khác !", Toast.LENGTH_LONG).show();
     }
@@ -121,14 +122,14 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
             switch (item.getItemId()) {
                 case R.id.navigation_home:
 //                    Utils.startFragment(getSupportFragmentManager(), TaxInvoiceDetailFragment.newInstance("ONE"));
-                    switchFragment(buildFragment_TaxInvoiceDetail(), "ABC");
+                    switchFragment(buildFragment_TaxInvoiceDetail(), "TAX");
                     return true;
                 case R.id.navigation_dashboard:
-                    switchFragment(buildFragment_AdjustInformations(), "ABC");
+                    switchFragment(buildFragment_AdjustInformations(), "ADJ");
                     return true;
                 case R.id.navigation_notifications:
 //                    Utils.startFragment(getSupportFragmentManager(), TaxInvoiceDetailFragment.newInstance("ONE"));
-                    switchFragment(new NanFragment(), "ABC");
+                    switchFragment(new NanFragment(), "NAN");
                     return true;
             }
             return false;
@@ -220,32 +221,37 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
     private class SwipeDetector extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            TaxInvoiceDetailFragment myFragment = (TaxInvoiceDetailFragment) getSupportFragmentManager().findFragmentByTag("TAX");
+            Fragment f = getVisibleFragment();
+            if (f.getTag().equals("TAX")) {
+//            if (myFragment != null && myFragment.isVisible()) {
+                // add your code here
+                // Check movement along the Y-axis. If it exceeds SWIPE_MAX_OFF_PATH,
+                // then dismiss the swipe.
+                if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+                    return false;
 
-            // Check movement along the Y-axis. If it exceeds SWIPE_MAX_OFF_PATH,
-            // then dismiss the swipe.
-            if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-                return false;
+                // Swipe from left to right.
+                // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
+                // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
+                if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    if (INDEX > 0) {
+                        INDEX--;
+                        taxInvoice = lstTaxInvoice.get(INDEX);
+                        switchFragment(buildFragment_TaxInvoiceDetail(), "TAX");
+                    }
+                    Log.d(TAG, "onSwipe: left2right " + INDEX);
+                    return true;
+                } else {
+                    if (INDEX < lstTaxInvoice.size() - 1) {
+                        INDEX++;
+                        taxInvoice = lstTaxInvoice.get(INDEX);
+                        switchFragment(buildFragment_TaxInvoiceDetail(), "TAX");
+                    }
+                    Log.d(TAG, "onSwipe: right2left " + INDEX);
 
-            // Swipe from left to right.
-            // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
-            // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
-            if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                if (INDEX > 0) {
-                    INDEX--;
-                    taxInvoice = lstTaxInvoice.get(INDEX);
-                    switchFragment(buildFragment_TaxInvoiceDetail(), "ABC");
                 }
-                Log.d(TAG, "onSwipe: left2right " + INDEX);
-                return true;
-            } else {
-                if (INDEX < lstTaxInvoice.size() - 1) {
-                    INDEX++;
-                    taxInvoice = lstTaxInvoice.get(INDEX);
-                    switchFragment(buildFragment_TaxInvoiceDetail(), "ABC");
-                }
-                Log.d(TAG, "onSwipe: right2left " + INDEX);
             }
-
             return false;
         }
     }
@@ -267,6 +273,17 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
         return gestureDetector.onTouchEvent(event);
     }
 
+    public Fragment getVisibleFragment() {
+        FragmentManager fragmentManager = HomeNavActivity.this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if (fragments != null) {
+            for (Fragment fragment : fragments) {
+                if (fragment != null && fragment.isVisible())
+                    return fragment;
+            }
+        }
+        return null;
+    }
 //    @Override
 //    public boolean onTouch(View v, MotionEvent event) {
 //        gestureDetector.onTouchEvent(event);

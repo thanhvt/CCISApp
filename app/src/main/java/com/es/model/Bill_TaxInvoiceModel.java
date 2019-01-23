@@ -89,10 +89,19 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
     @Column(name = "IsThuOffline")
     private boolean IsThuOffline;
 
+    @Column(name = "Amount")
+    private double Amount;
+
+    @Column(name = "ServiceTypeId")
+    private int ServiceTypeId;
+
+    @Column(name = "ServiceName")
+    private String ServiceName;
+
     public Bill_TaxInvoiceModel() {
     }
 
-    public Bill_TaxInvoiceModel(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked) {
+    public Bill_TaxInvoiceModel(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, double amount, int serviceTypeId, String serviceName) {
         TaxCode = taxCode;
         CustomerCode = customerCode;
         BankName = bankName;
@@ -119,7 +128,10 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
         CustomerName_Pay = customerName_Pay;
         Total = total;
         IsChecked = isChecked;
-        IsThuOffline = false;
+        IsThuOffline = isThuOffline;
+        Amount = amount;
+        ServiceTypeId = serviceTypeId;
+        ServiceName = serviceName;
     }
 
     public boolean isThuOffline() {
@@ -338,8 +350,63 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
         this.Total = Total;
     }
 
+    public double getAmount() {
+        return Amount;
+    }
+
+    public void setAmount(double amount) {
+        Amount = amount;
+    }
+
+    public int getServiceTypeId() {
+        return ServiceTypeId;
+    }
+
+    public void setServiceTypeId(int serviceTypeId) {
+        ServiceTypeId = serviceTypeId;
+    }
+
+    public String getServiceName() {
+        return ServiceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        ServiceName = serviceName;
+    }
+
     @Override
     public String toString() {
-        return "ClassPojo [TaxCode = " + TaxCode + ", CustomerCode = " + CustomerCode + ", BankName = " + BankName + ", Month = " + Month + ", SerialNumber = " + SerialNumber + ", Year = " + Year + ", CustomerId = " + CustomerId + ", DepartmentId = " + DepartmentId + ", TaxInvoiceAddress = " + TaxInvoiceAddress + ", TaxInvoiceId = " + TaxInvoiceId + ", IdDevice = " + IdDevice + ", ContractId = " + ContractId + ", FigureBookId = " + FigureBookId + ", SerialCode = " + SerialCode + ", CustomerName = " + CustomerName + ", CustomerCode_Pay = " + CustomerCode_Pay + ", SubTotal = " + SubTotal + ", Address_Pay = " + Address_Pay + ", BankAccount = " + BankAccount + ", VAT = " + VAT + ", TaxRatio = " + TaxRatio + ", CustomerId_Pay = " + CustomerId_Pay + ", BillType = " + BillType + ", CustomerName_Pay = " + CustomerName_Pay + ", Total = " + Total + "]";
+        return "Bill_TaxInvoiceModel{" +
+                "TaxCode='" + TaxCode + '\'' +
+                ", CustomerCode='" + CustomerCode + '\'' +
+                ", BankName='" + BankName + '\'' +
+                ", Month='" + Month + '\'' +
+                ", SerialNumber='" + SerialNumber + '\'' +
+                ", Year='" + Year + '\'' +
+                ", CustomerId='" + CustomerId + '\'' +
+                ", DepartmentId='" + DepartmentId + '\'' +
+                ", TaxInvoiceAddress='" + TaxInvoiceAddress + '\'' +
+                ", TaxInvoiceId=" + TaxInvoiceId +
+                ", IdDevice=" + IdDevice +
+                ", ContractId='" + ContractId + '\'' +
+                ", FigureBookId=" + FigureBookId +
+                ", SerialCode='" + SerialCode + '\'' +
+                ", CustomerName='" + CustomerName + '\'' +
+                ", CustomerCode_Pay='" + CustomerCode_Pay + '\'' +
+                ", SubTotal='" + SubTotal + '\'' +
+                ", Address_Pay='" + Address_Pay + '\'' +
+                ", BankAccount='" + BankAccount + '\'' +
+                ", VAT='" + VAT + '\'' +
+                ", TaxRatio='" + TaxRatio + '\'' +
+                ", CustomerId_Pay='" + CustomerId_Pay + '\'' +
+                ", BillType='" + BillType + '\'' +
+                ", CustomerName_Pay='" + CustomerName_Pay + '\'' +
+                ", Total='" + Total + '\'' +
+                ", IsChecked=" + IsChecked +
+                ", IsThuOffline=" + IsThuOffline +
+                ", Amount=" + Amount +
+                ", ServiceTypeId=" + ServiceTypeId +
+                ", ServiceName=" + ServiceName +
+                '}';
     }
 }
