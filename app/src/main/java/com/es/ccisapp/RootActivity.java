@@ -41,7 +41,15 @@ public class RootActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_root);
-
+//        ActiveAndroid.dispose();
+//
+//        String aaName = ReflectionUtils.getMetaData(getApplicationContext(), "AA_DB_NAME");
+//
+//        if (aaName == null) {
+//            aaName = "CCIS_DB.db";
+//        }
+//
+//        deleteDatabase(aaName);
         ActiveAndroid.initialize(getApplication());
 
         ButterKnife.bind(this);
