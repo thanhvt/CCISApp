@@ -87,13 +87,17 @@ public class CCISFragment extends Fragment {
         } else {
             recyclerView.setVisibility(View.VISIBLE);
             txtEmpty.setVisibility(View.GONE);
+            int stt = 0;
             for (Bill_TaxInvoiceModel b : lstDB) {
                 b.setChecked(false);
-                lstTaxInvoiceData.add(new Bill_TaxInvoice(b.getTaxCode(), b.getCustomerCode(),
+                Bill_TaxInvoice x = new Bill_TaxInvoice(b.getTaxCode(), b.getCustomerCode(),
                         b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(), "1",
                         b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
                         b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), b.isThuOffline()));
+                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), b.isThuOffline(), stt);
+                stt++;
+                x.setSTT(stt);
+                lstTaxInvoiceData.add(x);
             }
             taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
             recyclerView.setAdapter(taxInvoiceAdapter);
@@ -125,8 +129,11 @@ public class CCISFragment extends Fragment {
                     if (response != null && response.body() != null) {
                         lstTaxInvoiceData = response.body();
                         if (lstTaxInvoiceData.size() > 0) {
+                            int stt = 0;
                             for (Bill_TaxInvoice b : lstTaxInvoiceData) {
                                 b.setChecked(false);
+                                stt++;
+                                b.setSTT(stt);
                             }
                             Log.e(TAG, "Bill_TaxInvoice[0] received: " + lstTaxInvoiceData.get(0).toString());
                             taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
@@ -170,13 +177,15 @@ public class CCISFragment extends Fragment {
         } else {
             recyclerView.setVisibility(View.VISIBLE);
             txtEmpty.setVisibility(View.GONE);
+            int stt = 0;
             for (Bill_TaxInvoiceModel b : lstDB) {
                 b.setChecked(false);
+                stt++;
                 lstTaxInvoiceData.add(new Bill_TaxInvoice(b.getTaxCode(), b.getCustomerCode(),
                         b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(), "1",
                         b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
                         b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), b.isThuOffline()));
+                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), b.isThuOffline(), stt));
             }
             taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
             recyclerView.setAdapter(taxInvoiceAdapter);

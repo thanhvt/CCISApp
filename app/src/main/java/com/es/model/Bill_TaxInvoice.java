@@ -67,10 +67,12 @@ public class Bill_TaxInvoice implements Serializable {
 
     private boolean IsThuOffline;
 
+    private int STT;
+
     public Bill_TaxInvoice() {
     }
 
-    public Bill_TaxInvoice(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String $id, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline) {
+    public Bill_TaxInvoice(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String $id, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, int STT) {
         TaxCode = taxCode;
         CustomerCode = customerCode;
         BankName = bankName;
@@ -99,6 +101,15 @@ public class Bill_TaxInvoice implements Serializable {
         Total = total;
         IsChecked = isChecked;
         IsThuOffline = isThuOffline;
+        this.STT = STT;
+    }
+
+    public int getSTT() {
+        return STT;
+    }
+
+    public void setSTT(int STT) {
+        this.STT = STT;
     }
 
     public boolean isChecked() {

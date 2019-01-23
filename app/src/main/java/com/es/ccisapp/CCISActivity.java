@@ -46,8 +46,11 @@ public class CCISActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
                 List<Bill_TaxInvoice> movies = response.body();
+                int stt = 0;
                 for (Bill_TaxInvoice b : movies) {
                     b.setChecked(false);
+                    stt++;
+                    b.setSTT(stt);
                 }
                 Log.d(TAG, "Number of movies received: " + movies.get(0).toString());
                 taxInvoiceAdapter = new TaxInvoiceAdapter(movies, R.layout.list_taxinvoice, getApplicationContext());

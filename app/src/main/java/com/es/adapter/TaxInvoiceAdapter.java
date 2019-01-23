@@ -17,6 +17,7 @@ import com.es.ccisapp.HomeNavActivity;
 import com.es.ccisapp.R;
 import com.es.model.Bill_TaxInvoice;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
                     bundle.putSerializable("DATA", "123");
                     bundle.putString("IMAGE", lstTaxInvoice.get(getAdapterPosition()).getBankName());
                     bundle.putSerializable("TAX", lstTaxInvoice.get(getAdapterPosition()));
+                    bundle.putSerializable("ALL", (Serializable) lstTaxInvoice);
                     Intent intent = new Intent(context, HomeNavActivity.class);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
@@ -76,7 +78,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
 
     @Override
     public void onBindViewHolder(TaxInvoiceHolder holder, final int position) {
-        holder.movieTitle.setText(lstTaxInvoice.get(position).getCustomerCode() + " - " + lstTaxInvoice.get(position).getCustomerName());
+        holder.movieTitle.setText(lstTaxInvoice.get(position).getSTT() + ". " + lstTaxInvoice.get(position).getCustomerCode() + " - " + lstTaxInvoice.get(position).getCustomerName());
         holder.data.setText("Đơn giá: " + lstTaxInvoice.get(position).getSubTotal() + " VAT: " + lstTaxInvoice.get(position).getVAT());
         holder.movieDescription.setText(lstTaxInvoice.get(position).getTaxInvoiceAddress());
         holder.isChecked.setChecked(lstTaxInvoice.get(position).isChecked());

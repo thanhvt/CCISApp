@@ -12,14 +12,28 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.es.model.Bill_TaxInvoice;
 
-public class HomeNavActivity extends AppCompatActivity { // implements NavigationView.OnNavigationItemSelectedListener
-    Bill_TaxInvoice taxInvoice;
+import java.util.ArrayList;
+import java.util.List;
 
+public class HomeNavActivity extends AppCompatActivity { // implements NavigationView.OnNavigationItemSelectedListener  implements View.OnTouchListener
+    public static final String TAG = "HomeNavActivity msg: ";
+    Bill_TaxInvoice taxInvoice;
+    GestureDetector gestureDetector;
+    private float x1, x2;
+    static final int MIN_DISTANCE = 150;
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_MAX_OFF_PATH = 250;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+    List<Bill_TaxInvoice> lstTaxInvoice = new ArrayList<>();
+    int INDEX = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +41,27 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
         setContentView(R.layout.activity_home_nav);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        gestureDetector = new GestureDetector(new SwipeDetector());
+//        gestureDetector=new GestureDetector(this,new OnSwipeListener(){
+//
+//            @Override
+//            public boolean onSwipe(Direction direction) {
+//                if (direction==Direction.up){
+//                    //do your stuff
+//                    Log.d(TAG, "onSwipe: up");
+//
+//                }
+//
+//                if (direction==Direction.down){
+//                    //do your stuff
+//                    Log.d(TAG, "onSwipe: down");
+//                }
+//                return true;
+//            }
+//
+//
+//        });
+//        someLayout.setOnTouchListener(this);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -61,9 +96,21 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
 
         taxInvoice =
                 (Bill_TaxInvoice) bundle.getSerializable("TAX");
-        Log.e("taxInvoice", taxInvoice.toString());
 
+        lstTaxInvoice = (ArrayList<Bill_TaxInvoice>) bundle.getSerializable("ALL");
+        INDEX = lstTaxInvoice.indexOf(taxInvoice);
+        for (int i = 0; i < lstTaxInvoice.size(); i++) {
+            Bill_TaxInvoice x = lstTaxInvoice.get(i);
+            if (x.getTaxInvoiceId() == taxInvoice.getTaxInvoiceId()) {
+                INDEX = i;
+                break;
+            }
+        }
+
+        Log.e("taxInvoice", lstTaxInvoice.size() + " " + INDEX);
         switchFragment(buildFragment_TaxInvoiceDetail(), "ABC");
+
+        Toast.makeText(getApplicationContext(), "Vuốt màn hình sang trái hoặc phải để thao tác với khách hàng khác !", Toast.LENGTH_LONG).show();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -144,6 +191,87 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
         }
         return super.onOptionsItemSelected(item);
     }
+
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event)
+//    {
+//        switch(event.getAction())
+//        {
+//            case MotionEvent.ACTION_DOWN:
+//                x1 = event.getX();
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                x2 = event.getX();
+//                float deltaX = x2 - x1;
+//                if (Math.abs(deltaX) > MIN_DISTANCE)
+//                {
+//                    Toast.makeText(this, "left2right swipe", Toast.LENGTH_SHORT).show ();
+//                }
+//                else
+//                {
+//                    // consider as something else - a screen tap for example
+//                }
+//                break;
+//        }
+//        return super.onTouchEvent(event);
+//    }
+
+
+    private class SwipeDetector extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+            // Check movement along the Y-axis. If it exceeds SWIPE_MAX_OFF_PATH,
+            // then dismiss the swipe.
+            if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+                return false;
+
+            // Swipe from left to right.
+            // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
+            // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
+            if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                if (INDEX > 0) {
+                    INDEX--;
+                    taxInvoice = lstTaxInvoice.get(INDEX);
+                    switchFragment(buildFragment_TaxInvoiceDetail(), "ABC");
+                }
+                Log.d(TAG, "onSwipe: left2right " + INDEX);
+                return true;
+            } else {
+                if (INDEX < lstTaxInvoice.size() - 1) {
+                    INDEX++;
+                    taxInvoice = lstTaxInvoice.get(INDEX);
+                    switchFragment(buildFragment_TaxInvoiceDetail(), "ABC");
+                }
+                Log.d(TAG, "onSwipe: right2left " + INDEX);
+            }
+
+            return false;
+        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        // TouchEvent dispatcher.
+        if (gestureDetector != null) {
+            if (gestureDetector.onTouchEvent(ev))
+                // If the gestureDetector handles the event, a swipe has been
+                // executed and no more needs to be done.
+                return true;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+    }
+
+//    @Override
+//    public boolean onTouch(View v, MotionEvent event) {
+//        gestureDetector.onTouchEvent(event);
+//        return true;
+//    }
 
 //    @SuppressWarnings("StatementWithEmptyBody")
 //    @Override

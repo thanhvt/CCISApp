@@ -153,12 +153,15 @@ public class MainActivity extends AppCompatActivity
                                     List<Bill_TaxInvoiceModel> tmp = new Delete().from(Bill_TaxInvoiceModel.class).execute();
                                     ActiveAndroid.beginTransaction();
                                     try {
+                                        int stt = 0;
                                         for (Bill_TaxInvoice b : movies) {
                                             Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
                                                     b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
                                                     b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
                                                     b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
                                                     b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked());
+                                            stt++;
+                                            b.setSTT(stt);
                                             c.save();
                                         }
                                         Toast.makeText(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toast.LENGTH_LONG).show();
