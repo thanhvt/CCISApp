@@ -3,6 +3,7 @@ package com.es.ccisapp;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.util.ReflectionUtils;
 import com.es.utils.Utils;
 
 import java.lang.reflect.Method;
@@ -41,15 +43,34 @@ public class RootActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_root);
-//        ActiveAndroid.dispose();
-//
-//        String aaName = ReflectionUtils.getMetaData(getApplicationContext(), "AA_DB_NAME");
-//
-//        if (aaName == null) {
-//            aaName = "CCIS_DB.db";
-//        }
-//
-//        deleteDatabase(aaName);
+
+        /*
+         *
+         *   SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+                            String strUserSave = pref.getString("USERNAME", "");
+                            String strPassSave = pref.getString("PASSWORD", "");
+                            if (getEmailId.equals(strUserSave) && getPassword.equals(strPassSave)) {
+
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putInt("ONLINE", 0);
+                                editor.commit();
+         */
+        SharedPreferences pref = getSharedPreferences("FIRST", 0);
+        int first = pref.getInt("FIRST", 0);
+        if (first == 0) {
+            ActiveAndroid.dispose();
+
+            String aaName = ReflectionUtils.getMetaData(getApplicationContext(), "AA_DB_NAME");
+
+            if (aaName == null) {
+                aaName = "CCIS_DB.db";
+            }
+
+            deleteDatabase(aaName);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putInt("FIRST", 1);
+            editor.commit();
+        }
         ActiveAndroid.initialize(getApplication());
 
         ButterKnife.bind(this);
