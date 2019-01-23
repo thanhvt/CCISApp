@@ -177,11 +177,11 @@ public class PrintReceipt {
         //BT_Write() method will initiate the printer to start printing.
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("BIEN NHAN THU TIEN DICH VU VSMT" +
                 "\nLoai: KD" +
-                "\nIn HĐ: " + bill_taxInvoice.getContractId() +
+                "\nIn HD: " + bill_taxInvoice.getContractId() +
                 "\nTen KH: " + bill_taxInvoice.getCustomerName() +
                 "\nDia chi: " + bill_taxInvoice.getAddress_Pay() +
                 "\nMa KH: " + bill_taxInvoice.getCustomerCode() +
-                "\nKy: " +
+                "\nKy: " + bill_taxInvoice.getMonth() + "/" + bill_taxInvoice.getYear() +
                 "\nTu: " +
                 "\nDen: ");
 //                +
@@ -223,7 +223,7 @@ public class PrintReceipt {
         netBill = totalBill + totalVat;
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Số tiền:" + formatNumber(Long.parseLong(bill_taxInvoice.getSubTotal()
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("So tien:" + formatNumber(Long.parseLong(bill_taxInvoice.getSubTotal()
                 .substring(0, bill_taxInvoice.getSubTotal().indexOf(".")))) + " (VNĐ)");
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
@@ -240,7 +240,7 @@ public class PrintReceipt {
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 2);//Right
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x9);
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Tong tien:" + formatNumber(Long.parseLong(bill_taxInvoice.getTotal()
-                .substring(0, bill_taxInvoice.getTotal().indexOf(".")))) + " (VNĐ)");
+                .substring(0, bill_taxInvoice.getTotal().indexOf(".")))) + " (VND)");
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//center
@@ -259,22 +259,22 @@ public class PrintReceipt {
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//Center
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("\n\nNV thu");
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("NV thu");
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//Center
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("\n\nSDT");
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("SDT");
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//Center
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("\n\nSDT CSKH");
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("SDT CSKH");
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+//        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+//        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+//        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//Center
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("\n\nXin cam on");
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("\nXin cam on");
 
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
