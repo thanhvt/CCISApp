@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
@@ -24,6 +23,7 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -129,7 +129,8 @@ public class AdjustInformationsFragment extends Fragment {
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
         m.save();
-        Toast.makeText(getActivity(), "Lưu thông tin offline thành công. Duyệt thông tin để đẩy dữ liệu lên Server !", Toast.LENGTH_SHORT).show();
+
+        Toasty.success(getActivity(), "Lưu thông tin offline thành công. Duyệt thông tin để đẩy dữ liệu lên Server !", Toasty.LENGTH_LONG, true).show();
         Log.e("Adjust_Informations", m.toString());
     }
 
@@ -163,12 +164,12 @@ public class AdjustInformationsFragment extends Fragment {
                         Boolean postCheck = response.body().booleanValue();
                         Log.e("CHECK PUT", postCheck + "");
                         if (postCheck) {
-                            Toast.makeText(getActivity(), "Lưu thông tin khách hàng thành công !", Toast.LENGTH_SHORT).show();
+                            Toasty.success(getActivity(), "Lưu thông tin khách hàng thành công !", Toasty.LENGTH_LONG, true).show();
                         } else {
-                            Toast.makeText(getActivity(), "Lưu thông tin khách hàng không thành công !", Toast.LENGTH_SHORT).show();
+                            Toasty.error(getActivity(), "Lưu thông tin khách hàng không thành công !", Toasty.LENGTH_LONG, true).show();
                         }
                     } catch (Exception e) {
-                        Toast.makeText(getActivity(), "Lưu thông tin khách hàng không thành công !", Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), "Lưu thông tin khách hàng không thành công !", Toasty.LENGTH_LONG, true).show();
                         Log.e(TAG, e.getMessage());
                     }
                 }

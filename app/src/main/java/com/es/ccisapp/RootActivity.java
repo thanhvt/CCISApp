@@ -28,6 +28,7 @@ import java.lang.reflect.Method;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 
 public class RootActivity extends AppCompatActivity {
     private static FragmentManager fragmentManager;
@@ -85,6 +86,12 @@ public class RootActivity extends AppCompatActivity {
         }
 
         requestAppPermissions();
+
+        Toasty.Config.getInstance()
+                .tintIcon(true) // optional (apply textColor also to the icon)
+                .setTextSize(16) // optional
+                .allowQueue(true) // optional (prevents several Toastys from queuing)
+                .apply(); // required
     }
 
     // Replace Login Fragment with animation

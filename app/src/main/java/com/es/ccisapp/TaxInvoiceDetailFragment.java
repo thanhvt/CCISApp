@@ -15,6 +15,7 @@ import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceModel;
+import com.es.model.Mobile_Adjust_DB;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 import com.es.printer.BluetoothPrinterActivity;
@@ -28,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -96,6 +98,25 @@ public class TaxInvoiceDetailFragment extends Fragment {
             content = getArguments().getString(EXTRA_DATA);
             taxInvoice =
                     (Bill_TaxInvoice) getArguments().getSerializable("TAX");
+            try {
+                List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID = ?", taxInvoice.getCustomerId()).execute();
+                if (lstDB != null && lstDB.size() > 0) {
+                    Mobile_Adjust_DB m = lstDB.get(lstDB.size() - 1);
+                    taxInvoice.setCustomerName(m.getCustomerName());
+                    taxInvoice.setAddress_Pay(m.getCustomerAdd());
+                    taxInvoice.setAmount(Double.parseDouble(lstDB.get(0).getAmout()));
+                    taxInvoice.setSubTotal(lstDB.get(0).getPrice());
+//                    if (!m.getPrice().equals("")){
+//                        bill_taxInvoice.setSubTotal(m.getPrice());
+//                        Double d = Double.parseDouble(m.getPrice());
+//                        Double total = d * 1.01;
+//                    }
+
+                }
+            } catch (Exception e) {
+
+            }
+
             Log.e(TAG, "taxInvoice: " + taxInvoice.toString());
             txtMaKH.setText(taxInvoice.getCustomerCode());
             txtTenKH.setText(taxInvoice.getCustomerName());
@@ -144,9 +165,9 @@ public class TaxInvoiceDetailFragment extends Fragment {
                 Log.d(TAG, "movies: " + movies);
                 if (movies == 1) {
                     List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
-                    Toast.makeText(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " thành công !", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " thành công !", Toasty.LENGTH_LONG, true).show();
                 } else {
-                    Toast.makeText(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
                 }
             }
 

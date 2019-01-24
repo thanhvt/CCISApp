@@ -21,7 +21,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
@@ -37,6 +36,7 @@ import com.es.utils.CustomCallBack;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -164,18 +164,19 @@ public class MainActivity extends AppCompatActivity
                                             b.setSTT(stt);
                                             c.save();
                                         }
-                                        Toast.makeText(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toast.LENGTH_LONG).show();
+                                        Toasty.success(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toasty.LENGTH_LONG, true).show();
+
                                         switchFragment(buildFragment_CCIS(), "ABC");
                                         ActiveAndroid.setTransactionSuccessful();
                                     } finally {
                                         ActiveAndroid.endTransaction();
                                     }
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Không có dữ liệu chưa thu tiền !", Toast.LENGTH_LONG).show();
+                                    Toasty.warning(getApplicationContext(), "Không có dữ liệu chưa thu tiền !", Toasty.LENGTH_LONG, true).show();
                                 }
                             } else {
                                 Log.e(TAG, response.message());
-                                Toast.makeText(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+                                Toasty.error(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
                             }
                             this.mProgressDialog.dismiss();
                         }
@@ -185,9 +186,9 @@ public class MainActivity extends AppCompatActivity
                             // Log error here since request failed
                             Log.e(TAG, t.getMessage());
                             if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
-                                Toast.makeText(getApplicationContext(), "Không có dữ liệu chưa thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
+                                Toasty.error(getApplicationContext(), "Không có dữ liệu chưa thu tiền. Đề nghị kiểm tra lại !", Toasty.LENGTH_LONG, true).show();
                             } else {
-                                Toast.makeText(getApplicationContext(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+                                Toasty.error(getApplicationContext(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
                             }
                             this.mProgressDialog.dismiss();
                         }
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity
             });
             builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Toast.makeText(getApplicationContext(), "Hủy thao tác lấy dữ liệu chưa thu tiền từ Server !", Toast.LENGTH_LONG).show();
+                    Toasty.info(getApplicationContext(), "Hủy thao tác lấy dữ liệu chưa thu tiền từ Server !", Toasty.LENGTH_LONG, true).show();
                     dialog.dismiss();
                 }
             });
@@ -217,9 +218,9 @@ public class MainActivity extends AppCompatActivity
                             Log.d(TAG, "movies: " + movies);
                             if (movies == 1) {
                                 List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
-                                Toast.makeText(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toast.LENGTH_LONG).show();
+                                Toasty.success(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
                             } else {
-                                Toast.makeText(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toast.LENGTH_LONG).show();
+                                Toasty.error(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
                             }
                         }
 
@@ -253,13 +254,14 @@ public class MainActivity extends AppCompatActivity
                                     Boolean postCheck = response.body();
                                     Log.e("CHECK PUT", postCheck + "");
                                     if (postCheck) {
-                                        Toast.makeText(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " thành công !", Toast.LENGTH_SHORT).show();
+                                        Toasty.success(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
                                         List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).where("AdjustID = ?", mobile.getAdjustID()).execute();
                                     } else {
-                                        Toast.makeText(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " không thành công !", Toast.LENGTH_SHORT).show();
+                                        Toasty.error(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " không thành công !", Toasty.LENGTH_LONG, true).show();
                                     }
                                 } catch (Exception e) {
-                                    Toast.makeText(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " lỗi !", Toast.LENGTH_SHORT).show();
+                                    Toasty.error(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " lỗi !", Toasty.LENGTH_LONG, true).show();
+
                                     Log.e(TAG, e.getMessage());
                                 } finally {
                                     this.mProgressDialog.dismiss();
@@ -269,7 +271,8 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onFailure(Call<Boolean> call, Throwable t) {
                                 Log.e("USERDEVICE", t.getMessage() + "");
-                                Toast.makeText(getApplicationContext(), "Đẩy thông tin thất bại. Kiểm tra lại kết nối !", Toast.LENGTH_SHORT).show();
+                                Toasty.error(getApplicationContext(), "Đẩy thông tin thất bại. Kiểm tra lại kết nối !", Toasty.LENGTH_LONG, true).show();
+
                             }
 
                         });
@@ -278,7 +281,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
             } else {
-                Toast.makeText(getApplicationContext(), "Không có thông tin cần duyệt đẩy Server !", Toast.LENGTH_SHORT).show();
+                Toasty.warning(getApplicationContext(), "Không có thông tin cần duyệt đẩy Server !", Toasty.LENGTH_LONG, true).show();
             }
         } else if (id == R.id.nav_manage) {
 
@@ -292,10 +295,10 @@ public class MainActivity extends AppCompatActivity
                     List<Bill_TaxInvoiceModel> bill = new Delete().from(Bill_TaxInvoiceModel.class).execute();
                     List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).execute();
                     if (bill == null && info == null) {
-                        Toast.makeText(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thành công !", Toast.LENGTH_LONG).show();
+                        Toasty.success(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thành công !", Toasty.LENGTH_LONG, true).show();
                         switchFragment(buildFragment_CCIS(), "ABC");
                     } else {
-                        Toast.makeText(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thất bại. Thử lại sau !", Toast.LENGTH_LONG).show();
+                        Toasty.error(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thất bại. Thử lại sau !", Toasty.LENGTH_LONG, true).show();
                     }
                 }
             });

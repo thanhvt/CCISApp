@@ -17,12 +17,13 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 import com.es.model.Bill_TaxInvoice;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 public class HomeNavActivity extends AppCompatActivity { // implements NavigationView.OnNavigationItemSelectedListener  implements View.OnTouchListener
     public static final String TAG = "HomeNavActivity msg: ";
@@ -110,8 +111,7 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
 
         Log.e("taxInvoice", lstTaxInvoice.size() + " " + INDEX);
         switchFragment(buildFragment_TaxInvoiceDetail(), "TAX");
-
-        Toast.makeText(getApplicationContext(), "Vuốt màn hình sang trái hoặc phải để thao tác với khách hàng khác !", Toast.LENGTH_LONG).show();
+        Toasty.info(getApplicationContext(), "Vuốt màn hình sang trái hoặc phải để thao tác với khách hàng khác !", Toasty.LENGTH_LONG, true).show();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

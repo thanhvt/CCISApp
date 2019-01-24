@@ -34,6 +34,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -144,7 +145,7 @@ public class CCISFragment extends Fragment {
                         }
                     } else {
                         Log.e(TAG, response.message());
-                        Toast.makeText(getActivity(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+                        Toasty.error(getActivity(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -157,9 +158,9 @@ public class CCISFragment extends Fragment {
             public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
                 // Log error here since request failed
                 if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
-                    Toast.makeText(getActivity(), "Không có dữ liệu. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
+                    Toasty.error(getActivity(), "Không có dữ liệu. Đề nghị kiểm tra lại !", Toasty.LENGTH_LONG, true).show();
                 } else
-                    Toast.makeText(getActivity(), "Xảy ra lỗi quá trình lấy dữ liệu ! ", Toast.LENGTH_LONG).show();
+                    Toasty.error(getActivity(), "Xảy ra lỗi quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
                 Log.e(TAG, t.toString());
                 this.mProgressDialog.dismiss();
             }
@@ -275,7 +276,7 @@ public class CCISFragment extends Fragment {
                                     }
                                     b.setThuOffline(true);
                                     taxInvoiceAdapter.notifyDataSetChanged();
-                                    Toast.makeText(getActivity(), "Thu tiền offline khách hàng " + b.getCustomerName() + " thành công !", Toast.LENGTH_LONG).show();
+                                    Toasty.success(getActivity(), "Thu tiền offline khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
                                 }
                             }
                             // Update Data
@@ -298,9 +299,9 @@ public class CCISFragment extends Fragment {
                                             Log.d(TAG, "movies: " + movies);
                                             if (movies == 1) {
                                                 List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
-                                                Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toast.LENGTH_LONG).show();
+                                                Toasty.success(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
                                             } else {
-                                                Toast.makeText(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toast.LENGTH_LONG).show();
+                                                Toasty.error(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
                                             }
                                         }
 
