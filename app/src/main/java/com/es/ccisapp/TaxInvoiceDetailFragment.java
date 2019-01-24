@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
@@ -149,7 +148,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
             c.save();
             Log.e(TAG + " insert ", "2");
         }
-        Toast.makeText(getActivity(), "Thu tiền offline khách hàng " + taxInvoice.getCustomerName() + " thành công !", Toast.LENGTH_LONG).show();
+        Toasty.success(getActivity(), "Thu tiền offline khách hàng " + txtTenKH.getText() + " thành công !", Toasty.LENGTH_LONG, true).show();
     }
 
     @OnClick(R.id.btnThuTien)
