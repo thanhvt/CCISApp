@@ -89,7 +89,7 @@ public class RootActivity extends AppCompatActivity {
 
         Toasty.Config.getInstance()
                 .tintIcon(true) // optional (apply textColor also to the icon)
-                .setTextSize(16) // optional
+                .setTextSize(18) // optional
                 .allowQueue(true) // optional (prevents several Toastys from queuing)
                 .apply(); // required
     }

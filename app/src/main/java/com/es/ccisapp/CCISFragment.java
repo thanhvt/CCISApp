@@ -248,7 +248,7 @@ public class CCISFragment extends Fragment {
                     }
                 }
                 if (!isChon) {
-                    Toast.makeText(getActivity(), "Yêu cầu chọn ít nhất 1 KH để thực hiện !", Toast.LENGTH_LONG).show();
+                    Toasty.warning(getActivity(), "Yêu cầu chọn ít nhất 1 KH để thực hiện !", Toasty.LENGTH_LONG, true).show();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle(R.string.app_name);
