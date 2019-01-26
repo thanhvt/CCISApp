@@ -188,14 +188,13 @@ public class TaxInvoiceDetailFragment extends Fragment {
         startActivity(intent);
     }
 
-    @OnClick(R.id.btnGuiSMS)
-    public void btnGuiSMS() {
-        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-        sendIntent.putExtra("sms_body", "Thông báo tiền điện ");
-//        sendIntent.putExtra("address", "0376340xxx");
-        sendIntent.setType("vnd.android-dir/mms-sms");
-        startActivity(Intent.createChooser(sendIntent, "SMS:"));
-    }
+//    @OnClick(R.id.btnGuiSMS)
+//    public void btnGuiSMS() {
+//        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+//        sendIntent.putExtra("sms_body", "Thông báo tiền điện ");
+//        sendIntent.setType("vnd.android-dir/mms-sms");
+//        startActivity(Intent.createChooser(sendIntent, "SMS:"));
+//    }
 
     public String formatNumber(long number) {
         if (number < 1000) {

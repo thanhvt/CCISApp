@@ -253,10 +253,10 @@
         android:layout_height="wrap_content"
         android:text="In hóa đơn" />
 
-    <Button
-        android:id="@+id/btnGuiSMS"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Gửi SMS" />
+    <!--<Button-->
+    <!--android:id="@+id/btnGuiSMS"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Gửi SMS" />-->
 
 </LinearLayout>
