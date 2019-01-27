@@ -149,7 +149,8 @@ public class TaxInvoiceDetailFragment extends Fragment {
             Log.e(TAG + " insert ", "2");
         }
         txtTinhTrangThu.setText("Đã thu offline");
-        Toasty.success(getActivity(), "Thu tiền offline khách hàng " + txtTenKH.getText() + " thành công !", Toasty.LENGTH_LONG, true).show();
+        Toasty.success(getActivity(), "Thu tiền offline khách hàng " + txtTenKH.getText() + " thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
+        btnInHD();
     }
 
     @OnClick(R.id.btnThuTien)
@@ -165,7 +166,9 @@ public class TaxInvoiceDetailFragment extends Fragment {
                 Log.d(TAG, "movies: " + movies);
                 if (movies == 1) {
                     List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
-                    Toasty.success(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " thành công !", Toasty.LENGTH_LONG, true).show();
+                    txtTinhTrangThu.setText("Đã thu online");
+                    Toasty.success(getActivity(), "Đã thu tiền và đẩy dữ liệu khách hàng " + txtTenKH.getText() + " lên server thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
+                    btnInHD();
                 } else {
                     Toasty.error(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
                 }

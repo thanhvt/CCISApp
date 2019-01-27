@@ -20,24 +20,24 @@
         android:id="@+id/action_thutien"
         android:title="Thu tiền"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menu_search_option"
-        android:title="Lọc"
-        app:showAsAction="ifRoom">
-        <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/action_all"
-                    android:title="Tất cả" />
-                <item
-                    android:id="@+id/action_dathu"
-                    android:title="Đã thu tiền" />
-                <item
-                    android:id="@+id/action_chuathu"
-                    android:title="Chưa thu tiền" />
-            </group>
-        </menu>
-    </item>
+    <!--<item-->
+    <!--android:id="@+id/menu_search_option"-->
+    <!--android:title="Lọc"-->
+    <!--app:showAsAction="ifRoom">-->
+    <!--<menu>-->
+    <!--<group android:checkableBehavior="single">-->
+    <!--<item-->
+    <!--android:id="@+id/action_all"-->
+    <!--android:title="Tất cả" />-->
+    <!--<item-->
+    <!--android:id="@+id/action_dathu"-->
+    <!--android:title="Đã thu tiền" />-->
+    <!--<item-->
+    <!--android:id="@+id/action_chuathu"-->
+    <!--android:title="Chưa thu tiền" />-->
+    <!--</group>-->
+    <!--</menu>-->
+    <!--</item>-->
     <item
         android:id="@+id/action_daochon"
         android:orderInCategory="1"

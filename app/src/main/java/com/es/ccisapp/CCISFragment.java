@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
@@ -27,7 +26,6 @@ import com.es.model.Bill_TaxInvoiceModel;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 import com.es.utils.CustomCallBack;
-import com.es.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -338,27 +336,27 @@ public class CCISFragment extends Fragment {
             }
             return true;
         }
-        if (id == R.id.action_all) {
-            if (!Utils.isOnline(getContext())) {
-                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_LONG).show();
-            } else {
-                getDataTaxInvoice(-1);
-            }
-        }
-        if (id == R.id.action_dathu) {
-            if (!Utils.isOnline(getContext())) {
-                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_LONG).show();
-            } else {
-                getDataTaxInvoice(1);
-            }
-        }
-        if (id == R.id.action_chuathu) {
-            if (!Utils.isOnline(getContext())) {
-                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_LONG).show();
-            } else {
-                getDataTaxInvoice(0);
-            }
-        }
+//        if (id == R.id.action_all) {
+//            if (!Utils.isOnline(getContext())) {
+//                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_LONG).show();
+//            } else {
+//                getDataTaxInvoice(-1);
+//            }
+//        }
+//        if (id == R.id.action_dathu) {
+//            if (!Utils.isOnline(getContext())) {
+//                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_LONG).show();
+//            } else {
+//                getDataTaxInvoice(1);
+//            }
+//        }
+//        if (id == R.id.action_chuathu) {
+//            if (!Utils.isOnline(getContext())) {
+//                Toast.makeText(getActivity(), "Yêu cầu kết nối mạng để thực hiện !", Toast.LENGTH_LONG).show();
+//            } else {
+//                getDataTaxInvoice(0);
+//            }
+//        }
 
         return super.onOptionsItemSelected(item);
     }

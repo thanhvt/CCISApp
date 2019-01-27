@@ -5,6 +5,37 @@
     android:layout_height="match_parent"
     tools:context=".CCISActivity">
 
+    <LinearLayout
+        android:id="@+id/txtTong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:gravity="center|top">
+
+        <TextView
+            android:id="@+id/txtSoKH"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="left|top"
+            android:layout_weight="2"
+            android:visibility="visible"
+            android:textStyle="bold"
+            android:textColor="#1500FF"
+            android:text="Đã thu: 18/200 KH" />
+
+        <TextView
+            android:id="@+id/txtTongTien"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="right|top"
+            android:visibility="visible"
+            android:layout_weight="2"
+            android:textStyle="bold"
+            android:textColor="#1500FF"
+            android:layout_toRightOf="@id/txtSoKH"
+            android:text="Tiền thu: 999.999.999 VNĐ" />
+    </LinearLayout>
     <TextView
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
@@ -12,8 +43,10 @@
         android:gravity="center"
         android:visibility="gone"
         android:text="@string/no_data_available" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/movies_recycler_view"
+        android:layout_below="@id/txtTong"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
