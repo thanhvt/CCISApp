@@ -17,17 +17,17 @@
 
             <TextView
                 android:id="@+id/textView1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="Mã KH"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtMaKH"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#1500FF"
@@ -41,17 +41,17 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="Tên KH"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/edTenKH"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#1500FF"
@@ -65,17 +65,17 @@
 
             <TextView
                 android:id="@+id/textView5"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="Địa chỉ"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtDiaChi"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#1500FF"
@@ -89,17 +89,17 @@
 
             <TextView
                 android:id="@+id/textView7"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="Tiền trước thuế"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtSubTotal"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#1500FF"
@@ -113,17 +113,17 @@
 
             <TextView
                 android:id="@+id/textView9"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="VAT"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtVAT"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#1500FF"
@@ -137,17 +137,17 @@
 
             <TextView
                 android:id="@+id/textView15"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="Số nhân khẩu"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtSoNhanKhau"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#1500FF"
@@ -161,17 +161,17 @@
 
             <TextView
                 android:id="@+id/textView14"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="Kỳ"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtKy"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#1500FF"
@@ -184,17 +184,17 @@
 
             <TextView
                 android:id="@+id/textView11"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="Tổng tiền"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtTotal"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#1500FF"
@@ -208,17 +208,17 @@
 
             <TextView
                 android:id="@+id/textView13"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="Tình trạng thu"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtTinhTrangThu"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:text=""
                 android:textColor="#1500FF"
                 android:textSize="16sp"
@@ -235,14 +235,14 @@
             android:id="@+id/btnThuOff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:text="THU TIỀN OFFLINE" />
 
         <Button
             android:id="@+id/btnThuTien"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:text="THU TIỀN ONLINE" />
 
     </LinearLayout>

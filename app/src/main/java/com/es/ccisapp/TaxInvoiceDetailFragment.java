@@ -148,6 +148,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
             c.save();
             Log.e(TAG + " insert ", "2");
         }
+        txtTinhTrangThu.setText("Đã thu offline");
         Toasty.success(getActivity(), "Thu tiền offline khách hàng " + txtTenKH.getText() + " thành công !", Toasty.LENGTH_LONG, true).show();
     }
 

@@ -296,29 +296,39 @@ public class MainActivity extends AppCompatActivity
                 Toasty.warning(getApplicationContext(), "Không có thông tin cần duyệt đẩy Server !", Toasty.LENGTH_LONG, true).show();
             }
         } else if (id == R.id.nav_manage) {
-
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(R.string.app_name);
-            builder.setMessage("Anh/Chị muốn xóa dữ liệu CCIS trên máy điện thoại này ?");
             builder.setIcon(R.drawable.logo);
-            builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                    List<Bill_TaxInvoiceModel> bill = new Delete().from(Bill_TaxInvoiceModel.class).execute();
-                    List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).execute();
-                    if (bill == null && info == null) {
-                        Toasty.success(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thành công !", Toasty.LENGTH_LONG, true).show();
-                        switchFragment(buildFragment_CCIS(), "ABC");
-                    } else {
-                        Toasty.error(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thất bại. Thử lại sau !", Toasty.LENGTH_LONG, true).show();
+            List<Bill_TaxInvoiceModel> info = new Select().all().from(Bill_TaxInvoiceModel.class).where("IsThuOffline = ?", true).execute();
+            if (info.size() > 0) {
+                builder.setMessage("Đã thu tiền " + info.size() + " khách hàng. Đề nghị đẩy dữ liệu lên Server trước khi lấy dữ liệu mới để đảm bảo an toàn thông tin !");
+                builder.setPositiveButton("Quay lại", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
                     }
-                }
-            });
-            builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
+                });
+            } else {
+                builder.setMessage("Anh/Chị muốn xóa dữ liệu CCIS trên máy điện thoại này ?");
+                builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        List<Bill_TaxInvoiceModel> bill = new Delete().from(Bill_TaxInvoiceModel.class).execute();
+                        List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).execute();
+                        if (bill == null && info == null) {
+                            Toasty.success(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thành công !", Toasty.LENGTH_LONG, true).show();
+                            switchFragment(buildFragment_CCIS(), "ABC");
+                        } else {
+                            Toasty.error(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thất bại. Thử lại sau !", Toasty.LENGTH_LONG, true).show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+
             AlertDialog alert = builder.create();
             alert.show();
         } else if (id == R.id.nav_share) {
