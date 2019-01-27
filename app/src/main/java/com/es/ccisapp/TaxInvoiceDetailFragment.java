@@ -1,5 +1,7 @@
 package com.es.ccisapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -97,36 +99,47 @@ public class TaxInvoiceDetailFragment extends Fragment {
             content = getArguments().getString(EXTRA_DATA);
             taxInvoice =
                     (Bill_TaxInvoice) getArguments().getSerializable("TAX");
+            Log.e(TAG, "taxInvoice: " + taxInvoice.toString());
+
+
             try {
                 List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID = ?", taxInvoice.getCustomerId()).execute();
                 if (lstDB != null && lstDB.size() > 0) {
                     Mobile_Adjust_DB m = lstDB.get(lstDB.size() - 1);
                     taxInvoice.setCustomerName(m.getCustomerName());
                     taxInvoice.setAddress_Pay(m.getCustomerAdd());
-                    taxInvoice.setAmount(Double.parseDouble(lstDB.get(0).getAmout()));
-                    taxInvoice.setSubTotal(lstDB.get(0).getPrice());
+                    taxInvoice.setAmount(Double.parseDouble(m.getAmout()));
+                    taxInvoice.setSubTotal(m.getPrice());
 //                    if (!m.getPrice().equals("")){
 //                        bill_taxInvoice.setSubTotal(m.getPrice());
 //                        Double d = Double.parseDouble(m.getPrice());
 //                        Double total = d * 1.01;
 //                    }
+                    String vat = taxInvoice.getTaxRatio();
 
+                    Double dSub = Double.parseDouble(lstDB.get(0).getPrice());
+                    Double dVat = dSub * Double.parseDouble(vat) / 100;
+                    Double dTotal = dSub + dVat;
+
+                    txtVAT.setText(formatNumber(Math.round(dVat)) + " VNĐ");
+                    txtSubTotal.setText(formatNumber(Math.round(dSub)) + " VNĐ (đã điều chỉnh)");
+                    txtTotal.setText(formatNumber(Math.round(dTotal)) + " VNĐ");
+                } else {
+                    txtVAT.setText(formatNumber(Long.parseLong(taxInvoice.getVAT().substring(0, taxInvoice.getVAT().indexOf(".")))) + " VNĐ");
+                    txtTotal.setText(formatNumber(Long.parseLong(taxInvoice.getTotal().substring(0, taxInvoice.getTotal().indexOf(".")))) + " VNĐ");
+                    txtSubTotal.setText(formatNumber(Long.parseLong(taxInvoice.getSubTotal().substring(0, taxInvoice.getSubTotal().indexOf(".")))) + " VNĐ");
                 }
             } catch (Exception e) {
 
             }
-
-            Log.e(TAG, "taxInvoice: " + taxInvoice.toString());
             txtMaKH.setText(taxInvoice.getCustomerCode());
             txtTenKH.setText(taxInvoice.getCustomerName());
-            NumberFormat format = NumberFormat.getCurrencyInstance();
-            txtVAT.setText(formatNumber(Long.parseLong(taxInvoice.getVAT().substring(0, taxInvoice.getVAT().indexOf(".")))) + " (VNĐ)");
-            txtTotal.setText(formatNumber(Long.parseLong(taxInvoice.getTotal().substring(0, taxInvoice.getTotal().indexOf(".")))) + " (VNĐ)");
-            txtSubTotal.setText(formatNumber(Long.parseLong(taxInvoice.getSubTotal().substring(0, taxInvoice.getSubTotal().indexOf(".")))) + " (VNĐ)");
             txtDiaChi.setText(taxInvoice.getTaxInvoiceAddress());
             txtTinhTrangThu.setText(taxInvoice.isThuOffline() ? "Đã thu offline" : "Chưa thu");
             txtKy.setText(taxInvoice.getMonth() + "/" + taxInvoice.getYear());
             txtSoNhanKhau.setText(taxInvoice.getAmount() + "");
+
+
         }
 
         return rootView;
@@ -134,53 +147,91 @@ public class TaxInvoiceDetailFragment extends Fragment {
 
     @OnClick(R.id.btnThuOff)
     public void btnThuOff() {
-        Bill_TaxInvoiceModel details = new Select().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).executeSingle();
-        if (details != null) {
-            details.setThuOffline(true);
-            details.save();
-            Log.e(TAG + " update ", "1");
-        } else {
-            Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(taxInvoice.getTaxCode(), taxInvoice.getCustomerCode(),
-                    taxInvoice.getBankName(), taxInvoice.getMonth(), taxInvoice.getSerialNumber(), taxInvoice.getYear(), taxInvoice.getCustomerId(), taxInvoice.getDepartmentId(),
-                    taxInvoice.getTaxInvoiceAddress(), taxInvoice.getTaxInvoiceId(), taxInvoice.getIdDevice(), taxInvoice.getContractId(), taxInvoice.getFigureBookId(), taxInvoice.getSerialCode(),
-                    taxInvoice.getCustomerName(), taxInvoice.getCustomerCode_Pay(), taxInvoice.getSubTotal(), taxInvoice.getAddress_Pay(), taxInvoice.getBankAccount(), taxInvoice.getVAT(),
-                    taxInvoice.getTaxRatio(), taxInvoice.getCustomerId_Pay(), taxInvoice.getBillType(), taxInvoice.getCustomerName_Pay(), taxInvoice.getTotal(), taxInvoice.isChecked(), true, taxInvoice.getAmount(), taxInvoice.getServiceTypeId(), taxInvoice.getServiceName());
-            c.save();
-            Log.e(TAG + " insert ", "2");
-        }
-        txtTinhTrangThu.setText("Đã thu offline");
-        Toasty.success(getActivity(), "Thu tiền offline khách hàng " + txtTenKH.getText() + " thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
-        btnInHD();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(R.drawable.logo);
+
+        builder.setMessage("Anh/Chị xác nhận thu tiền khách hàng " + taxInvoice.getCustomerName() + ". Kiểm tra lại kỹ thông tin trước khi xác nhận.");
+        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                Bill_TaxInvoiceModel details = new Select().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).executeSingle();
+                if (details != null) {
+                    details.setThuOffline(true);
+                    details.save();
+                    Log.e(TAG + " update ", "1");
+                } else {
+                    Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(taxInvoice.getTaxCode(), taxInvoice.getCustomerCode(),
+                            taxInvoice.getBankName(), taxInvoice.getMonth(), taxInvoice.getSerialNumber(), taxInvoice.getYear(), taxInvoice.getCustomerId(), taxInvoice.getDepartmentId(),
+                            taxInvoice.getTaxInvoiceAddress(), taxInvoice.getTaxInvoiceId(), taxInvoice.getIdDevice(), taxInvoice.getContractId(), taxInvoice.getFigureBookId(), taxInvoice.getSerialCode(),
+                            taxInvoice.getCustomerName(), taxInvoice.getCustomerCode_Pay(), taxInvoice.getSubTotal(), taxInvoice.getAddress_Pay(), taxInvoice.getBankAccount(), taxInvoice.getVAT(),
+                            taxInvoice.getTaxRatio(), taxInvoice.getCustomerId_Pay(), taxInvoice.getBillType(), taxInvoice.getCustomerName_Pay(), taxInvoice.getTotal(), taxInvoice.isChecked(), true, taxInvoice.getAmount(), taxInvoice.getServiceTypeId(), taxInvoice.getServiceName());
+                    c.save();
+                    Log.e(TAG + " insert ", "2");
+                }
+                txtTinhTrangThu.setText("Đã thu offline");
+                Toasty.success(getActivity(), "Thu tiền offline khách hàng " + txtTenKH.getText() + " thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
+                btnInHD();
+            }
+        });
+        builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 
     @OnClick(R.id.btnThuTien)
     public void btnThuTien() {
-        CCISDataService apiService =
-                RetrofitInstance.getRetrofitInstance(getActivity().getApplicationContext()).create(CCISDataService.class);
-        Call<Integer> call = apiService.ThuTien((taxInvoice.getTaxInvoiceId()));
-        call.enqueue(new CustomCallBack<Integer>(getActivity()) {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                this.mProgressDialog.dismiss();
-                Integer movies = response.body();
-                Log.d(TAG, "movies: " + movies);
-                if (movies == 1) {
-                    List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
-                    txtTinhTrangThu.setText("Đã thu online");
-                    Toasty.success(getActivity(), "Đã thu tiền và đẩy dữ liệu khách hàng " + txtTenKH.getText() + " lên server thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
-                    btnInHD();
-                } else {
-                    Toasty.error(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-                this.mProgressDialog.dismiss();
-                // Log error here since request failed
-                Log.e(TAG, t.toString());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(R.drawable.logo);
+
+        builder.setMessage("Anh/Chị xác nhận thu tiền khách hàng " + taxInvoice.getCustomerName() + ". Kiểm tra lại kỹ thông tin trước khi đồng ý.");
+        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                CCISDataService apiService =
+                        RetrofitInstance.getRetrofitInstance(getActivity().getApplicationContext()).create(CCISDataService.class);
+                Call<Integer> call = apiService.ThuTien((taxInvoice.getTaxInvoiceId()));
+                call.enqueue(new CustomCallBack<Integer>(getActivity()) {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        this.mProgressDialog.dismiss();
+                        Integer movies = response.body();
+                        Log.d(TAG, "movies: " + movies);
+                        if (movies == 1) {
+                            List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+                            txtTinhTrangThu.setText("Đã thu online");
+                            Toasty.success(getActivity(), "Đã thu tiền và đẩy dữ liệu khách hàng " + txtTenKH.getText() + " lên server thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
+                            btnInHD();
+                        } else {
+                            Toasty.error(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
+                        this.mProgressDialog.dismiss();
+                        // Log error here since request failed
+                        Log.e(TAG, t.toString());
+                    }
+                });
             }
         });
+        builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+
     }
 
     @OnClick(R.id.btnInHD)

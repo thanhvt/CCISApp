@@ -30,8 +30,8 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
     Bill_TaxInvoice taxInvoice;
     GestureDetector gestureDetector;
     private float x1, x2;
-    static final int MIN_DISTANCE = 150;
-    private static final int SWIPE_MIN_DISTANCE = 120;
+
+    private static final int SWIPE_MIN_DISTANCE = 180;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
     List<Bill_TaxInvoice> lstTaxInvoice = new ArrayList<>();
