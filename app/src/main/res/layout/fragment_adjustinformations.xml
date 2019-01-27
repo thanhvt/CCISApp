@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Số lượng mới"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
 
             <TextView
                 android:id="@+id/textView46"

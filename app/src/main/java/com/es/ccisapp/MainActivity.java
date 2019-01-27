@@ -134,106 +134,118 @@ public class MainActivity extends AppCompatActivity
             SharedPreferences pref = getSharedPreferences("LOGIN", 0);
             final int strUserID = pref.getInt("USERID", -1);
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            // , AlertDialog.THEME_HOLO_DARK
             builder.setTitle(R.string.app_name);
-            builder.setMessage("Chương trình sẽ xóa dữ liệu chưa thu tiền cũ đang có trên máy điện thoại này để lấy dữ liệu mới. Anh/Chị muốn thực hiện ?");
             builder.setIcon(R.drawable.logo);
-            builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                    Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(0, strUserID);
-                    Log.wtf("URL Called", call.request().url() + "");
-                    call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(mContext, "Đang lấy số liệu chưa thu tiền từ Server") {
-                        @Override
-                        public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
+            List<Bill_TaxInvoiceModel> info = new Select().all().from(Bill_TaxInvoiceModel.class).where("IsThuOffline = ?", true).execute();
+            if (info.size() > 0) {
+                builder.setMessage("Đã thu tiền " + info.size() + " khách hàng. Đề nghị đẩy dữ liệu lên Server trước khi lấy dữ liệu mới để đảm bảo an toàn thông tin !");
+                builder.setPositiveButton("Quay lại", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+            } else {
+                builder.setMessage("Chương trình sẽ xóa dữ liệu chưa thu tiền cũ đang có trên máy điện thoại này để lấy dữ liệu mới. Anh/Chị muốn thực hiện ?");
+                builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(0, strUserID);
+                        Log.wtf("URL Called", call.request().url() + "");
+                        call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(mContext, "Đang lấy số liệu chưa thu tiền từ Server") {
+                            @Override
+                            public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
 
-                            if (response != null && response.body() != null) {
-                                List<Bill_TaxInvoice> movies = response.body();
-                                if (movies.size() > 0) {
-                                    List<Bill_TaxInvoiceModel> tmp = new Delete().from(Bill_TaxInvoiceModel.class).execute();
-                                    ActiveAndroid.beginTransaction();
-                                    try {
-                                        int stt = 0;
-                                        for (Bill_TaxInvoice b : movies) {
-                                            Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
-                                                    b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
-                                                    b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
-                                                    b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                                                    b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), false, b.getAmount(), b.getServiceTypeId(), b.getServiceName());
-                                            stt++;
-                                            b.setSTT(stt);
-                                            c.save();
+                                if (response != null && response.body() != null) {
+                                    List<Bill_TaxInvoice> movies = response.body();
+                                    if (movies.size() > 0) {
+                                        List<Bill_TaxInvoiceModel> tmp = new Delete().from(Bill_TaxInvoiceModel.class).execute();
+                                        ActiveAndroid.beginTransaction();
+                                        try {
+                                            int stt = 0;
+                                            for (Bill_TaxInvoice b : movies) {
+                                                Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
+                                                        b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
+                                                        b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
+                                                        b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
+                                                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), false, b.getAmount(), b.getServiceTypeId(), b.getServiceName());
+                                                stt++;
+                                                b.setSTT(stt);
+                                                c.save();
+                                            }
+                                            Toasty.success(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toasty.LENGTH_LONG, true).show();
+
+                                            switchFragment(buildFragment_CCIS(), "ABC");
+                                            ActiveAndroid.setTransactionSuccessful();
+                                        } finally {
+                                            ActiveAndroid.endTransaction();
                                         }
-                                        Toasty.success(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toasty.LENGTH_LONG, true).show();
-
-                                        switchFragment(buildFragment_CCIS(), "ABC");
-                                        ActiveAndroid.setTransactionSuccessful();
-                                    } finally {
-                                        ActiveAndroid.endTransaction();
+                                    } else {
+                                        Toasty.warning(getApplicationContext(), "Không có dữ liệu chưa thu tiền !", Toasty.LENGTH_LONG, true).show();
                                     }
                                 } else {
-                                    Toasty.warning(getApplicationContext(), "Không có dữ liệu chưa thu tiền !", Toasty.LENGTH_LONG, true).show();
+                                    Log.e(TAG, response.message());
+                                    Toasty.error(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
                                 }
-                            } else {
-                                Log.e(TAG, response.message());
-                                Toasty.error(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
+                                this.mProgressDialog.dismiss();
                             }
-                            this.mProgressDialog.dismiss();
-                        }
 
-                        @Override
-                        public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
-                            // Log error here since request failed
-                            Log.e(TAG, t.getMessage());
-                            if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
-                                Toasty.error(getApplicationContext(), "Không có dữ liệu chưa thu tiền. Đề nghị kiểm tra lại !", Toasty.LENGTH_LONG, true).show();
-                            } else {
-                                Toasty.error(getApplicationContext(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
+                            @Override
+                            public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
+                                // Log error here since request failed
+                                Log.e(TAG, t.getMessage());
+                                if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+                                    Toasty.error(getApplicationContext(), "Không có dữ liệu chưa thu tiền. Đề nghị kiểm tra lại !", Toasty.LENGTH_LONG, true).show();
+                                } else {
+                                    Toasty.error(getApplicationContext(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
+                                }
+                                this.mProgressDialog.dismiss();
                             }
-                            this.mProgressDialog.dismiss();
-                        }
-                    });
-                }
-            });
-            builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    Toasty.info(getApplicationContext(), "Hủy thao tác lấy dữ liệu chưa thu tiền từ Server !", Toasty.LENGTH_LONG, true).show();
-                    dialog.dismiss();
-                }
-            });
+                        });
+                    }
+                });
+                builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toasty.info(getApplicationContext(), "Hủy thao tác lấy dữ liệu chưa thu tiền từ Server !", Toasty.LENGTH_LONG, true).show();
+                        dialog.dismiss();
+                    }
+                });
+            }
             AlertDialog alert = builder.create();
             alert.show();
 
         } else if (id == R.id.nav_up) {
             List<Bill_TaxInvoiceModel> tmp = new Select().all().from(Bill_TaxInvoiceModel.class).execute();
-            for (final Bill_TaxInvoiceModel b : tmp) {
-                if (b.isThuOffline()) {
-                    Log.e(TAG, b.toString());
-                    Call<Integer> call = apiService.ThuTien((b.getTaxInvoiceId()));
-                    call.enqueue(new CustomCallBack<Integer>(mContext) {
-                        @Override
-                        public void onResponse(Call<Integer> call, Response<Integer> response) {
-                            this.mProgressDialog.dismiss();
-                            Integer movies = response.body();
-                            Log.d(TAG, "movies: " + movies);
-                            if (movies == 1) {
-                                List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
-                                Toasty.success(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
-                            } else {
-                                Toasty.error(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
+            if (tmp.size() == 0) {
+                Toasty.error(getApplicationContext(), "Chưa có thu tiền của KH. Chưa thể đẩy !!", Toasty.LENGTH_LONG, true).show();
+            } else {
+                for (final Bill_TaxInvoiceModel b : tmp) {
+                    if (b.isThuOffline()) {
+                        Log.e(TAG, b.toString());
+                        Call<Integer> call = apiService.ThuTien((b.getTaxInvoiceId()));
+                        call.enqueue(new CustomCallBack<Integer>(mContext) {
+                            @Override
+                            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                this.mProgressDialog.dismiss();
+                                Integer movies = response.body();
+                                Log.d(TAG, "movies: " + movies);
+                                if (movies == 1) {
+                                    List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
+                                    Toasty.success(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
+                                } else {
+                                    Toasty.error(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<Integer> call, Throwable t) {
-                            this.mProgressDialog.dismiss();
-                            // Log error here since request failed
-                            Log.e(TAG, t.toString());
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<Integer> call, Throwable t) {
+                                this.mProgressDialog.dismiss();
+                                // Log error here since request failed
+                                Log.e(TAG, t.toString());
+                            }
+                        });
+                    }
                 }
             }
-
         } else if (id == R.id.nav_duyet) {
             List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).execute();
 
