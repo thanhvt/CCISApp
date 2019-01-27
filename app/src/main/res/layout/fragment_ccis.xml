@@ -25,7 +25,7 @@
             android:text="Đã thu: 18/200 KH" />
 
         <TextView
-            android:id="@+id/txtTongTien"
+            android:id="@+id/txtTienThu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="right|top"

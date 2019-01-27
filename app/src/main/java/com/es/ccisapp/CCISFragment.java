@@ -27,6 +27,8 @@ import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 import com.es.utils.CustomCallBack;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +49,10 @@ public class CCISFragment extends Fragment {
     List<Bill_TaxInvoice> lstTaxInvoiceData;
     @BindView(R.id.empty_view)
     TextView txtEmpty;
+    @BindView(R.id.txtSoKH)
+    TextView txtSoKH;
+    @BindView(R.id.txtTienThu)
+    TextView txtTienThu;
 
 
     private void retrieveExtras() {
@@ -76,6 +82,9 @@ public class CCISFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_ccis, container, false);
         ButterKnife.bind(this, rootView);
         lstTaxInvoiceData = new ArrayList<>();
+        txtSoKH.setText("Đã thu: ");
+        txtTienThu.setText("Tiền thu: ");
+
         recyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -101,6 +110,17 @@ public class CCISFragment extends Fragment {
             taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
             recyclerView.setAdapter(taxInvoiceAdapter);
             taxInvoiceAdapter.notifyDataSetChanged();
+
+            int daThu = 0;
+            long tienThu = 0L;
+            for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
+                if (bill.isThuOffline()) {
+                    daThu++;
+                    tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                }
+            }
+            txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
+            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
         }
 
         apiService =
@@ -114,6 +134,20 @@ public class CCISFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    public String formatNumber(long number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+        try {
+            NumberFormat formatter = new DecimalFormat("###,###");
+            String resp = formatter.format(number);
+            resp = resp.replaceAll(",", ".");
+            return resp;
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     public void getDataTaxInvoice(int trangThai) {
@@ -140,6 +174,16 @@ public class CCISFragment extends Fragment {
                             taxInvoiceAdapter.notifyDataSetChanged();
                             recyclerView.setVisibility(View.VISIBLE);
                             txtEmpty.setVisibility(View.GONE);
+                            int daThu = 0;
+                            long tienThu = 0L;
+                            for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
+                                if (bill.isThuOffline()) {
+                                    daThu++;
+                                    tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                                }
+                            }
+                            txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
+                            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
                         }
                     } else {
                         Log.e(TAG, response.message());
@@ -189,6 +233,16 @@ public class CCISFragment extends Fragment {
             taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
             recyclerView.setAdapter(taxInvoiceAdapter);
             taxInvoiceAdapter.notifyDataSetChanged();
+            int daThu = 0;
+            long tienThu = 0L;
+            for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
+                if (bill.isThuOffline()) {
+                    daThu++;
+                    tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                }
+            }
+            txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
+            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
         }
     }
 
@@ -277,6 +331,18 @@ public class CCISFragment extends Fragment {
                                     Toasty.success(getActivity(), "Thu tiền offline khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
                                 }
                             }
+
+                            int daThu = 0;
+                            long tienThu = 0L;
+                            for (Bill_TaxInvoice bill : stList) {
+                                if (bill.isThuOffline()) {
+                                    daThu++;
+                                    tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                                }
+                            }
+                            txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
+                            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+
                             // Update Data
                         }
                     });
