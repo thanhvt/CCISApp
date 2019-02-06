@@ -61,6 +61,18 @@ public class CauHinhActivity extends AppCompatActivity {
             String TEN_CHINHANH = sharedPrefs.getString("TEN_CHINHANH", "");
             EditTextPreference etpTEN_CHINHANH = (EditTextPreference) findPreference("TEN_CHINHANH");
             etpTEN_CHINHANH.setSummary(TEN_CHINHANH);
+
+            String TEN_NVTHU = sharedPrefs.getString("TEN_NVTHU", "");
+            EditTextPreference etpTEN_NVTHU = (EditTextPreference) findPreference("TEN_NVTHU");
+            etpTEN_NVTHU.setSummary(TEN_NVTHU);
+
+            String SDT = sharedPrefs.getString("SDT", "");
+            EditTextPreference etpSDT = (EditTextPreference) findPreference("SDT");
+            etpSDT.setSummary(SDT);
+
+            String SDT_CSKH = sharedPrefs.getString("SDT_CSKH", "");
+            EditTextPreference etpSDT_CSKH = (EditTextPreference) findPreference("SDT_CSKH");
+            etpSDT_CSKH.setSummary(SDT_CSKH);
         }
 
         @Override
@@ -91,6 +103,18 @@ public class CauHinhActivity extends AppCompatActivity {
             if (key.equals("TEN_CHINHANH")) {
                 EditTextPreference etp = (EditTextPreference) findPreference("TEN_CHINHANH");
                 etp.setSummary(sharedPreferences.getString("TEN_CHINHANH", "Chưa xác định"));
+            }
+            if (key.equals("TEN_NVTHU")) {
+                EditTextPreference etp = (EditTextPreference) findPreference("TEN_CHINHANH");
+                etp.setSummary(sharedPreferences.getString("TEN_CHINHANH", "Chưa xác định"));
+            }
+            if (key.equals("SDT")) {
+                EditTextPreference etp = (EditTextPreference) findPreference("SDT");
+                etp.setSummary(sharedPreferences.getString("SDT", "Chưa xác định"));
+            }
+            if (key.equals("SDT_CSKH")) {
+                EditTextPreference etp = (EditTextPreference) findPreference("SDT_CSKH");
+                etp.setSummary(sharedPreferences.getString("SDT_CSKH", "Chưa xác định"));
             }
         }
 

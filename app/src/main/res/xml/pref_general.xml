@@ -46,13 +46,13 @@
             android:maxLines="1"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Nhân viên thu" />
+            android:title="Họ và tên viên thu" />
 
         <android.support.v7.preference.EditTextPreference
             android:summary="Số điện thoại"
             android:dialogMessage="Xin mời cung cấp số điện thoại để hiển thị trên phiếu in biên nhận"
             android:capitalize="words"
-            android:inputType="textCapWords"
+            android:inputType="number"
             android:key="SDT"
             android:maxLines="1"
             android:selectAllOnFocus="true"
@@ -63,7 +63,7 @@
             android:summary="Số điện thoại CSKH"
             android:dialogMessage="Xin mời cung cấp số điện thoại CSKH để hiển thị trên phiếu in biên nhận"
             android:capitalize="words"
-            android:inputType="textCapWords"
+            android:inputType="number"
             android:key="SDT_CSKH"
             android:maxLines="1"
             android:selectAllOnFocus="true"
