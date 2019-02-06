@@ -1,6 +1,8 @@
 package com.es.ccisapp;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -16,15 +18,18 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.es.model.UserProfile;
@@ -48,6 +53,7 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
     //    private static TextView signUp;
     private static CheckBox show_hide_password;
     private static LinearLayout loginLayout;
+    private static RelativeLayout reLayout;
     private static Animation shakeAnimation;
     private static FragmentManager fragmentManager;
 
@@ -122,7 +128,9 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
         show_hide_password = (CheckBox) view
                 .findViewById(R.id.show_hide_password);
         loginLayout = (LinearLayout) view.findViewById(R.id.login_layout);
+        reLayout = (RelativeLayout) view.findViewById(R.id.root_layout);
 
+        setupUI(reLayout);
         // Load ShakeAnimation
         shakeAnimation = AnimationUtils.loadAnimation(getActivity(),
                 R.anim.shake);
@@ -138,6 +146,10 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
 //            signUp.setTextColor(csl);
         } catch (Exception e) {
         }
+
+        View.OnFocusChangeListener ofcListener = new MyFocusChangeListener();
+        emailid.setOnFocusChangeListener(ofcListener);
+        password.setOnFocusChangeListener(ofcListener);
 
         SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
         String getEmailId = pref.getString("USERNAME", "");
@@ -185,6 +197,48 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
 
                     }
                 });
+    }
+
+    private class MyFocusChangeListener implements View.OnFocusChangeListener {
+
+        public void onFocusChange(View v, boolean hasFocus) {
+
+            if (!hasFocus) {
+
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+            }
+        }
+    }
+
+    public void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getActivity().getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                getActivity().getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public void setupUI(View view) {
+
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard();
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
     }
 
     @Override

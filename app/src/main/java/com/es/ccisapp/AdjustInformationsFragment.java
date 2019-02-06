@@ -2,6 +2,7 @@ package com.es.ccisapp;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,6 +50,8 @@ public class AdjustInformationsFragment extends Fragment {
     RadioButton rdTT;
     @BindView(R.id.rdDCHD)
     RadioButton rdDCHD;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     // constant
     String TAG = "AdjustInformationsFragment";
@@ -107,6 +110,11 @@ public class AdjustInformationsFragment extends Fragment {
         return rootView;
     }
 
+
+    @OnClick(R.id.fab)
+    public void btnFab() {
+        btnAdjOffline();
+    }
     @OnClick(R.id.btnAdjOffline)
     public void btnAdjOffline() {
         int ran = new Random().nextInt();

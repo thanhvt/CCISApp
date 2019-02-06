@@ -121,16 +121,14 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-//                    Utils.startFragment(getSupportFragmentManager(), TaxInvoiceDetailFragment.newInstance("ONE"));
                     switchFragment(buildFragment_TaxInvoiceDetail(), "TAX");
                     return true;
                 case R.id.navigation_dashboard:
                     switchFragment(buildFragment_AdjustInformations(), "ADJ");
                     return true;
-                case R.id.navigation_notifications:
-//                    Utils.startFragment(getSupportFragmentManager(), TaxInvoiceDetailFragment.newInstance("ONE"));
-                    switchFragment(new NanFragment(), "NAN");
-                    return true;
+//                case R.id.navigation_notifications:
+//                    switchFragment(new NanFragment(), "NAN");
+//                    return true;
             }
             return false;
         }
@@ -238,6 +236,7 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
                     if (INDEX > 0) {
                         INDEX--;
                         taxInvoice = lstTaxInvoice.get(INDEX);
+                        Toasty.info(getApplicationContext(), "Chuyển thao tác với khách hàng " + taxInvoice.getCustomerName(), Toasty.LENGTH_LONG, true).show();
                         switchFragment(buildFragment_TaxInvoiceDetail(), "TAX");
                     }
                     Log.d(TAG, "onSwipe: left2right " + INDEX);
@@ -246,6 +245,7 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
                     if (INDEX < lstTaxInvoice.size() - 1) {
                         INDEX++;
                         taxInvoice = lstTaxInvoice.get(INDEX);
+                        Toasty.info(getApplicationContext(), "Chuyển thao tác với khách hàng " + taxInvoice.getCustomerName(), Toasty.LENGTH_LONG, true).show();
                         switchFragment(buildFragment_TaxInvoiceDetail(), "TAX");
                     }
                     Log.d(TAG, "onSwipe: right2left " + INDEX);

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,6 +12,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:id="@+id/scroll"
         android:layout_height="wrap_content">
 
         <LinearLayout
@@ -93,12 +96,14 @@
                     android:text="1" />
             </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/scroll"
+        android:id="@+id/thaydoi"
         android:orientation="horizontal">
 
         <RadioGroup
@@ -135,6 +140,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/thaydoi"
+        android:id="@+id/commit"
         android:orientation="horizontal">
 
         <Button
@@ -152,5 +159,16 @@
             android:text="Đẩy lên Server" />
     </LinearLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_alignRight="@+id/scroll"
+        android:layout_alignEnd="@+id/scroll"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/save"
+        app:layout_anchorGravity="bottom|right|end" />
 
-</LinearLayout>
+
+</RelativeLayout>

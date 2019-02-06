@@ -58,7 +58,7 @@
     </string>
 
     <string name="pref_title_display_name">Địa chỉ máy chủ Webservice</string>
-    <string name="pref_default_ipservice">103.63.108.5:8084</string>
+    <string name="pref_default_ipservice">14.248.85.241:88</string>
 
     <string name="pref_default_tencty">CÔNG TY TNHH MTV MTĐT HÀ NỘI</string>
 

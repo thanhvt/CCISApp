@@ -117,7 +117,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
 //                    }
                     String vat = taxInvoice.getTaxRatio();
 
-                    Double dSub = Double.parseDouble(lstDB.get(0).getPrice());
+                    Double dSub = Double.parseDouble(lstDB.get(lstDB.size() - 1).getPrice());
                     Double dVat = dSub * Double.parseDouble(vat) / 100;
                     Double dTotal = dSub + dVat;
 
