@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
+import com.es.model.Bill_TaxInvoiceDetail;
 import com.es.model.Bill_TaxInvoiceModel;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.network.CCISDataService;
@@ -24,6 +26,7 @@ import com.es.utils.CustomCallBack;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -64,6 +67,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
     public static final String EXTRA_DATA = "DATA_CONTENT";
     Bill_TaxInvoice taxInvoice;
     private String content;
+    List<Bill_TaxInvoiceDetail> lstDetail = new ArrayList<>();
 
     public static TaxInvoiceDetailFragment newInstance(String data) {
         TaxInvoiceDetailFragment fragment = new TaxInvoiceDetailFragment();
@@ -140,6 +144,30 @@ public class TaxInvoiceDetailFragment extends Fragment {
             txtSoNhanKhau.setText(taxInvoice.getAmount() + "");
 
 
+            CCISDataService apiService =
+                    RetrofitInstance.getRetrofitInstance(getActivity()).create(CCISDataService.class);
+
+            Call<List<Bill_TaxInvoiceDetail>> call = apiService.getBill_TaxInvoiceDetail(taxInvoice.getTaxInvoiceId());
+            call.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(getActivity()) {
+                @Override
+                public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
+                    lstDetail = response.body();
+                    Log.d(TAG, "Number lstDetail received: " + lstDetail.get(0).toString());
+                    this.mProgressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<List<Bill_TaxInvoiceDetail>> call, Throwable t) {
+                    // Log error here since request failed
+                    Log.e(TAG, t.toString());
+                    if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+                        Toast.makeText(getActivity(), "Không có dữ liệu chi tiết thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+                    }
+                    this.mProgressDialog.dismiss();
+                }
+            });
         }
 
         return rootView;

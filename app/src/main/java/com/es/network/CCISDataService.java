@@ -1,6 +1,7 @@
 package com.es.network;
 
 import com.es.model.Bill_TaxInvoice;
+import com.es.model.Bill_TaxInvoiceDetail;
 import com.es.model.Mobile_Adjust_Informations;
 import com.es.model.UserProfile;
 
@@ -16,6 +17,9 @@ public interface CCISDataService {
 
     @GET("getUserProfile/{userid}")
     Call<List<UserProfile>> getUserProfile(@Path("userid") String userid);
+
+    @GET("Bill_TaxInvoiceDetail/{id}")
+    Call<List<Bill_TaxInvoiceDetail>> getBill_TaxInvoiceDetail(@Path("id") long id);
 
     @GET("getBill_TaxInvoice/{status}/{userid}")
     Call<List<Bill_TaxInvoice>> getBill_TaxInvoice(@Path("status") int status, @Path("userid") int userid);

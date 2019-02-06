@@ -4,26 +4,37 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.es.ccisapp.R;
 import com.es.model.Bill_TaxInvoice;
+import com.es.model.Bill_TaxInvoiceDetail;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.SalesModel;
+import com.es.network.CCISDataService;
+import com.es.network.RetrofitInstance;
+import com.es.utils.CustomCallBack;
 import com.es.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 
 /**
  * This class is responsible to generate a static sales receipt and to print that receipt
  */
 public class PrintReceipt {
-//    public static Bill_TaxInvoice bill_taxInvoice;
+    //    public static Bill_TaxInvoice bill_taxInvoice;
 //    public PrintReceipt(Bill_TaxInvoice bill_taxInvoice){
 //        this.bill_taxInvoice = bill_taxInvoice;
 //    }
+    static List<Bill_TaxInvoiceDetail> lstDetail;
+    public static final String TAG = PrintReceipt.class.getName();
 
     public static boolean printTest(Context context) {
         Log.e("PrintReceipt", "Test");
@@ -137,7 +148,34 @@ public class PrintReceipt {
         return true;
     }
 
-    public static boolean printBillFromOrder(Context context, Bill_TaxInvoice bill_taxInvoice) {
+    public static boolean printBillFromOrder(final Context context, Bill_TaxInvoice bill_taxInvoice) {
+
+        lstDetail = new ArrayList<>();
+        CCISDataService apiService =
+                RetrofitInstance.getRetrofitInstance(context).create(CCISDataService.class);
+
+        Call<List<Bill_TaxInvoiceDetail>> call = apiService.getBill_TaxInvoiceDetail(bill_taxInvoice.getTaxInvoiceId());
+        call.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(context) {
+            @Override
+            public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
+                lstDetail = response.body();
+                Log.d(TAG, "Number of lstDetail received: " + lstDetail.get(0).toString());
+                this.mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<List<Bill_TaxInvoiceDetail>> call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+                if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+                    Toast.makeText(context, "Không có dữ liệu chi tiết thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "Gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+                }
+                this.mProgressDialog.dismiss();
+            }
+        });
+
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         String TEN_CTY = sharedPrefs.getString("TEN_CTY", "Chưa cấu hình");
         String TEN_CHINHANH = sharedPrefs.getString("TEN_CHINHANH", "Chưa cấu hình");
@@ -206,12 +244,12 @@ public class PrintReceipt {
         //BT_Write() method will initiate the printer to start printing.
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(
                 "\nID HD: " + bill_taxInvoice.getContractId() +
-                "\nTen KH: " + bill_taxInvoice.getCustomerName() +
-                "\nDia chi: " + bill_taxInvoice.getAddress_Pay() +
-                "\nMa KH: " + bill_taxInvoice.getCustomerCode() +
-                "\nKy: " + bill_taxInvoice.getMonth() + "/" + bill_taxInvoice.getYear() +
-                "\nTu: " +
-                "\nDen: ");
+                        "\nTen KH: " + bill_taxInvoice.getCustomerName() +
+                        "\nDia chi: " + bill_taxInvoice.getAddress_Pay() +
+                        "\nMa KH: " + bill_taxInvoice.getCustomerCode() +
+                        "\nKy: " + bill_taxInvoice.getMonth() + "/" + bill_taxInvoice.getYear() +
+                        "\nTu: " +
+                        "\nDen: ");
 
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
@@ -221,7 +259,13 @@ public class PrintReceipt {
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //50 * 0.125mm
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal font
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Dv|SL|S.thg|Don gia |Thanh tien  ");
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Dv|SL|S.thg|Don gia |Thanh tien ");
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("--|--|-----|--------|-----------");
+        for (Bill_TaxInvoiceDetail de : lstDetail) {
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Ho|" + de.getAmount() + "|" + de.getTerm() + "|" + de.getPrice() + "|" + de.getTotal());
+        }
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Ho|3 |3    |180,180 |1,540,540");
 
