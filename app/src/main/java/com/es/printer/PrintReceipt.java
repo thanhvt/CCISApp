@@ -148,19 +148,29 @@ public class PrintReceipt {
         return true;
     }
 
-    public static boolean printBillFromOrder(final Context context, Bill_TaxInvoice bill_taxInvoice) {
+    public static boolean printBillFromOrder(final Context context, final Bill_TaxInvoice bill_taxInvoice) {
 
         lstDetail = new ArrayList<>();
         CCISDataService apiService =
                 RetrofitInstance.getRetrofitInstance(context).create(CCISDataService.class);
 
         Call<List<Bill_TaxInvoiceDetail>> call = apiService.getBill_TaxInvoiceDetail(bill_taxInvoice.getTaxInvoiceId());
+
+//        try {
+//            lstDetail = call.execute().body();
+//            Log.e(TAG, "lstDetail: " + lstDetail.get(0).toString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Toast.makeText(context, "Không có dữ liệu chi tiết thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
+//        }
+
         call.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(context) {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
                 lstDetail = response.body();
                 Log.d(TAG, "Number of lstDetail received: " + lstDetail.get(0).toString());
                 this.mProgressDialog.dismiss();
+                printResult(context, bill_taxInvoice, lstDetail);
             }
 
             @Override
@@ -176,6 +186,11 @@ public class PrintReceipt {
             }
         });
 
+
+        return true;
+    }
+
+    public static boolean printResult(Context context, Bill_TaxInvoice bill_taxInvoice, List<Bill_TaxInvoiceDetail> lstDetail) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         String TEN_CTY = sharedPrefs.getString("TEN_CTY", "Chưa cấu hình");
         String TEN_CHINHANH = sharedPrefs.getString("TEN_CHINHANH", "Chưa cấu hình");
@@ -196,7 +211,7 @@ public class PrintReceipt {
 //            }
 
         }
-        Log.e("PrintReceipt", bill_taxInvoice.toString());
+        Log.e(TAG, bill_taxInvoice.toString());
         if (BluetoothPrinterActivity.BLUETOOTH_PRINTER.IsNoConnection()) {
             return false;
         }
@@ -259,15 +274,43 @@ public class PrintReceipt {
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //50 * 0.125mm
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal font
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Dv|SL|S.thg|Don gia |Thanh tien ");
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Dv|SL |S.th|Don gia |Thanh tien ");
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("--|--|-----|--------|-----------");
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("--|---|----|--------|-----------");
         for (Bill_TaxInvoiceDetail de : lstDetail) {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Ho|" + de.getAmount() + "|" + de.getTerm() + "|" + de.getPrice() + "|" + de.getTotal());
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Ho|" +
+                    inThat(3, (de.getAmount() + "").length(), de.getAmount() + "") + "|" +
+                    inThat(4, (de.getTerm() + "").length(), de.getTerm() + "") + "|" +
+                    inThat(8, (de.getPrice() + "").length(), de.getPrice() + "") + "|" +
+                    inThat(11, (de.getTotal() + "").length(), de.getTotal() + ""));
         }
+
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Ho|3 |3    |180,180 |1,540,540");
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
+        String strXFix = "Thue GTGT " + bill_taxInvoice.getTaxRatio() + "%";
+        String strVat = bill_taxInvoice.getVAT();
+        int so0 = 32 - strXFix.length() - strVat.length();
+        for (int i = 0; i < so0; i++) {
+            strXFix += " ";
+        }
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(strXFix + strVat);
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+        strXFix = "Tong tien";
+        strVat = bill_taxInvoice.getTotal();
+        so0 = 32 - strXFix.length() - strVat.length();
+        for (int i = 0; i < so0; i++) {
+            strXFix += " ";
+        }
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(strXFix + strVat);
+        Double d = Double.parseDouble(strVat);
+        String tienChu = Utils.numberToString(d);
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
+        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(tienChu);
+//        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Ho|3 |3    |180,180 |1,540,540");
 
         ////////////////////////////// TAM ZEM LAI //////////////////////////////////////////////
 //        BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 2);//RIGHT
@@ -336,4 +379,15 @@ public class PrintReceipt {
         BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         return true;
     }
+
+    public static String inThat(int doDaiChoPhep, int doDaiThucTe, String strX) {
+        if (doDaiThucTe < doDaiChoPhep) {
+            int kc = doDaiChoPhep - doDaiThucTe;
+            for (int i = 0; i < kc; i++) {
+                strX += " ";
+            }
+        }
+        return strX;
+    }
+
 }

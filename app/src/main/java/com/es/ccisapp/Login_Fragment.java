@@ -76,8 +76,14 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_login, container, false);
+        String x = "26400.50";
+        Double d = Double.parseDouble(x);
+        String str = Utils.numberToString(d);
+        Log.e(TAG, str);
         initViews();
         setListeners();
+
+
         return view;
     }
 
