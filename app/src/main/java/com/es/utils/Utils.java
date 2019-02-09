@@ -92,7 +92,7 @@ public class Utils {
         if (sReturn.length() > 1) {
             sReturn = sReturn.substring(0, 1).toUpperCase() + sReturn.substring(1);
         }
-        sReturn = sReturn + "đồng";
+        sReturn = sReturn + "dong";
         return sReturn;
     }
 
@@ -101,15 +101,15 @@ public class Utils {
         // Tao mot bien tra ve
         String sReturn = "";
         // Tao mot bien so
-        String sPo[] = {"", "ngàn" + " ",
-                "triệu" + " ", "tỷ" + " "};
-        String sSo[] = {"không" + " ", "một" + " ",
+        String sPo[] = {"", "ngan" + " ",
+                "trieu" + " ", "ty" + " "};
+        String sSo[] = {"khong" + " ", "mot" + " ",
                 "hai" + " ", "ba" + " ",
-                "bốn" + " ", "năm" + " ",
-                "sáu" + " ", "bảy" + " ",
-                "tám" + " ", "chín" + " "};
-        String sDonvi[] = {"", "mươi" + " ",
-                "trăm" + " "};
+                "bon" + " ", "nam" + " ",
+                "sau" + " ", "bay" + " ",
+                "tam" + " ", "chin" + " "};
+        String sDonvi[] = {"", "muoi" + " ",
+                "tram" + " "};
         // Tim chieu dai cua chuoi
         int iLen = sNumber.length();
         // Tao mot bien nho vi tri doc
@@ -127,14 +127,14 @@ public class Utils {
                         break;// Khong lam gi ca
                     case 1: {
                         if (Integer.parseInt("" + sNumber.charAt(0)) != 0) {
-                            sRead = "lẻ" + " ";
+                            sRead = "le" + " ";
                         }
                         break;
                     }
                     case 2: {
                         if (Integer.parseInt("" + sNumber.charAt(0)) != 0
                                 && Integer.parseInt("" + sNumber.charAt(1)) != 0) {
-                            sRead = "không trăm" + " ";
+                            sRead = "khong tram" + " ";
                         }
                         break;
                     }
@@ -142,21 +142,21 @@ public class Utils {
             } else if (iTemp == 1) {
                 switch (iRe) {
                     case 1:
-                        sRead = "mười" + " ";
+                        sRead = "muoi" + " ";
                         break;
                     default:
-                        sRead = "một" + " " + sDonvi[iRe];
+                        sRead = "mot" + " " + sDonvi[iRe];
                         break;
                 }
             } else if (iTemp == 5) {
                 switch (iRe) {
                     case 0: {
                         if (sNumber.length() <= 1) {
-                            sRead = "năm" + " ";
+                            sRead = "nam" + " ";
                         } else if (Integer.parseInt("" + sNumber.charAt(1)) != 0) {
-                            sRead = "lăm" + " ";
+                            sRead = "lam" + " ";
                         } else
-                            sRead = "năm" + " ";
+                            sRead = "nam" + " ";
                         break;
                     }
                     default:
