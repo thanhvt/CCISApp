@@ -111,16 +111,22 @@ public class CCISFragment extends Fragment {
             recyclerView.setAdapter(taxInvoiceAdapter);
             taxInvoiceAdapter.notifyDataSetChanged();
 
-            int daThu = 0;
-            long tienThu = 0L;
-            for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
-                if (bill.isThuOffline()) {
-                    daThu++;
-                    tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+            try {
+                int daThu = 0;
+                long tienThu = 0L;
+                for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
+                    if (bill.isThuOffline()) {
+                        daThu++;
+                        tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                    }
                 }
+                txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
+                txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+
+            } catch (Exception e) {
+
             }
-            txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
-            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+
         }
 
         apiService =
@@ -233,21 +239,27 @@ public class CCISFragment extends Fragment {
             taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
             recyclerView.setAdapter(taxInvoiceAdapter);
             taxInvoiceAdapter.notifyDataSetChanged();
-            int daThu = 0;
-            long tienThu = 0L;
-            for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
-                if (bill.isThuOffline()) {
-                    daThu++;
-                    tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+            try {
+                int daThu = 0;
+                long tienThu = 0L;
+                for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
+                    if (bill.isThuOffline()) {
+                        daThu++;
+                        tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                    }
                 }
+                txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
+                txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+            } catch (Exception e) {
+
             }
-            txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
-            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+
         }
     }
 
     private SearchView searchView;
     private MenuItem searchMenuItem;
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // TODO Add your menu entries here

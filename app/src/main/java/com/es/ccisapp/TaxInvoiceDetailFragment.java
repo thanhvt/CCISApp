@@ -133,41 +133,43 @@ public class TaxInvoiceDetailFragment extends Fragment {
                     txtTotal.setText(formatNumber(Long.parseLong(taxInvoice.getTotal().substring(0, taxInvoice.getTotal().indexOf(".")))) + " VNĐ");
                     txtSubTotal.setText(formatNumber(Long.parseLong(taxInvoice.getSubTotal().substring(0, taxInvoice.getSubTotal().indexOf(".")))) + " VNĐ");
                 }
+
+                txtMaKH.setText(taxInvoice.getCustomerCode());
+                txtTenKH.setText(taxInvoice.getCustomerName());
+                txtDiaChi.setText(taxInvoice.getTaxInvoiceAddress());
+                txtTinhTrangThu.setText(taxInvoice.isThuOffline() ? "Đã thu offline" : "Chưa thu");
+                txtKy.setText(taxInvoice.getMonth() + "/" + taxInvoice.getYear());
+                txtSoNhanKhau.setText(taxInvoice.getAmount() + "");
+
+
+                CCISDataService apiService =
+                        RetrofitInstance.getRetrofitInstance(getActivity()).create(CCISDataService.class);
+
+                Call<List<Bill_TaxInvoiceDetail>> call = apiService.getBill_TaxInvoiceDetail(taxInvoice.getTaxInvoiceId());
+                call.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(getActivity()) {
+                    @Override
+                    public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
+                        lstDetail = response.body();
+                        Log.d(TAG, "Number lstDetail received: " + lstDetail.get(0).toString());
+                        this.mProgressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Bill_TaxInvoiceDetail>> call, Throwable t) {
+                        // Log error here since request failed
+                        Log.e(TAG, t.toString());
+                        if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+                            Toast.makeText(getActivity(), "Không có dữ liệu chi tiết thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getActivity(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+                        }
+                        this.mProgressDialog.dismiss();
+                    }
+                });
             } catch (Exception e) {
 
             }
-            txtMaKH.setText(taxInvoice.getCustomerCode());
-            txtTenKH.setText(taxInvoice.getCustomerName());
-            txtDiaChi.setText(taxInvoice.getTaxInvoiceAddress());
-            txtTinhTrangThu.setText(taxInvoice.isThuOffline() ? "Đã thu offline" : "Chưa thu");
-            txtKy.setText(taxInvoice.getMonth() + "/" + taxInvoice.getYear());
-            txtSoNhanKhau.setText(taxInvoice.getAmount() + "");
 
-
-            CCISDataService apiService =
-                    RetrofitInstance.getRetrofitInstance(getActivity()).create(CCISDataService.class);
-
-            Call<List<Bill_TaxInvoiceDetail>> call = apiService.getBill_TaxInvoiceDetail(taxInvoice.getTaxInvoiceId());
-            call.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(getActivity()) {
-                @Override
-                public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
-                    lstDetail = response.body();
-                    Log.d(TAG, "Number lstDetail received: " + lstDetail.get(0).toString());
-                    this.mProgressDialog.dismiss();
-                }
-
-                @Override
-                public void onFailure(Call<List<Bill_TaxInvoiceDetail>> call, Throwable t) {
-                    // Log error here since request failed
-                    Log.e(TAG, t.toString());
-                    if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
-                        Toast.makeText(getActivity(), "Không có dữ liệu chi tiết thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getActivity(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
-                    }
-                    this.mProgressDialog.dismiss();
-                }
-            });
         }
 
         return rootView;
