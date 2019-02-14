@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity
     CCISDataService apiService;
     Context mContext = this;
     public static final String TAG = "MainActivity msg";
+    MenuItem nav_itemUp;
+    MenuItem nav_itemDuyet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,17 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Menu menuNav = navigationView.getMenu();
+        nav_itemUp = menuNav.findItem(R.id.nav_up);
+        List<Bill_TaxInvoiceModel> tmp = new Select().all().from(Bill_TaxInvoiceModel.class).execute();
+        if (tmp.size() == 0) {
+            nav_itemUp.setEnabled(false);
+        }
+        nav_itemDuyet = menuNav.findItem(R.id.nav_duyet);
+        List<Mobile_Adjust_DB> adjThayDoi = new Select().all().from(Mobile_Adjust_DB.class).execute();
+        if (adjThayDoi.size() == 0) {
+            nav_itemDuyet.setEnabled(false);
+        }
 
         switchFragment(buildFragment_CCIS(), "ABC");
         apiService =
@@ -173,7 +186,7 @@ public class MainActivity extends AppCompatActivity
                                                 c.save();
                                             }
                                             Toasty.success(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toasty.LENGTH_LONG, true).show();
-
+                                            nav_itemUp.setEnabled(true);
                                             switchFragment(buildFragment_CCIS(), "ABC");
                                             ActiveAndroid.setTransactionSuccessful();
                                         } finally {
@@ -364,5 +377,16 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        List<Mobile_Adjust_DB> adjThayDoi = new Select().all().from(Mobile_Adjust_DB.class).execute();
+        if (adjThayDoi.size() == 0) {
+            nav_itemDuyet.setEnabled(false);
+        } else {
+            nav_itemDuyet.setEnabled(true);
+        }
     }
 }
