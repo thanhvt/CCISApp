@@ -10,8 +10,10 @@ import android.support.v4.app.FragmentTransaction;
 import com.es.ccisapp.R;
 
 import java.text.DecimalFormat;
+import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class Utils {
     public static void startFragment(FragmentManager manager, Fragment fragment) {
@@ -25,6 +27,15 @@ public class Utils {
     public static final String Login_Fragment = "Login_Fragment";
     public static final String SignUp_Fragment = "SignUp_Fragment";
     public static final String ForgotPassword_Fragment = "ForgotPassword_Fragment";
+
+    public static String removeAccent(String s) {
+
+        String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        String strX = pattern.matcher(temp).replaceAll("");
+        strX = strX.replaceAll("Đ", "D").replace("đ", "");
+        return strX;
+    }
 
     public static String doubleFormatter(double number) {
         Locale locale = new Locale("en");

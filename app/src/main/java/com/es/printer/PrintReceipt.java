@@ -156,14 +156,6 @@ public class PrintReceipt {
 
         Call<List<Bill_TaxInvoiceDetail>> call = apiService.getBill_TaxInvoiceDetail(bill_taxInvoice.getTaxInvoiceId());
 
-//        try {
-//            lstDetail = call.execute().body();
-//            Log.e(TAG, "lstDetail: " + lstDetail.get(0).toString());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Toast.makeText(context, "Không có dữ liệu chi tiết thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
-//        }
-
         call.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(context) {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
@@ -209,6 +201,10 @@ public class PrintReceipt {
             String TEN_NVTHU = sharedPrefs.getString("TEN_NVTHU", "Chưa cấu hình");
             String SDT = sharedPrefs.getString("SDT", "Chưa cấu hình");
             String SDT_CSKH = sharedPrefs.getString("SDT_CSKH", "Chưa cấu hình");
+
+            TEN_CTY = Utils.removeAccent(TEN_CTY);
+            TEN_CHINHANH = Utils.removeAccent(TEN_CHINHANH);
+            TEN_NVTHU = Utils.removeAccent(TEN_NVTHU);
 
 
             List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID = ?", bill_taxInvoice.getCustomerId()).execute();
@@ -275,8 +271,8 @@ public class PrintReceipt {
             //BT_Write() method will initiate the printer to start printing.
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(
                     "\nID HD: " + bill_taxInvoice.getContractId() +
-                            "\nTen KH: " + bill_taxInvoice.getCustomerName() +
-                            "\nDia chi: " + bill_taxInvoice.getAddress_Pay() +
+                            "\nTen KH: " + Utils.removeAccent(bill_taxInvoice.getCustomerName()) +
+                            "\nDia chi: " + Utils.removeAccent(bill_taxInvoice.getAddress_Pay()) +
                             "\nMa KH: " + bill_taxInvoice.getCustomerCode() +
                             "\nKy: " + bill_taxInvoice.getMonth() + "/" + bill_taxInvoice.getYear() +
                             "\nTu: " +
