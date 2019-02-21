@@ -26,6 +26,8 @@ import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
+import com.es.model.Bill_TaxInvoiceDetail;
+import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Bill_TaxInvoiceModel;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.Mobile_Adjust_Informations;
@@ -175,6 +177,7 @@ public class MainActivity extends AppCompatActivity
                                         ActiveAndroid.beginTransaction();
                                         try {
                                             int stt = 0;
+                                            String strIDs = "";
                                             for (Bill_TaxInvoice b : movies) {
                                                 Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
                                                         b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
@@ -184,7 +187,9 @@ public class MainActivity extends AppCompatActivity
                                                 stt++;
                                                 b.setSTT(stt);
                                                 c.save();
+                                                strIDs += b.getTaxInvoiceId() + ",";
                                             }
+                                            getDetail(strIDs);
                                             Toasty.success(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toasty.LENGTH_LONG, true).show();
                                             nav_itemUp.setEnabled(true);
                                             switchFragment(buildFragment_CCIS(), "ABC");
@@ -214,6 +219,8 @@ public class MainActivity extends AppCompatActivity
                                 this.mProgressDialog.dismiss();
                             }
                         });
+
+
                     }
                 });
                 builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
@@ -244,6 +251,7 @@ public class MainActivity extends AppCompatActivity
                                 if (movies == 1) {
                                     List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
                                     Toasty.success(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
+                                    new Delete().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
                                 } else {
                                     Toasty.error(getApplicationContext(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
                                 }
@@ -327,6 +335,7 @@ public class MainActivity extends AppCompatActivity
                         dialog.dismiss();
                         List<Bill_TaxInvoiceModel> bill = new Delete().from(Bill_TaxInvoiceModel.class).execute();
                         List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).execute();
+                        new Delete().from(Bill_TaxInvoiceDetail_DB.class).execute();
                         if (bill == null && info == null) {
                             Toasty.success(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thành công !", Toasty.LENGTH_LONG, true).show();
                             switchFragment(buildFragment_CCIS(), "ABC");
@@ -377,6 +386,56 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void getDetail(String strID) {
+        Call<List<Bill_TaxInvoiceDetail>> call2 = apiService.getList_Bill_TaxInvoiceDetail(strID);
+        call2.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(mContext, "Đang lấy số liệu chưa thu tiền từ Server") {
+            @Override
+            public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
+
+                if (response != null && response.body() != null) {
+                    List<Bill_TaxInvoiceDetail> movies = response.body();
+                    if (movies.size() > 0) {
+                        Log.e(TAG, movies.get(0).toString());
+                        try {
+                            List<Bill_TaxInvoiceDetail_DB> tmp = new Delete().from(Bill_TaxInvoiceDetail_DB.class).execute();
+                            ActiveAndroid.beginTransaction();
+                            try {
+                                for (Bill_TaxInvoiceDetail b : movies) {
+                                    Bill_TaxInvoiceDetail_DB c = new Bill_TaxInvoiceDetail_DB(b.TaxInvoiceDetailId, b.DepartmentId, b.Term, b.TaxInvoiceId, b.CustomerId, b.CustomerCode, b.ServiceTypeId, b.ServiceName,
+                                            b.FigureBookId, b.Month, b.Year, b.Total, b.ContractDetailId, b.CreateUser, b.Amount, b.Price, b.TypeOfUnit);
+                                    c.save();
+                                }
+                                ActiveAndroid.setTransactionSuccessful();
+                            } finally {
+                                ActiveAndroid.endTransaction();
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    } else {
+                        Toasty.warning(getApplicationContext(), "Không có dữ liệu chi tiết chưa thu tiền !", Toasty.LENGTH_LONG, true).show();
+                    }
+                } else {
+                    Log.e(TAG, response.message());
+                    Toasty.error(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu chi tiết !", Toasty.LENGTH_LONG, true).show();
+                }
+                this.mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<List<Bill_TaxInvoiceDetail>> call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.getMessage());
+                if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+                    Toasty.error(getApplicationContext(), "Không có dữ liệu chưa thu tiền. Đề nghị kiểm tra lại !", Toasty.LENGTH_LONG, true).show();
+                } else {
+                    Toasty.error(getApplicationContext(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
+                }
+                this.mProgressDialog.dismiss();
+            }
+        });
     }
 
     @Override

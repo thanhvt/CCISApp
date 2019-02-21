@@ -22,6 +22,7 @@ import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.es.adapter.TaxInvoiceAdapter;
 import com.es.model.Bill_TaxInvoice;
+import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Bill_TaxInvoiceModel;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
@@ -377,6 +378,7 @@ public class CCISFragment extends Fragment {
                                             Log.d(TAG, "movies: " + movies);
                                             if (movies == 1) {
                                                 List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
+                                                new Delete().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
                                                 Toasty.success(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
                                             } else {
                                                 Toasty.error(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();

@@ -58,17 +58,15 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
-
         <meta-data
             android:name="AA_DB_NAME"
             android:value="CCIS_DB.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="1" />
+            android:value="2" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.es.model.Bill_TaxInvoiceModel, com.es.model.Mobile_Adjust_DB" />
+            android:value="com.es.model.Bill_TaxInvoiceModel, com.es.model.Mobile_Adjust_DB, com.es.model.Bill_TaxInvoiceDetail_DB" />
     </application>
 
 </manifest>

@@ -21,6 +21,9 @@ public interface CCISDataService {
     @GET("Bill_TaxInvoiceDetail/{id}")
     Call<List<Bill_TaxInvoiceDetail>> getBill_TaxInvoiceDetail(@Path("id") long id);
 
+    @GET("getList_Bill_TaxInvoiceDetail/{id}")
+    Call<List<Bill_TaxInvoiceDetail>> getList_Bill_TaxInvoiceDetail(@Path("id") String id);
+
     @GET("getBill_TaxInvoice/{status}/{userid}")
     Call<List<Bill_TaxInvoice>> getBill_TaxInvoice(@Path("status") int status, @Path("userid") int userid);
 

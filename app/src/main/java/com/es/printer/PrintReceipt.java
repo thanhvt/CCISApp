@@ -4,25 +4,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.es.ccisapp.R;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail;
+import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.SalesModel;
-import com.es.network.CCISDataService;
-import com.es.network.RetrofitInstance;
-import com.es.utils.CustomCallBack;
 import com.es.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 
 /**
@@ -151,32 +145,43 @@ public class PrintReceipt {
     public static boolean printBillFromOrder(final Context context, final Bill_TaxInvoice bill_taxInvoice) {
 
         lstDetail = new ArrayList<>();
-        CCISDataService apiService =
-                RetrofitInstance.getRetrofitInstance(context).create(CCISDataService.class);
 
-        Call<List<Bill_TaxInvoiceDetail>> call = apiService.getBill_TaxInvoiceDetail(bill_taxInvoice.getTaxInvoiceId());
+        List<Bill_TaxInvoiceDetail_DB> lstDetailDB = new ArrayList<>();
+        try {
+            lstDetailDB = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", bill_taxInvoice.getTaxInvoiceId()).execute();
+        } catch (Exception e) {
 
-        call.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(context) {
-            @Override
-            public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
-                lstDetail = response.body();
-                Log.d(TAG, "Number of lstDetail received: " + lstDetail.get(0).toString());
-                this.mProgressDialog.dismiss();
-                printResult(context, bill_taxInvoice, lstDetail);
-            }
-
-            @Override
-            public void onFailure(Call<List<Bill_TaxInvoiceDetail>> call, Throwable t) {
-                // Log error here since request failed
-                Log.e(TAG, t.toString());
-                if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
-                    Toast.makeText(context, "Không có dữ liệu chi tiết thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(context, "Gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
-                }
-                this.mProgressDialog.dismiss();
-            }
-        });
+        }
+        if (lstDetailDB.size() == 0) {
+//            CCISDataService apiService =
+//                    RetrofitInstance.getRetrofitInstance(context).create(CCISDataService.class);
+//
+//            Call<List<Bill_TaxInvoiceDetail>> call = apiService.getBill_TaxInvoiceDetail(bill_taxInvoice.getTaxInvoiceId());
+//
+//            call.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(context) {
+//                @Override
+//                public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
+//                    lstDetail = response.body();
+//                    Log.d(TAG, "Number of lstDetail received: " + lstDetail.get(0).toString());
+//                    this.mProgressDialog.dismiss();
+//                    printResult(context, bill_taxInvoice, lstDetail);
+//                }
+//
+//                @Override
+//                public void onFailure(Call<List<Bill_TaxInvoiceDetail>> call, Throwable t) {
+//                    // Log error here since request failed
+//                    Log.e(TAG, t.toString());
+//                    if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+//                        Toast.makeText(context, "Không có dữ liệu chi tiết thu tiền. Đề nghị kiểm tra lại !", Toast.LENGTH_LONG).show();
+//                    } else {
+//                        Toast.makeText(context, "Gặp lỗi trong quá trình lấy dữ liệu !", Toast.LENGTH_LONG).show();
+//                    }
+//                    this.mProgressDialog.dismiss();
+//                }
+//            });
+        } else {
+            printResult(context, bill_taxInvoice, lstDetailDB);
+        }
 
 
         return true;
@@ -193,7 +198,7 @@ public class PrintReceipt {
     }
 
 
-    public static boolean printResult(Context context, Bill_TaxInvoice bill_taxInvoice, List<Bill_TaxInvoiceDetail> lstDetail) {
+    public static boolean printResult(Context context, Bill_TaxInvoice bill_taxInvoice, List<Bill_TaxInvoiceDetail_DB> lstDetail) {
         try {
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
             String TEN_CTY = sharedPrefs.getString("TEN_CTY", "Chưa cấu hình");
@@ -286,16 +291,16 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //50 * 0.125mm
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal font
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Dv|SL |S.th|Don gia |Thanh tien ");
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Dv|SL |S.th|Don gia  |Thanh tien");
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("--|---|----|--------|-----------");
-            for (Bill_TaxInvoiceDetail de : lstDetail) {
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("--|---|----|---------|----------");
+            for (Bill_TaxInvoiceDetail_DB de : lstDetail) {
                 BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
                 BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Ho|" +
                         inThat(3, (de.getAmount() + "").length(), de.getAmount() + "") + "|" +
                         inThat(4, (de.getTerm() + "").length(), de.getTerm() + "") + "|" +
-                        inThat(8, (de.getPrice() + "").length(), de.getPrice() + "") + "|" +
-                        inThat(11, (de.getTotal() + "").length(), de.getTotal() + ""));
+                        inThat(9, (de.getPrice() + "").length(), de.getPrice() + "") + "|" +
+                        inThat(10, (de.getTotal() + "").length(), de.getTotal() + ""));
             }
 
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
@@ -359,15 +364,15 @@ public class PrintReceipt {
 
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);//1: Center, 0: LEFT
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("NV thu: " + TEN_NVTHU);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("NV thu: " + Utils.removeAccent(TEN_NVTHU));
 
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("SDT: " + SDT);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("SDT: " + Utils.removeAccent(SDT));
 
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("SDT CSKH: " + SDT_CSKH);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("SDT CSKH: " + Utils.removeAccent(SDT_CSKH));
 
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);

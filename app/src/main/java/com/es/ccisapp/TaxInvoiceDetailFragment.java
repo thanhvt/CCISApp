@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
+import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Bill_TaxInvoiceModel;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.network.CCISDataService;
@@ -233,6 +234,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                         Log.d(TAG, "movies: " + movies);
                         if (movies == 1) {
                             List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+                            new Delete().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
                             txtTinhTrangThu.setText("Đã thu online");
                             Toasty.success(getActivity(), "Đã thu tiền và đẩy dữ liệu khách hàng " + txtTenKH.getText() + " lên server thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
                             btnInHD();
