@@ -67,6 +67,12 @@
         <meta-data
             android:name="AA_MODELS"
             android:value="com.es.model.Bill_TaxInvoiceModel, com.es.model.Mobile_Adjust_DB, com.es.model.Bill_TaxInvoiceDetail_DB" />
+
+        <provider
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="com.es.ccisapp"
+            android:enabled="true"
+            android:exported="false"></provider>
     </application>
 
 </manifest>

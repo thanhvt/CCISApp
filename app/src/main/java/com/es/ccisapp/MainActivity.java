@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(0, strUserID);
-                        Log.wtf("URL Called", call.request().url() + "");
+
                         call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(mContext, "Đang lấy số liệu chưa thu tiền từ Server") {
                             @Override
                             public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity
                                     List<Bill_TaxInvoice> movies = response.body();
                                     if (movies.size() > 0) {
                                         List<Bill_TaxInvoiceModel> tmp = new Delete().from(Bill_TaxInvoiceModel.class).execute();
+                                        new Delete().from(Bill_TaxInvoiceDetail_DB.class).execute();
                                         ActiveAndroid.beginTransaction();
                                         try {
                                             int stt = 0;
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity
                                                 c.save();
                                                 strIDs += b.getTaxInvoiceId() + ",";
                                             }
-                                            getDetail(strIDs);
+                                            getDetail(movies);
                                             Toasty.success(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toasty.LENGTH_LONG, true).show();
                                             nav_itemUp.setEnabled(true);
                                             switchFragment(buildFragment_CCIS(), "ABC");
@@ -388,8 +389,33 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void getDetail(String strID) {
+    public void getDetail(List<Bill_TaxInvoice> movies) {
+        int tmpLength = movies.size() * 6;
+        int soLanQua = tmpLength / 200;
+        String strID = "";
+        if (soLanQua == 0) {
+            for (Bill_TaxInvoice b : movies) {
+                strID += b.getTaxInvoiceId() + ",";
+            }
+            getDetailSoLan(strID);
+        } else {
+            for (int i = 0; i < movies.size(); i++) {
+                Bill_TaxInvoice item = movies.get(i);
+                strID += item.getTaxInvoiceId() + ",";
+                if (strID.length() > 200) {
+                    getDetailSoLan(strID);
+                    strID = "";
+                }
+                if (i == movies.size() - 1 && strID.length() <= 200) {
+                    getDetailSoLan(strID);
+                }
+            }
+        }
+    }
+
+    public void getDetailSoLan(String strID) {
         Call<List<Bill_TaxInvoiceDetail>> call2 = apiService.getList_Bill_TaxInvoiceDetail(strID);
+        Log.wtf("URL Called", call2.request().url() + "");
         call2.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(mContext, "Đang lấy số liệu chưa thu tiền từ Server") {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
@@ -397,9 +423,9 @@ public class MainActivity extends AppCompatActivity
                 if (response != null && response.body() != null) {
                     List<Bill_TaxInvoiceDetail> movies = response.body();
                     if (movies.size() > 0) {
-                        Log.e(TAG, movies.get(0).toString());
+                        Log.e(TAG, "getDetailSoLan " + movies.size());
                         try {
-                            List<Bill_TaxInvoiceDetail_DB> tmp = new Delete().from(Bill_TaxInvoiceDetail_DB.class).execute();
+
                             ActiveAndroid.beginTransaction();
                             try {
                                 for (Bill_TaxInvoiceDetail b : movies) {

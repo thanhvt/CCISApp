@@ -97,13 +97,12 @@ public class TaxInvoiceDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_taxinvoicedetail, container, false);
         ButterKnife.bind(this, rootView);
 
+        List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).execute();
+        Log.e(TAG, "Bill_TaxInvoiceDetail_DB: " + tmp.size());
         if (getArguments() != null) {
             content = getArguments().getString(EXTRA_DATA);
             taxInvoice =
                     (Bill_TaxInvoice) getArguments().getSerializable("TAX");
-            Log.e(TAG, "taxInvoice: " + taxInvoice.toString());
-
-
             try {
                 List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID = ?", taxInvoice.getCustomerId()).execute();
                 if (lstDB != null && lstDB.size() > 0) {

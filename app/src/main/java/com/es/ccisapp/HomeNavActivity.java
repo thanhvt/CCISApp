@@ -34,13 +34,14 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
     private static final int SWIPE_MIN_DISTANCE = 180;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-    List<Bill_TaxInvoice> lstTaxInvoice = new ArrayList<>();
+    public static List<Bill_TaxInvoice> lstTaxInvoice = new ArrayList<>();
     int INDEX = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_nav);
+        Log.e("Track", "5");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         gestureDetector = new GestureDetector(new SwipeDetector());
@@ -79,7 +80,7 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
+        Log.e("Track", "6");
 //        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
 //                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -91,14 +92,11 @@ public class HomeNavActivity extends AppCompatActivity { // implements Navigatio
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 //        Utils.startFragment(getSupportFragmentManager(), TaxInvoiceDetailFragment.newInstance("ONE"));
-
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
-
         taxInvoice =
                 (Bill_TaxInvoice) bundle.getSerializable("TAX");
-
-        lstTaxInvoice = (ArrayList<Bill_TaxInvoice>) bundle.getSerializable("ALL");
+//        lstTaxInvoice = (ArrayList<Bill_TaxInvoice>) bundle.getSerializable("ALL");
         INDEX = lstTaxInvoice.indexOf(taxInvoice);
         for (int i = 0; i < lstTaxInvoice.size(); i++) {
             Bill_TaxInvoice x = lstTaxInvoice.get(i);

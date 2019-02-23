@@ -17,7 +17,6 @@ import com.es.ccisapp.HomeNavActivity;
 import com.es.ccisapp.R;
 import com.es.model.Bill_TaxInvoice;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +51,8 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
                     bundle.putSerializable("DATA", "123");
                     bundle.putString("IMAGE", lstTaxInvoice.get(getAdapterPosition()).getBankName());
                     bundle.putSerializable("TAX", lstTaxInvoice.get(getAdapterPosition()));
-                    bundle.putSerializable("ALL", (Serializable) lstTaxInvoice);
+//                    bundle.putSerializable("ALL", (Serializable) lstTaxInvoice);
+                    HomeNavActivity.lstTaxInvoice = lstTaxInvoice;
                     Intent intent = new Intent(context, HomeNavActivity.class);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
