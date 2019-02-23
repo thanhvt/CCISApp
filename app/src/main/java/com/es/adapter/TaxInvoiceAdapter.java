@@ -124,7 +124,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
         protected FilterResults performFiltering(CharSequence constraint) {
             String data = constraint.toString().toLowerCase();
             FilterResults results = new FilterResults();
-            if (data.length() > 0) {
+            if (data.length() > 0 && filterList.size() > 0) {
                 List<Bill_TaxInvoice> filteredList = new ArrayList<>(filterList);
                 List<Bill_TaxInvoice> nList = new ArrayList<>();
                 int count = filteredList.size();

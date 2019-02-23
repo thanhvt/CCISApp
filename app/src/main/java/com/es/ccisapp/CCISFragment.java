@@ -278,7 +278,7 @@ public class CCISFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                if (!s.isEmpty()) {
+                if (!s.isEmpty() && taxInvoiceAdapter != null && taxInvoiceAdapter.getFilter() != null) {
                     taxInvoiceAdapter.getFilter().filter(s);
                 }
                 return false;
