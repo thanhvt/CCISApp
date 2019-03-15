@@ -24,6 +24,7 @@ import com.es.adapter.TaxInvoiceAdapter;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Bill_TaxInvoiceModel;
+import com.es.model.Mobile_Adjust_DB;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 import com.es.utils.CustomCallBack;
@@ -54,6 +55,8 @@ public class CCISFragment extends Fragment {
     TextView txtSoKH;
     @BindView(R.id.txtTienThu)
     TextView txtTienThu;
+    @BindView(R.id.txtTienCoVAT)
+    TextView txtTienCoVAT;
 
 
     private void retrieveExtras() {
@@ -85,7 +88,7 @@ public class CCISFragment extends Fragment {
         lstTaxInvoiceData = new ArrayList<>();
         txtSoKH.setText("Đã thu: ");
         txtTienThu.setText("Tiền thu: ");
-
+        txtTienCoVAT.setText("Tổng tiền: ");
         recyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -115,15 +118,17 @@ public class CCISFragment extends Fragment {
             try {
                 int daThu = 0;
                 long tienThu = 0L;
+                long tongTien = 0L;
                 for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
                     if (bill.isThuOffline()) {
                         daThu++;
                         tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                        tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
                     }
                 }
                 txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
                 txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
-
+                txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
             } catch (Exception e) {
 
             }
@@ -183,14 +188,17 @@ public class CCISFragment extends Fragment {
                             txtEmpty.setVisibility(View.GONE);
                             int daThu = 0;
                             long tienThu = 0L;
+                            long tongTien = 0L;
                             for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
                                 if (bill.isThuOffline()) {
                                     daThu++;
                                     tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                                    tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
                                 }
                             }
                             txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
                             txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+                            txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
                         }
                     } else {
                         Log.e(TAG, response.message());
@@ -231,6 +239,23 @@ public class CCISFragment extends Fragment {
             for (Bill_TaxInvoiceModel b : lstDB) {
                 b.setChecked(false);
                 stt++;
+
+                List<Mobile_Adjust_DB> lstDieuChinh = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID = ?", b.getCustomerId()).execute();
+                if (lstDieuChinh != null && lstDieuChinh.size() > 0) {
+                    Mobile_Adjust_DB m = lstDieuChinh.get(lstDieuChinh.size() - 1);
+                    b.setCustomerName(m.getCustomerName());
+                    b.setAddress_Pay(m.getCustomerAdd());
+                    b.setAmount(Double.parseDouble(m.getAmout()));
+                    b.setSubTotal(m.getPrice());
+//                    String vat = taxInvoice.getTaxRatio();
+//                    Double dSub = Double.parseDouble(lstDieuChinh.get(lstDieuChinh.size() - 1).getPrice());
+//                    Double dVat = dSub * Double.parseDouble(vat) / 100;
+//                    Double dTotal = dSub + dVat;
+//                    txtVAT.setText(formatNumber(Math.round(dVat)) + " VNĐ");
+//                    txtSubTotal.setText(formatNumber(Math.round(dSub)) + " VNĐ (đã điều chỉnh)");
+//                    txtTotal.setText(formatNumber(Math.round(dTotal)) + " VNĐ");
+                }
+
                 lstTaxInvoiceData.add(new Bill_TaxInvoice(b.getTaxCode(), b.getCustomerCode(),
                         b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(), "1",
                         b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
@@ -243,14 +268,17 @@ public class CCISFragment extends Fragment {
             try {
                 int daThu = 0;
                 long tienThu = 0L;
+                long tongTien = 0L;
                 for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
                     if (bill.isThuOffline()) {
                         daThu++;
                         tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                        tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
                     }
                 }
                 txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
                 txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+                txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
             } catch (Exception e) {
 
             }
@@ -349,15 +377,17 @@ public class CCISFragment extends Fragment {
 
                             int daThu = 0;
                             long tienThu = 0L;
+                            long tongTien = 0L;
                             for (Bill_TaxInvoice bill : stList) {
                                 if (bill.isThuOffline()) {
                                     daThu++;
                                     tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                                    tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
                                 }
                             }
                             txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
                             txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
-
+                            txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
                             // Update Data
                         }
                     });

@@ -106,35 +106,35 @@
         android:id="@+id/thaydoi"
         android:orientation="horizontal">
 
-        <RadioGroup
-            android:id="@+id/rgTN"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <!--<RadioGroup-->
+        <!--android:id="@+id/rgTN"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-            <RadioButton
-                android:id="@+id/rdTT"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="Tiếp nhận thông thường" />
+        <!--<RadioButton-->
+        <!--android:id="@+id/rdTT"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:checked="true"-->
+        <!--android:text="Tiếp nhận thông thường" />-->
 
-            <RadioButton
-                android:id="@+id/rdDC"
-                android:layout_weight="1"
-                android:text="Tiếp nhận, để điều chỉnh hóa đơn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <!--<RadioButton-->
+        <!--android:id="@+id/rdDC"-->
+        <!--android:layout_weight="1"-->
+        <!--android:text="Tiếp nhận, để điều chỉnh hóa đơn"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
 
-            <RadioButton
-                android:id="@+id/rdDCHD"
-                android:layout_weight="1"
-                android:text="Tiếp nhận, đã điều chỉnh hóa đơn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </RadioGroup>
+        <!--<RadioButton-->
+        <!--android:id="@+id/rdDCHD"-->
+        <!--android:layout_weight="1"-->
+        <!--android:text="Tiếp nhận, đã điều chỉnh hóa đơn"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+        <!--</RadioGroup>-->
     </LinearLayout>
 
     <LinearLayout

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.RadioButton;
 
 import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
@@ -44,12 +43,12 @@ public class AdjustInformationsFragment extends Fragment {
     EditText edSTT;
     @BindView(R.id.edDonGia)
     EditText edDonGia;
-    @BindView(R.id.rdDC)
-    RadioButton rdDC;
-    @BindView(R.id.rdTT)
-    RadioButton rdTT;
-    @BindView(R.id.rdDCHD)
-    RadioButton rdDCHD;
+    //    @BindView(R.id.rdDC)
+//    RadioButton rdDC;
+//    @BindView(R.id.rdTT)
+//    RadioButton rdTT;
+//    @BindView(R.id.rdDCHD)
+//    RadioButton rdDCHD;
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
@@ -133,7 +132,7 @@ public class AdjustInformationsFragment extends Fragment {
         m.setEmployeeCode("2");
         m.setIndexSo(edSTT.getText().toString());
         m.setPrice(edDonGia.getText().toString());
-        m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
+        m.setType("0");
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
         m.save();
@@ -152,7 +151,7 @@ public class AdjustInformationsFragment extends Fragment {
         m.setEmployeeCode("2");
         m.setIndex(edSTT.getText().toString());
         m.setPrice(edDonGia.getText().toString());
-        m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
+        m.setType("0");
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
         Log.e("Adjust_Informations", m.toString());
