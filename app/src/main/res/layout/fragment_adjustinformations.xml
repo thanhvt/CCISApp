@@ -95,6 +95,34 @@
                     android:inputType="number"
                     android:text="1" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Từ ngày"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edTuNgay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đến ngày"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edDenNgay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text" />
         </LinearLayout>
     </ScrollView>
 

@@ -51,7 +51,10 @@ public class AdjustInformationsFragment extends Fragment {
 //    RadioButton rdDCHD;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-
+    @BindView(R.id.edTuNgay)
+    EditText edTuNgay;
+    @BindView(R.id.edDenNgay)
+    EditText edDenNgay;
     // constant
     String TAG = "AdjustInformationsFragment";
 
@@ -135,6 +138,8 @@ public class AdjustInformationsFragment extends Fragment {
         m.setType("0");
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
+        m.setTuNgay(edTuNgay.getText().toString());
+        m.setDenNgay(edDenNgay.getText().toString());
         m.save();
 
         Toasty.success(getActivity(), "Lưu thông tin offline thành công. Duyệt thông tin để đẩy dữ liệu lên Server !", Toasty.LENGTH_LONG, true).show();

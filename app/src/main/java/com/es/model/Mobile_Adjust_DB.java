@@ -41,6 +41,12 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
     @Column(name = "AdjustID")
     private String AdjustID;
 
+    @Column(name = "TuNgay")
+    private String TuNgay;
+
+    @Column(name = "DenNgay")
+    private String DenNgay;
+
     public Mobile_Adjust_DB() {
     }
 
@@ -56,6 +62,22 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
         CustomerName = customerName;
         Amout = amout;
         AdjustID = adjustID;
+    }
+
+    public String getTuNgay() {
+        return TuNgay;
+    }
+
+    public void setTuNgay(String tuNgay) {
+        TuNgay = tuNgay;
+    }
+
+    public String getDenNgay() {
+        return DenNgay;
+    }
+
+    public void setDenNgay(String denNgay) {
+        DenNgay = denNgay;
     }
 
     public boolean getStatus() {
