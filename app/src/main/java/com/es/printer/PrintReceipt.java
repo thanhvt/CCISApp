@@ -396,7 +396,7 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
         } catch (Exception e) {
-
+            Log.e("Err in HD ", e.getMessage());
         }
 
         return true;

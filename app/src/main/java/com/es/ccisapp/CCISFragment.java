@@ -138,12 +138,12 @@ public class CCISFragment extends Fragment {
         apiService =
                 RetrofitInstance.getRetrofitInstance(getContext()).create(CCISDataService.class);
 
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        recyclerView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         return rootView;
     }
