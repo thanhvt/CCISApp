@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.activeandroid.query.Delete;
@@ -58,6 +59,8 @@ public class TaxInvoiceDetailFragment extends Fragment {
     TextView txtKy;
     @BindView(R.id.txtSoNhanKhau)
     TextView txtSoNhanKhau;
+    @BindView(R.id.btnInHD)
+    Button btnInHD;
     private Unbinder unbinder;
     // constant
     String TAG = "TaxInvoiceDetailFragment";
@@ -123,8 +126,9 @@ public class TaxInvoiceDetailFragment extends Fragment {
                     Double dTotal = dSub + dVat;
 
                     txtVAT.setText(formatNumber(Math.round(dVat)) + " VNĐ");
-                    txtSubTotal.setText(formatNumber(Math.round(dSub)) + " VNĐ (đã điều chỉnh)");
+                    txtSubTotal.setText(formatNumber(Math.round(dSub)) + " VNĐ");
                     txtTotal.setText(formatNumber(Math.round(dTotal)) + " VNĐ");
+                    btnInHD.setText("IN HÓA ĐƠN (đã điều chỉnh t.ttin)");
                 } else {
                     txtVAT.setText(formatNumber(Long.parseLong(taxInvoice.getVAT().substring(0, taxInvoice.getVAT().indexOf(".")))) + " VNĐ");
                     txtTotal.setText(formatNumber(Long.parseLong(taxInvoice.getTotal().substring(0, taxInvoice.getTotal().indexOf(".")))) + " VNĐ");

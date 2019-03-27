@@ -227,6 +227,8 @@ public class CCISFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        List<Mobile_Adjust_DB> lstDieuChinhTmp = new Select().all().from(Mobile_Adjust_DB.class).execute();
+        Log.d(TAG + " size", lstDieuChinhTmp.size() + "");
         lstTaxInvoiceData.clear();  //Reset before update adapter to avoid duplication of list
         List<Bill_TaxInvoiceModel> lstDB = new Select().all().from(Bill_TaxInvoiceModel.class).execute();
         if (lstDB.size() == 0) {
