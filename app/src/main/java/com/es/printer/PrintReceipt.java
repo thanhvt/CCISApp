@@ -282,8 +282,8 @@ public class PrintReceipt {
                             "\nDia chi: " + Utils.removeAccent(bill_taxInvoice.getAddress_Pay()) +
                             "\nMa KH: " + bill_taxInvoice.getCustomerCode() +
                             "\nKy: " + bill_taxInvoice.getMonth() + "/" + bill_taxInvoice.getYear() +
-                            "\nTu: " +  mThayDoi.getTuNgay() != null ? mThayDoi.getTuNgay() : "" +
-                            "\nDen: " + mThayDoi.getDenNgay() != null ? mThayDoi.getDenNgay() : "");
+                            "\nTu: " + (mThayDoi.getTuNgay() != null ? mThayDoi.getTuNgay() : "") +
+                            "\nDen: " + (mThayDoi.getDenNgay() != null ? mThayDoi.getDenNgay() : ""));
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();

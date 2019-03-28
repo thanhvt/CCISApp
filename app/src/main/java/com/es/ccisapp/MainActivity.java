@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity
                                     Log.e("CHECK PUT", postCheck + "");
                                     if (postCheck) {
                                         Toasty.success(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
-                                        List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).where("AdjustID = ?", mobile.getAdjustID()).execute();
+                                        //List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).where("AdjustID = ?", mobile.getAdjustID()).execute();
                                     } else {
                                         Toasty.error(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " không thành công !", Toasty.LENGTH_LONG, true).show();
                                     }
@@ -426,9 +426,12 @@ public class MainActivity extends AppCompatActivity
                             ActiveAndroid.beginTransaction();
                             try {
                                 for (Bill_TaxInvoiceDetail b : movies) {
-                                    Bill_TaxInvoiceDetail_DB c = new Bill_TaxInvoiceDetail_DB(b.TaxInvoiceDetailId, b.DepartmentId, b.Term, b.TaxInvoiceId, b.CustomerId, b.CustomerCode, b.ServiceTypeId, b.ServiceName,
-                                            b.FigureBookId, b.Month, b.Year, b.Total, b.ContractDetailId, b.CreateUser, b.Amount, b.Price, b.TypeOfUnit);
-                                    c.save();
+                                    List<Bill_TaxInvoiceDetail_DB> info = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceDetailId = ?", b.getTaxInvoiceDetailId()).execute();
+                                    if (info.size() == 0) {
+                                        Bill_TaxInvoiceDetail_DB c = new Bill_TaxInvoiceDetail_DB(b.TaxInvoiceDetailId, b.DepartmentId, b.Term, b.TaxInvoiceId, b.CustomerId, b.CustomerCode, b.ServiceTypeId, b.ServiceName,
+                                                b.FigureBookId, b.Month, b.Year, b.Total, b.ContractDetailId, b.CreateUser, b.Amount, b.Price, b.TypeOfUnit);
+                                        c.save();
+                                    }
                                 }
                                 ActiveAndroid.setTransactionSuccessful();
                             } finally {
