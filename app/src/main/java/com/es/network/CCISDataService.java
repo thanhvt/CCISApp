@@ -3,6 +3,7 @@ package com.es.network;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail;
 import com.es.model.Mobile_Adjust_Informations;
+import com.es.model.SoGCS_User;
 import com.es.model.UserProfile;
 
 import java.util.List;
@@ -44,4 +45,7 @@ public interface CCISDataService {
 
     @GET("Account/{username}/{pass}")
     Call<List<UserProfile>> CheckLogin(@Path("username") String username, @Path("pass") String pass);
+
+    @GET("getSo_User/{userid}")
+    Call<List<SoGCS_User>> getSo_User(@Path("userid") int userid);
 }

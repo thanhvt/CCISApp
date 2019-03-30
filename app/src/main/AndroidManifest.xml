@@ -63,10 +63,10 @@
             android:value="CCIS_DB.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="4" />
+            android:value="5" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.es.model.Bill_TaxInvoiceModel, com.es.model.Mobile_Adjust_DB, com.es.model.Bill_TaxInvoiceDetail_DB" />
+            android:value="com.es.model.Bill_TaxInvoiceModel, com.es.model.Mobile_Adjust_DB, com.es.model.Bill_TaxInvoiceDetail_DB, com.es.model.SoGCS_User_DB" />
 
         <provider
             android:name="com.activeandroid.content.ContentProvider"

@@ -28,6 +28,8 @@ import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Bill_TaxInvoiceModel;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.Mobile_Adjust_Informations;
+import com.es.model.SoGCS_User;
+import com.es.model.SoGCS_User_DB;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 import com.es.utils.CustomCallBack;
@@ -140,11 +142,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
+        final int id = item.getItemId();
+        SharedPreferences pref = getSharedPreferences("LOGIN", 0);
+        final int strUserID = pref.getInt("USERID", -1);
         if (id == R.id.nav_down) {
-            SharedPreferences pref = getSharedPreferences("LOGIN", 0);
-            final int strUserID = pref.getInt("USERID", -1);
+
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(R.string.app_name);
             builder.setIcon(R.drawable.logo);
@@ -377,8 +379,53 @@ public class MainActivity extends AppCompatActivity
             });
             AlertDialog alert = builder.create();
             alert.show();
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_so) {
+            Call<List<SoGCS_User>> call = apiService.getSo_User(strUserID);
 
+            call.enqueue(new CustomCallBack<List<SoGCS_User>>(mContext, "Đang lấy danh mục sổ từ Server") {
+                @Override
+                public void onResponse(Call<List<SoGCS_User>> call, Response<List<SoGCS_User>> response) {
+
+                    if (response != null && response.body() != null) {
+                        List<SoGCS_User> movies = response.body();
+                        if (movies.size() > 0) {
+                            Log.e(TAG, movies.size() + " sổ");
+                            new Delete().from(SoGCS_User_DB.class).execute();
+                            ActiveAndroid.beginTransaction();
+                            try {
+                                int stt = 0;
+                                String strIDs = "";
+                                for (SoGCS_User b : movies) {
+                                    SoGCS_User_DB c = new SoGCS_User_DB(b.EmployeeId, b.EmployeeCode, b.UserId, b.BookCode, b.BookName);
+                                    c.save();
+                                }
+
+                                ActiveAndroid.setTransactionSuccessful();
+                            } finally {
+                                ActiveAndroid.endTransaction();
+                            }
+                        } else {
+                            Toasty.warning(getApplicationContext(), "Không có dữ liệu sổ của user !", Toasty.LENGTH_LONG, true).show();
+                        }
+                    } else {
+                        Log.e(TAG, response.message());
+                        Toasty.error(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
+                    }
+                    this.mProgressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<List<SoGCS_User>> call, Throwable t) {
+                    // Log error here since request failed
+                    Log.e(TAG, t.getMessage());
+                    if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+                        Toasty.error(getApplicationContext(), "Không có dữ liệu sổ của user. Đề nghị kiểm tra lại !", Toasty.LENGTH_LONG, true).show();
+                    } else {
+                        Toasty.error(getApplicationContext(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
+                    }
+                    this.mProgressDialog.dismiss();
+                }
+            });
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
