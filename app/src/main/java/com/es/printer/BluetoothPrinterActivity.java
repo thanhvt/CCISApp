@@ -47,7 +47,7 @@ public class BluetoothPrinterActivity extends AppCompatActivity {
     private static TextView txtPrinterStatus = null;
 //    private static ImageView mImgPosPrinter = null;
 Bill_TaxInvoice taxInvoice;
-
+    int kieu;
     Button btnPrintInHD;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +81,7 @@ Bill_TaxInvoice taxInvoice;
         if (getIntent().getExtras() != null) {
             taxInvoice =
                     (Bill_TaxInvoice) getIntent().getExtras().getSerializable("TAX");
+            kieu = getIntent().getExtras().getInt("KIEU");
         }
     }
 
@@ -220,7 +221,7 @@ Bill_TaxInvoice taxInvoice;
         @Override
         public void onClick(View v) {
             // Stop the Bluetooth chat services
-            if (!PrintReceipt.printBillFromOrder(getApplicationContext(), taxInvoice)) {
+            if (!PrintReceipt.printBillFromOrder(getApplicationContext(), taxInvoice, kieu)) {
                 Toast.makeText(BluetoothPrinterActivity.this, "No printer is connected!!", Toast.LENGTH_LONG).show();
             }
         }
@@ -230,7 +231,7 @@ Bill_TaxInvoice taxInvoice;
 
     OnClickListener mBtnPrintOnClickListener = new OnClickListener() {
         public void onClick(View arg0) {
-            PrintReceipt.printBillFromOrder(BluetoothPrinterActivity.this, taxInvoice);
+            PrintReceipt.printBillFromOrder(BluetoothPrinterActivity.this, taxInvoice, kieu);
         }
     };
 

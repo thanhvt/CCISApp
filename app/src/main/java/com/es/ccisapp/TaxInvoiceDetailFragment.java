@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail_DB;
@@ -64,7 +63,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
     private Unbinder unbinder;
     // constant
     String TAG = "TaxInvoiceDetailFragment";
-
+    int kieu = 0;
     public static final String EXTRA_DATA = "DATA_CONTENT";
     Bill_TaxInvoice taxInvoice;
     private String content;
@@ -202,6 +201,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                 }
                 txtTinhTrangThu.setText("Đã thu offline");
                 Toasty.success(getActivity(), "Thu tiền offline khách hàng " + txtTenKH.getText() + " thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
+                kieu = 0;
                 btnInHD();
             }
         });
@@ -236,11 +236,11 @@ public class TaxInvoiceDetailFragment extends Fragment {
                         Integer movies = response.body();
                         Log.d(TAG, "movies: " + movies);
                         if (movies == 1) {
-                            List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
-                            new Delete().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
                             txtTinhTrangThu.setText("Đã thu online");
                             Toasty.success(getActivity(), "Đã thu tiền và đẩy dữ liệu khách hàng " + txtTenKH.getText() + " lên server thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
+                            kieu = 1;
                             btnInHD();
+
                         } else {
                             Toasty.error(getActivity(), "Thu tiền khách hàng " + txtTenKH.getText() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
                         }
@@ -271,6 +271,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
         Intent intent = new Intent(getActivity().getApplicationContext(), BluetoothPrinterActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("TAX", taxInvoice);
+        bundle.putInt("KIEU", kieu);
         intent.putExtras(bundle);
         startActivity(intent);
     }

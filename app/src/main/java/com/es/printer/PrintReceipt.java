@@ -5,11 +5,13 @@ import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.es.ccisapp.R;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail;
 import com.es.model.Bill_TaxInvoiceDetail_DB;
+import com.es.model.Bill_TaxInvoiceModel;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.SalesModel;
 import com.es.utils.Utils;
@@ -142,7 +144,7 @@ public class PrintReceipt {
         return true;
     }
 
-    public static boolean printBillFromOrder(final Context context, final Bill_TaxInvoice bill_taxInvoice) {
+    public static boolean printBillFromOrder(final Context context, final Bill_TaxInvoice bill_taxInvoice, int kieu) {
 
         lstDetail = new ArrayList<>();
 
@@ -153,6 +155,7 @@ public class PrintReceipt {
 
         }
         if (lstDetailDB.size() == 0) {
+
 //            CCISDataService apiService =
 //                    RetrofitInstance.getRetrofitInstance(context).create(CCISDataService.class);
 //
@@ -182,7 +185,10 @@ public class PrintReceipt {
         } else {
             printResult(context, bill_taxInvoice, lstDetailDB);
         }
-
+        if (kieu == 1) {
+            List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", bill_taxInvoice.getTaxInvoiceId()).execute();
+            new Delete().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", bill_taxInvoice.getTaxInvoiceId()).execute();
+        }
 
         return true;
     }
