@@ -183,6 +183,30 @@
             android:layout_margin="2px">
 
             <TextView
+                android:id="@+id/textView18"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="Từ ngày - đến ngày"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTuDen"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1500FF"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2px">
+
+            <TextView
                 android:id="@+id/textView11"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

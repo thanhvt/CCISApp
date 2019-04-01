@@ -476,7 +476,7 @@ public class MainActivity extends AppCompatActivity
                                     List<Bill_TaxInvoiceDetail_DB> info = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceDetailId = ?", b.getTaxInvoiceDetailId()).execute();
                                     if (info.size() == 0) {
                                         Bill_TaxInvoiceDetail_DB c = new Bill_TaxInvoiceDetail_DB(b.TaxInvoiceDetailId, b.DepartmentId, b.Term, b.TaxInvoiceId, b.CustomerId, b.CustomerCode, b.ServiceTypeId, b.ServiceName,
-                                                b.FigureBookId, b.Month, b.Year, b.Total, b.ContractDetailId, b.CreateUser, b.Amount, b.Price, b.TypeOfUnit);
+                                                b.FigureBookId, b.Month, b.Year, b.Total, b.ContractDetailId, b.CreateUser, b.Amount, b.Price, b.TypeOfUnit, b.TuNgay, b.DenNgay);
                                         c.save();
                                     }
                                 }

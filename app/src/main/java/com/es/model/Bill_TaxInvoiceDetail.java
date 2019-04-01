@@ -21,6 +21,24 @@ public class Bill_TaxInvoiceDetail implements Serializable {
     public double Price;
     public String TypeOfUnit;
     public int Term;
+    public String TuNgay;
+    public String DenNgay;
+
+    public String getTuNgay() {
+        return TuNgay;
+    }
+
+    public void setTuNgay(String tuNgay) {
+        TuNgay = tuNgay;
+    }
+
+    public String getDenNgay() {
+        return DenNgay;
+    }
+
+    public void setDenNgay(String denNgay) {
+        DenNgay = denNgay;
+    }
 
     @Override
     public String toString() {
@@ -184,7 +202,7 @@ public class Bill_TaxInvoiceDetail implements Serializable {
         Term = term;
     }
 
-    public Bill_TaxInvoiceDetail(double taxInvoiceDetailId, int departmentId, int term, double taxInvoiceId, int customerId, String customerCode, int serviceTypeId, String serviceName, int figureBookId, int month, int year, double total, int contractDetailId, int createUser, double amount, double price, String typeOfUnit) {
+    public Bill_TaxInvoiceDetail(double taxInvoiceDetailId, int departmentId, double taxInvoiceId, int customerId, String customerCode, int serviceTypeId, String serviceName, int figureBookId, int month, int year, double total, int contractDetailId, int createUser, double amount, double price, String typeOfUnit, int term, String tuNgay, String denNgay) {
         TaxInvoiceDetailId = taxInvoiceDetailId;
         DepartmentId = departmentId;
         TaxInvoiceId = taxInvoiceId;
@@ -202,7 +220,10 @@ public class Bill_TaxInvoiceDetail implements Serializable {
         Price = price;
         TypeOfUnit = typeOfUnit;
         Term = term;
+        TuNgay = tuNgay;
+        DenNgay = denNgay;
     }
+
     /*[
     "Amount":3.0000,
     "ContractDetailId":0,

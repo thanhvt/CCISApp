@@ -42,7 +42,10 @@ public class Bill_TaxInvoiceDetail_DB extends Model implements Serializable {
     public String TypeOfUnit;
     @Column(name = "Term")
     public int Term;
-
+    @Column(name = "TuNgay")
+    public String TuNgay;
+    @Column(name = "DenNgay")
+    public String DenNgay;
 
     @Override
     public String toString() {
@@ -224,5 +227,27 @@ public class Bill_TaxInvoiceDetail_DB extends Model implements Serializable {
         Price = price;
         TypeOfUnit = typeOfUnit;
         Term = term;
+    }
+
+    public Bill_TaxInvoiceDetail_DB(double taxInvoiceDetailId, int departmentId, int term, double taxInvoiceId, int customerId, String customerCode, int serviceTypeId, String serviceName, int figureBookId, int month, int year, double total, int contractDetailId, int createUser, double amount, double price, String typeOfUnit, String tuNgay, String denNgay) {
+        TaxInvoiceDetailId = taxInvoiceDetailId;
+        DepartmentId = departmentId;
+        TaxInvoiceId = taxInvoiceId;
+        CustomerId = customerId;
+        CustomerCode = customerCode;
+        ServiceTypeId = serviceTypeId;
+        ServiceName = serviceName;
+        FigureBookId = figureBookId;
+        Month = month;
+        Year = year;
+        Total = total;
+        ContractDetailId = contractDetailId;
+        CreateUser = createUser;
+        Amount = amount;
+        Price = price;
+        TypeOfUnit = typeOfUnit;
+        Term = term;
+        TuNgay = tuNgay;
+        DenNgay = denNgay;
     }
 }

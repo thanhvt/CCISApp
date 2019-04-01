@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
+import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.Mobile_Adjust_Informations;
 import com.es.network.CCISDataService;
@@ -103,11 +104,17 @@ public class AdjustInformationsFragment extends Fragment {
             content = getArguments().getString(EXTRA_DATA);
             taxInvoice =
                     (Bill_TaxInvoice) getArguments().getSerializable("TAX");
+            List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+            Log.e(TAG, "Bill_TaxInvoiceDetail_DB: " + tmp.size());
             Log.e(TAG, "taxInvoice: " + taxInvoice.toString());
             edDC.setText(taxInvoice.getTaxInvoiceAddress());
             edTenKH.setText(taxInvoice.getCustomerName());
             edSL.setText(taxInvoice.getAmount() + "");
             edDonGia.setText(taxInvoice.getSubTotal());
+            if (tmp.size() > 0) {
+                edTuNgay.setText(tmp.get(0).TuNgay);
+                edDenNgay.setText(tmp.get(0).DenNgay);
+            }
         }
         return rootView;
     }

@@ -58,6 +58,8 @@ public class TaxInvoiceDetailFragment extends Fragment {
     TextView txtKy;
     @BindView(R.id.txtSoNhanKhau)
     TextView txtSoNhanKhau;
+    @BindView(R.id.txtTuDen)
+    TextView txtTuDen;
     @BindView(R.id.btnInHD)
     Button btnInHD;
     private Unbinder unbinder;
@@ -99,13 +101,15 @@ public class TaxInvoiceDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_taxinvoicedetail, container, false);
         ButterKnife.bind(this, rootView);
 
-        List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).execute();
-        Log.e(TAG, "Bill_TaxInvoiceDetail_DB: " + tmp.size());
+
         if (getArguments() != null) {
             content = getArguments().getString(EXTRA_DATA);
             taxInvoice =
                     (Bill_TaxInvoice) getArguments().getSerializable("TAX");
             try {
+                List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+                Log.e(TAG, "Bill_TaxInvoiceDetail_DB: " + tmp.size());
+
                 List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID = ?", taxInvoice.getCustomerId()).execute();
                 if (lstDB != null && lstDB.size() > 0) {
                     Mobile_Adjust_DB m = lstDB.get(lstDB.size() - 1);
@@ -127,11 +131,16 @@ public class TaxInvoiceDetailFragment extends Fragment {
                     txtVAT.setText(formatNumber(Math.round(dVat)) + " VNĐ");
                     txtSubTotal.setText(formatNumber(Math.round(dSub)) + " VNĐ");
                     txtTotal.setText(formatNumber(Math.round(dTotal)) + " VNĐ");
+                    txtTuDen.setText(m.getTuNgay() + " - " + m.getDenNgay());
+
                     btnInHD.setText("IN HÓA ĐƠN (đã điều chỉnh t.ttin)");
                 } else {
                     txtVAT.setText(formatNumber(Long.parseLong(taxInvoice.getVAT().substring(0, taxInvoice.getVAT().indexOf(".")))) + " VNĐ");
                     txtTotal.setText(formatNumber(Long.parseLong(taxInvoice.getTotal().substring(0, taxInvoice.getTotal().indexOf(".")))) + " VNĐ");
                     txtSubTotal.setText(formatNumber(Long.parseLong(taxInvoice.getSubTotal().substring(0, taxInvoice.getSubTotal().indexOf(".")))) + " VNĐ");
+                    if (tmp.size() > 0) {
+                        txtTuDen.setText(tmp.get(0).TuNgay + " - " + tmp.get(0).DenNgay);
+                    }
                 }
 
                 txtMaKH.setText(taxInvoice.getCustomerCode());
