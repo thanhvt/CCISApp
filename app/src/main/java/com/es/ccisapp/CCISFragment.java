@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Delete;
@@ -299,6 +300,8 @@ public class CCISFragment extends Fragment {
 //        getActivity().getMenuInflater().inflate(R.menu.menu_scrolling, menu);
         searchMenuItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        ImageView mCloseButton = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+
         searchView.setQueryHint("Tìm kiếm theo tên, địa chỉ, vv...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -322,6 +325,39 @@ public class CCISFragment extends Fragment {
                     searchView.setQuery("", false);
                     searchView.setIconified(true);
                 }
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                taxInvoiceAdapter.getFilter().filter("");
+                return false;
+            }
+        });
+        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b && searchView.getQuery().length() == 0) {
+                    taxInvoiceAdapter.getFilter().filter("");
+                }
+            }
+        });
+        mCloseButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //Clear the query
+                searchMenuItem.collapseActionView();
+                searchView.setQuery("", false);
+                taxInvoiceAdapter.getFilter().filter("");
+//                mSearchView.setQuery("",false);
+//                // below lines were all tried and do not work
+//                **mSearchView.setQueryHint(" Search here...");**
+//                **mSearchView.setIconified(false);**
+//                **mSearchView.onActionViewCollapsed);**
+//                **MenuItemCompat.expandActionView(searchitem);**
+//                adapter.clear();
+//                adapter.addAll(allList);
             }
         });
     }
