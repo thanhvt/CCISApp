@@ -277,16 +277,16 @@ public class MainActivity extends AppCompatActivity
                             mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(), "1", mo.getAmout(), mo.getAdjustID());
                     lstInsert.add(mobile);
                     try {
-                        Call<Boolean> call = apiService.Post(mobile);
+                        Call<String> call = apiService.Post(mobile);
                         Log.e(TAG, "lstInsert " + lstInsert.size() + "");
-                        call.enqueue(new CustomCallBack<Boolean>(mContext, "Đang đẩy thông tin ...") {
+                        call.enqueue(new CustomCallBack<String>(mContext, "Đang đẩy thông tin ...") {
                             @Override
-                            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                            public void onResponse(Call<String> call, Response<String> response) {
                                 try {
                                     Log.e(TAG, response.message());
-                                    Boolean postCheck = response.body();
+                                    String postCheck = response.body();
                                     Log.e("CHECK PUT", postCheck + "");
-                                    if (postCheck) {
+                                    if (postCheck.equals("OK")) {
                                         Toasty.success(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
                                         //List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).where("AdjustID = ?", mobile.getAdjustID()).execute();
                                     } else {
@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity
                             }
 
                             @Override
-                            public void onFailure(Call<Boolean> call, Throwable t) {
+                            public void onFailure(Call<String> call, Throwable t) {
                                 Log.e("USERDEVICE", t.getMessage() + "");
                                 Toasty.error(getApplicationContext(), "Đẩy thông tin thất bại. Kiểm tra lại kết nối !", Toasty.LENGTH_LONG, true).show();
 

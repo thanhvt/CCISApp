@@ -13,6 +13,8 @@ public class UserProfile implements Serializable {
     private String Address;
     private String GenderId;
     private String DepartmentId;
+    private String EmployeeCode;
+
 
     public UserProfile() {
     }
@@ -45,6 +47,14 @@ public class UserProfile implements Serializable {
                 ", GenderId='" + GenderId + '\'' +
                 ", DepartmentId='" + DepartmentId + '\'' +
                 '}';
+    }
+
+    public String getEmployeeCode() {
+        return EmployeeCode;
+    }
+
+    public void setEmployeeCode(String employeeCode) {
+        EmployeeCode = employeeCode;
     }
 
     public int getUserId() {

@@ -38,7 +38,7 @@ public interface CCISDataService {
     Call<List<Mobile_Adjust_Informations>> getMobile_Adjust_Informations(@Path("id") int id);
 
     @POST("Mobile_Adjust_Informations/")
-    Call<Boolean> Post(@Body Mobile_Adjust_Informations devices);
+    Call<String> Post(@Body Mobile_Adjust_Informations devices);
 
     @POST("Mobile_Adjust_Informations_List/")
     Call<String> Post_List(@Body List<Mobile_Adjust_Informations> devices);

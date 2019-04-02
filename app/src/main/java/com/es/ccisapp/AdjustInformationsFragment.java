@@ -1,5 +1,6 @@
 package com.es.ccisapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -126,6 +127,9 @@ public class AdjustInformationsFragment extends Fragment {
     }
     @OnClick(R.id.btnAdjOffline)
     public void btnAdjOffline() {
+        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+        String strEmployeeCode = pref.getString("EMPLOYEECODE", "");
+
         int ran = new Random().nextInt();
         List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
         while (tmp.size() > 0) {
@@ -139,7 +143,7 @@ public class AdjustInformationsFragment extends Fragment {
         m.setCustomerAdd(edDC.getText().toString());
         m.setCustomerID(taxInvoice.getCustomerId());
         m.setCustomerName(edTenKH.getText().toString());
-        m.setEmployeeCode("2");
+        m.setEmployeeCode(strEmployeeCode);
         m.setIndexSo(edSTT.getText().toString());
         m.setPrice(edDonGia.getText().toString());
         m.setType("0");
@@ -155,12 +159,14 @@ public class AdjustInformationsFragment extends Fragment {
 
     @OnClick(R.id.btnAdjInformation)
     public void btnAdjInformation() {
+        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+        String strEmployeeCode = pref.getString("EMPLOYEECODE", "");
         Mobile_Adjust_Informations m = new Mobile_Adjust_Informations();
         m.setAmout(edSL.getText().toString());
         m.setCustomerAdd(edDC.getText().toString());
         m.setCustomerID(taxInvoice.getCustomerId());
         m.setCustomerName(edTenKH.getText().toString());
-        m.setEmployeeCode("2");
+        m.setEmployeeCode(strEmployeeCode);
         m.setIndex(edSTT.getText().toString());
         m.setPrice(edDonGia.getText().toString());
         m.setType("0");
@@ -173,16 +179,16 @@ public class AdjustInformationsFragment extends Fragment {
     private void insertData(Mobile_Adjust_Informations devices) {
         try {
             CCISDataService service = RetrofitInstance.getRetrofitInstance(getContext()).create(CCISDataService.class);
-            Call<Boolean> call = service.Post(devices);
+            Call<String> call = service.Post(devices);
             Log.wtf("URL Called", call.request().url() + "");
-            call.enqueue(new Callback<Boolean>() {
+            call.enqueue(new Callback<String>() {
                 @Override
-                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                public void onResponse(Call<String> call, Response<String> response) {
                     try {
                         Log.e(TAG, response.message());
-                        Boolean postCheck = response.body().booleanValue();
+                        String postCheck = response.body().toString();
                         Log.e("CHECK PUT", postCheck + "");
-                        if (postCheck) {
+                        if (postCheck.equals("OK")) {
                             Toasty.success(getActivity(), "Lưu thông tin khách hàng thành công !", Toasty.LENGTH_LONG, true).show();
                         } else {
                             Toasty.error(getActivity(), "Lưu thông tin khách hàng không thành công !", Toasty.LENGTH_LONG, true).show();
@@ -194,7 +200,7 @@ public class AdjustInformationsFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<Boolean> call, Throwable t) {
+                public void onFailure(Call<String> call, Throwable t) {
                     Log.e("USERDEVICE", t.getMessage() + "");
                 }
 

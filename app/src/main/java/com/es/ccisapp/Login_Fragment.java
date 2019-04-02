@@ -278,6 +278,7 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
                                             editor.putString("PASSWORD", getPassword);
                                             editor.putInt("ONLINE", 1);
                                             editor.putInt("USERID", pUserProfile.get(0).getUserId());
+                                            editor.putString("EMPLOYEECODE", pUserProfile.get(0).getEmployeeCode());
                                             editor.commit();
 
                                         } else {
