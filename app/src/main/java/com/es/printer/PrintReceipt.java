@@ -229,6 +229,10 @@ public class PrintReceipt {
 //                Double total = d * 1.01;
 //            }
 
+            } else {
+//                List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+                mThayDoi.setTuNgay(lstDetail.get(0).TuNgay);
+                mThayDoi.setDenNgay(lstDetail.get(0).DenNgay);
             }
             Log.e(TAG, bill_taxInvoice.toString());
             if (BluetoothPrinterActivity.BLUETOOTH_PRINTER.IsNoConnection()) {
