@@ -223,6 +223,17 @@ public class PrintReceipt {
                 mThayDoi = lstDB.get(0);
                 bill_taxInvoice.setCustomerName(mThayDoi.getCustomerName());
                 bill_taxInvoice.setAddress_Pay(mThayDoi.getCustomerAdd());
+                bill_taxInvoice.setAmount(Double.parseDouble(mThayDoi.getAmout()));
+
+//                String vat = bill_taxInvoice.getTaxRatio();
+//
+//                Double dSub = Double.parseDouble(lstDB.get(lstDB.size() - 1).getPrice());
+//                Double dVat = dSub * Double.parseDouble(vat) / 100;
+//                Double dTotal = dSub + dVat;
+//
+//                bill_taxInvoice.setSubTotal(Math.round(dSub) + "");
+//                bill_taxInvoice.setTotal(Math.round(dTotal) + "");
+
 //            if (!m.getPrice().equals("")){
 //                bill_taxInvoice.setSubTotal(m.getPrice());
 //                Double d = Double.parseDouble(m.getPrice());
