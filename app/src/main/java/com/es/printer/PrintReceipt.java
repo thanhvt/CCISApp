@@ -291,7 +291,6 @@ public class PrintReceipt {
                             "\nTen KH: " + Utils.removeAccent(bill_taxInvoice.getCustomerName()) +
                             "\nDia chi: " + Utils.removeAccent(bill_taxInvoice.getAddress_Pay()) +
                             "\nMa KH: " + bill_taxInvoice.getCustomerCode() +
-                            "\nKy: " + bill_taxInvoice.getMonth() + "/" + bill_taxInvoice.getYear() +
                             "\nTu: " + (mThayDoi.getTuNgay() != null ? mThayDoi.getTuNgay() : "") +
                             "\nDen: " + (mThayDoi.getDenNgay() != null ? mThayDoi.getDenNgay() : ""));
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
