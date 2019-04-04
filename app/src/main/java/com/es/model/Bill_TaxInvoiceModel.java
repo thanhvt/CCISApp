@@ -98,10 +98,16 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
     @Column(name = "ServiceName")
     private String ServiceName;
 
+    @Column(name = "INDEX_THU")
+    private String INDEX_THU;
+
+    @Column(name = "KIEU")
+    private String KIEU;
+
     public Bill_TaxInvoiceModel() {
     }
 
-    public Bill_TaxInvoiceModel(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, double amount, int serviceTypeId, String serviceName) {
+    public Bill_TaxInvoiceModel(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, double amount, int serviceTypeId, String serviceName, String INDEX_THU, String KIEU) {
         TaxCode = taxCode;
         CustomerCode = customerCode;
         BankName = bankName;
@@ -132,6 +138,24 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
         Amount = amount;
         ServiceTypeId = serviceTypeId;
         ServiceName = serviceName;
+        this.INDEX_THU = INDEX_THU;
+        this.KIEU = KIEU;
+    }
+
+    public String getINDEX_THU() {
+        return INDEX_THU;
+    }
+
+    public void setINDEX_THU(String INDEX_THU) {
+        this.INDEX_THU = INDEX_THU;
+    }
+
+    public String getKIEU() {
+        return KIEU;
+    }
+
+    public void setKIEU(String KIEU) {
+        this.KIEU = KIEU;
     }
 
     public boolean isThuOffline() {

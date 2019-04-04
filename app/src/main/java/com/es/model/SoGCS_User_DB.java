@@ -18,9 +18,27 @@ public class SoGCS_User_DB extends Model implements Serializable {
     public String BookCode;
     @Column(name = "BookName")
     public String BookName;
-
+    @Column(name = "FigureBookId")
+    public int FigureBookId;
 
     public SoGCS_User_DB() {
+    }
+
+    public SoGCS_User_DB(int employeeId, String employeeCode, int userId, String bookCode, String bookName, int figureBookId) {
+        EmployeeId = employeeId;
+        EmployeeCode = employeeCode;
+        UserId = userId;
+        BookCode = bookCode;
+        BookName = bookName;
+        FigureBookId = figureBookId;
+    }
+
+    public int getFigureBookId() {
+        return FigureBookId;
+    }
+
+    public void setFigureBookId(int figureBookId) {
+        FigureBookId = figureBookId;
     }
 
     @Override
@@ -31,15 +49,8 @@ public class SoGCS_User_DB extends Model implements Serializable {
                 ", UserId=" + UserId +
                 ", BookCode='" + BookCode + '\'' +
                 ", BookName='" + BookName + '\'' +
+                ", FigureBookId=" + FigureBookId +
                 '}';
-    }
-
-    public SoGCS_User_DB(int employeeId, String employeeCode, int userId, String bookCode, String bookName) {
-        EmployeeId = employeeId;
-        EmployeeCode = employeeCode;
-        UserId = userId;
-        BookCode = bookCode;
-        BookName = bookName;
     }
 
     public int getEmployeeId() {

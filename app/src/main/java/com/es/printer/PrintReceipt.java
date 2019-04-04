@@ -334,7 +334,7 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("--|---|----|---------|----------");
             for (Bill_TaxInvoiceDetail_DB de : lstDetail) {
                 BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-                BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("NK|" +
+                BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(bill_taxInvoice.getKIEU() + "|" +
                         inThat(3, (de.getAmount() + "").length(), de.getAmount() + "") + "|" +
                         inThat(4, (de.getTerm() + "").length(), de.getTerm() + "") + "|" +
                         inThat(9, (de.getPrice() + "").length(), de.getPrice() + "") + "|" +

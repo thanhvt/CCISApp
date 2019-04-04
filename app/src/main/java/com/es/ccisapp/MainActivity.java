@@ -186,7 +186,8 @@ public class MainActivity extends AppCompatActivity
                                                         b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
                                                         b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
                                                         b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                                                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), false, b.getAmount(), b.getServiceTypeId(), b.getServiceName());
+                                                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), false, b.getAmount(), b.getServiceTypeId(), b.getServiceName(),
+                                                        b.getINDEX_THU(), b.getKIEU());
                                                 stt++;
                                                 b.setSTT(stt);
                                                 c.save();
@@ -454,7 +455,7 @@ public class MainActivity extends AppCompatActivity
                                 int stt = 0;
                                 String strIDs = "";
                                 for (SoGCS_User b : movies) {
-                                    SoGCS_User_DB c = new SoGCS_User_DB(b.EmployeeId, b.EmployeeCode, b.UserId, b.BookCode, b.BookName);
+                                    SoGCS_User_DB c = new SoGCS_User_DB(b.EmployeeId, b.EmployeeCode, b.UserId, b.BookCode, b.BookName, b.FigureBookId);
                                     c.save();
                                 }
 

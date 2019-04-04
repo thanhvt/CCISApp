@@ -223,7 +223,8 @@ public class TaxInvoiceDetailFragment extends Fragment {
                             taxInvoice.getBankName(), taxInvoice.getMonth(), taxInvoice.getSerialNumber(), taxInvoice.getYear(), taxInvoice.getCustomerId(), taxInvoice.getDepartmentId(),
                             taxInvoice.getTaxInvoiceAddress(), taxInvoice.getTaxInvoiceId(), taxInvoice.getIdDevice(), taxInvoice.getContractId(), taxInvoice.getFigureBookId(), taxInvoice.getSerialCode(),
                             taxInvoice.getCustomerName(), taxInvoice.getCustomerCode_Pay(), taxInvoice.getSubTotal(), taxInvoice.getAddress_Pay(), taxInvoice.getBankAccount(), taxInvoice.getVAT(),
-                            taxInvoice.getTaxRatio(), taxInvoice.getCustomerId_Pay(), taxInvoice.getBillType(), taxInvoice.getCustomerName_Pay(), taxInvoice.getTotal(), taxInvoice.isChecked(), true, taxInvoice.getAmount(), taxInvoice.getServiceTypeId(), taxInvoice.getServiceName());
+                            taxInvoice.getTaxRatio(), taxInvoice.getCustomerId_Pay(), taxInvoice.getBillType(), taxInvoice.getCustomerName_Pay(), taxInvoice.getTotal(), taxInvoice.isChecked(), true, taxInvoice.getAmount(), taxInvoice.getServiceTypeId(), taxInvoice.getServiceName(),
+                            taxInvoice.getINDEX_THU(), taxInvoice.getKIEU());
                     c.save();
                     Log.e(TAG + " insert ", "2");
                 }

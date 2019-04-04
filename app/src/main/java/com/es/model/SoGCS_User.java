@@ -16,8 +16,25 @@ public class SoGCS_User implements Serializable {
     public int UserId;
     public String BookCode;
     public String BookName;
-
+    public int FigureBookId;
     public SoGCS_User() {
+    }
+
+    public SoGCS_User(int employeeId, String employeeCode, int userId, String bookCode, String bookName, int figureBookId) {
+        EmployeeId = employeeId;
+        EmployeeCode = employeeCode;
+        UserId = userId;
+        BookCode = bookCode;
+        BookName = bookName;
+        FigureBookId = figureBookId;
+    }
+
+    public int getFigureBookId() {
+        return FigureBookId;
+    }
+
+    public void setFigureBookId(int figureBookId) {
+        FigureBookId = figureBookId;
     }
 
     @Override
@@ -28,15 +45,8 @@ public class SoGCS_User implements Serializable {
                 ", UserId=" + UserId +
                 ", BookCode='" + BookCode + '\'' +
                 ", BookName='" + BookName + '\'' +
+                ", FigureBookId=" + FigureBookId +
                 '}';
-    }
-
-    public SoGCS_User(int employeeId, String employeeCode, int userId, String bookCode, String bookName) {
-        EmployeeId = employeeId;
-        EmployeeCode = employeeCode;
-        UserId = userId;
-        BookCode = bookCode;
-        BookName = bookName;
     }
 
     public int getEmployeeId() {

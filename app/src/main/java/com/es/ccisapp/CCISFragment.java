@@ -16,7 +16,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.activeandroid.query.Delete;
@@ -26,6 +29,7 @@ import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Bill_TaxInvoiceModel;
 import com.es.model.Mobile_Adjust_DB;
+import com.es.model.SoGCS_User_DB;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 import com.es.utils.CustomCallBack;
@@ -58,7 +62,10 @@ public class CCISFragment extends Fragment {
     TextView txtTienThu;
     @BindView(R.id.txtTienCoVAT)
     TextView txtTienCoVAT;
-
+    @BindView(R.id.spnSo)
+    Spinner spnSo;
+    List<String> listStrSo;
+    List<SoGCS_User_DB> info;
 
     private void retrieveExtras() {
         if (getArguments() != null) {
@@ -79,6 +86,50 @@ public class CCISFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         retrieveExtras();
+
+        listStrSo = new ArrayList<>();
+        info = new Select().all().from(SoGCS_User_DB.class).execute();
+        SoGCS_User_DB x = new SoGCS_User_DB(0, "", 0, "", "Lọc theo sổ", 0);
+        listStrSo.add("Lọc theo sổ");
+        for (SoGCS_User_DB item : info) {
+            listStrSo.add(item.getBookCode() + ":" + item.getBookName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, listStrSo);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        spnSo.setAdapter(adapter);
+
+        spnSo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i > 0) {
+                    List<Bill_TaxInvoice> lstTmp = new ArrayList<Bill_TaxInvoice>();
+                    for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
+                        for (SoGCS_User_DB item : info) {
+                            if (item.getBookCode().equals(spnSo.getSelectedItem().toString().split(":")[0])) {
+                                if (bill.getFigureBookId() == item.getFigureBookId()) {
+                                    lstTmp.add(bill);
+                                }
+                            }
+                        }
+                    }
+                    Toasty.info(getActivity(), "Lọc ra được " + lstTmp.size() + " khách hàng", Toasty.LENGTH_LONG, true).show();
+                    taxInvoiceAdapter = new TaxInvoiceAdapter(lstTmp, R.layout.list_taxinvoice, getContext());
+                    recyclerView.setAdapter(taxInvoiceAdapter);
+                    taxInvoiceAdapter.notifyDataSetChanged();
+                } else {
+                    taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
+                    recyclerView.setAdapter(taxInvoiceAdapter);
+                    taxInvoiceAdapter.notifyDataSetChanged();
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -107,7 +158,7 @@ public class CCISFragment extends Fragment {
                         b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(), "1",
                         b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
                         b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), b.isThuOffline(), stt, b.getAmount(), b.getServiceTypeId(), b.getServiceName());
+                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), b.isThuOffline(), stt, b.getAmount(), b.getServiceTypeId(), b.getServiceName(), b.getINDEX_THU(), b.getKIEU());
                 stt++;
                 x.setSTT(stt);
                 lstTaxInvoiceData.add(x);
@@ -263,7 +314,7 @@ public class CCISFragment extends Fragment {
                         b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(), "1",
                         b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
                         b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), b.isThuOffline(), stt, b.getAmount(), b.getServiceTypeId(), b.getServiceName()));
+                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), b.isThuOffline(), stt, b.getAmount(), b.getServiceTypeId(), b.getServiceName(), b.getINDEX_THU(), b.getKIEU()));
             }
             taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
             recyclerView.setAdapter(taxInvoiceAdapter);
@@ -403,7 +454,7 @@ public class CCISFragment extends Fragment {
                                                 b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
                                                 b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
                                                 b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                                                b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), true, b.getAmount(), b.getServiceTypeId(), b.getServiceName());
+                                                b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), true, b.getAmount(), b.getServiceTypeId(), b.getServiceName(), b.getINDEX_THU(), b.getKIEU());
                                         c.save();
                                         Log.e(TAG + " insert ", "2");
                                     }

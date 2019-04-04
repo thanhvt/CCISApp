@@ -48,6 +48,12 @@
             android:textColor="#1500FF"
             android:layout_toRightOf="@id/txtSoKH"
             android:text="Tiền thu: 999.999.999 VNĐ" />
+
+        <Spinner
+            android:id="@+id/spnSo"
+            android:layout_width="match_parent"
+            android:tooltipText="Lọc theo sổ"
+            android:layout_height="50dp" />
     </LinearLayout>
     <TextView
         android:id="@+id/empty_view"

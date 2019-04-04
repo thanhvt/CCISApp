@@ -145,6 +145,7 @@ public class AdjustInformationsFragment extends Fragment {
             edTenKH.setText(taxInvoice.getCustomerName());
             edSL.setText(taxInvoice.getAmount() + "");
             edDonGia.setText(taxInvoice.getSubTotal());
+            edSTT.setText(taxInvoice.getINDEX_THU());
             if (tmp.size() > 0) {
                 edTuNgay.setText(tmp.get(0).TuNgay);
                 edDenNgay.setText(tmp.get(0).DenNgay);
