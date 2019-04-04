@@ -75,6 +75,10 @@ public class Bill_TaxInvoice implements Serializable {
 
     private String ServiceName;
 
+    private String INDEX;
+
+    private String KIEU;
+
 //    i.Amount,
 //    i.ServiceTypeId,
 //    i.ServiceName
@@ -115,6 +119,22 @@ public class Bill_TaxInvoice implements Serializable {
         Amount = amount;
         ServiceTypeId = serviceTypeId;
         ServiceName = serviceName;
+    }
+
+    public String getINDEX() {
+        return INDEX;
+    }
+
+    public void setINDEX(String INDEX) {
+        this.INDEX = INDEX;
+    }
+
+    public String getKIEU() {
+        return KIEU;
+    }
+
+    public void setKIEU(String KIEU) {
+        this.KIEU = KIEU;
     }
 
     public int getSTT() {
