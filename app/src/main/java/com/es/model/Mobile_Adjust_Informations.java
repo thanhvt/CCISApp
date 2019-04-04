@@ -1,6 +1,7 @@
 package com.es.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Mobile_Adjust_Informations implements Serializable {
     private boolean Status;
@@ -29,9 +30,9 @@ public class Mobile_Adjust_Informations implements Serializable {
 
     private String FigureBookId;
 
-    private String StartDate;
+    private Date StartDate;
 
-    private String EndDate;
+    private Date EndDate;
 
     private String SubTotal;
 
@@ -50,7 +51,7 @@ public class Mobile_Adjust_Informations implements Serializable {
 //    public Nullable<int> CustomerNew { get; set; }
 
 
-    public Mobile_Adjust_Informations(boolean status, String index, String type, String price, String customerID, String customerAdd, String departmentId, String employeeCode, String customerName, String $id, String amout, String adjustID, String figureBookId, String startDate, String endDate, String subTotal, String tax, String total, String customerNew) {
+    public Mobile_Adjust_Informations(boolean status, String index, String type, String price, String customerID, String customerAdd, String departmentId, String employeeCode, String customerName, String $id, String amout, String adjustID, String figureBookId, Date startDate, Date endDate, String subTotal, String tax, String total, String customerNew) {
         Status = status;
         Index = index;
         Type = type;
@@ -84,19 +85,19 @@ public class Mobile_Adjust_Informations implements Serializable {
         FigureBookId = figureBookId;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return StartDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         StartDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return EndDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         EndDate = endDate;
     }
 

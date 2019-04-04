@@ -12,6 +12,8 @@ import com.es.ccisapp.R;
 import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -35,6 +37,22 @@ public class Utils {
         String strX = pattern.matcher(temp).replaceAll("");
         strX = strX.replaceAll("Đ", "D").replace("đ", "");
         return strX;
+    }
+
+    public static Date parseDate(String sDate) {
+        Date dateReturn = null;
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                dateReturn = df.parse(sDate);
+            } catch (Exception ex) {
+                df = new SimpleDateFormat("MMM d,yyyy HH:mm:ss aaa");
+                dateReturn = df.parse(sDate);
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+        return dateReturn;
     }
 
     public static double round(double value, int places) {

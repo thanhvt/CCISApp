@@ -22,6 +22,7 @@ import com.es.model.Mobile_Adjust_DB;
 import com.es.model.Mobile_Adjust_Informations;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
+import com.es.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -274,8 +275,8 @@ public class AdjustInformationsFragment extends Fragment {
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
 
-        m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
-        m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
+        m.setStartDate(edTuNgay.getText() != null ? Utils.parseDate(edTuNgay.getText().toString()) : null);
+        m.setEndDate(edDenNgay.getText() != null ? Utils.parseDate(edDenNgay.getText().toString()) : null);
         m.setFigureBookId(taxInvoice.getFigureBookId() + "");
         m.setTax(taxInvoice.getTaxRatio());
         m.setCustomerNew("-1");

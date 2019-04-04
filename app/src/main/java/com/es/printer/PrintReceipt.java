@@ -227,6 +227,9 @@ public class PrintReceipt {
                 bill_taxInvoice.setAddress_Pay(mThayDoi.getCustomerAdd());
                 bill_taxInvoice.setAmount(Double.parseDouble(mThayDoi.getAmout()));
 
+                for (Bill_TaxInvoiceDetail_DB item : lstDetail) {
+                    item.setAmount(Double.parseDouble(mThayDoi.getAmout()));
+                }
                 String vat = bill_taxInvoice.getTaxRatio();
                 BigDecimal a = new BigDecimal(mThayDoi.getAmout());
                 BigDecimal b = new BigDecimal(mThayDoi.getPrice());
@@ -331,7 +334,7 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("--|---|----|---------|----------");
             for (Bill_TaxInvoiceDetail_DB de : lstDetail) {
                 BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-                BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Ho|" +
+                BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("NK|" +
                         inThat(3, (de.getAmount() + "").length(), de.getAmount() + "") + "|" +
                         inThat(4, (de.getTerm() + "").length(), de.getTerm() + "") + "|" +
                         inThat(9, (de.getPrice() + "").length(), de.getPrice() + "") + "|" +

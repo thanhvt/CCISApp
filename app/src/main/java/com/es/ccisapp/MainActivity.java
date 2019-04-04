@@ -35,6 +35,7 @@ import com.es.model.SoGCS_User_DB;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 import com.es.utils.CustomCallBack;
+import com.es.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -277,7 +278,7 @@ public class MainActivity extends AppCompatActivity
                 for (Mobile_Adjust_DB mo : tmp) {
                     final Mobile_Adjust_Informations mobile = new Mobile_Adjust_Informations(mo.getStatus(), mo.getIndexSo(), mo.getType(), mo.getPrice(), mo.getCustomerID(), mo.getCustomerAdd(),
                             mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(),
-                            "1", mo.getAmout(), mo.getAdjustID(), mo.getFigureBookId(), mo.getStartDate(), mo.getEndDate(), mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1");
+                            "1", mo.getAmout(), mo.getAdjustID(), mo.getFigureBookId(), Utils.parseDate(mo.getStartDate()), Utils.parseDate(mo.getEndDate()), mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1");
                     //, String amout, String adjustID, String figureBookId, String startDate, String endDate, String subTotal, String tax, String total, String customerNew) {
                     lstInsert.add(mobile);
                     try {
