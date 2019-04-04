@@ -340,6 +340,8 @@ public class MainActivity extends AppCompatActivity
                         List<Bill_TaxInvoiceModel> bill = new Delete().from(Bill_TaxInvoiceModel.class).execute();
                         List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).execute();
                         new Delete().from(Bill_TaxInvoiceDetail_DB.class).execute();
+                        new Delete().from(SoGCS_User_DB.class).execute();
+                        new Delete().from(DonGia_DB.class).execute();
                         if (bill == null && info == null) {
                             Toasty.success(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thành công !", Toasty.LENGTH_LONG, true).show();
                             switchFragment(buildFragment_CCIS(), "ABC");
@@ -397,12 +399,18 @@ public class MainActivity extends AppCompatActivity
                             new Delete().from(DonGia_DB.class).execute();
                             ActiveAndroid.beginTransaction();
                             try {
+
+                                // int priceId, String occupationsGroupCode, String description, String time, double priceRound, double price
+                                DonGia_DB x = new DonGia_DB(-1, "", "---", "", 0, 0);
+                                x.save();
+
                                 for (DonGia b : movies) {
-                                    DonGia_DB c = new DonGia_DB(b.PriceId, b.OccupationsGroupCode, b.Description, b.Time, b.PriceRound);
+                                    DonGia_DB c = new DonGia_DB(b.PriceId, b.OccupationsGroupCode, b.Description, b.Time, b.PriceRound, b.Price);
                                     c.save();
                                 }
 
                                 ActiveAndroid.setTransactionSuccessful();
+                                Toasty.success(getApplicationContext(), "Lấy danh mục " + movies.size() + " đơn giá thành công !", Toasty.LENGTH_LONG, true).show();
                             } finally {
                                 ActiveAndroid.endTransaction();
                             }
@@ -450,6 +458,7 @@ public class MainActivity extends AppCompatActivity
                                 }
 
                                 ActiveAndroid.setTransactionSuccessful();
+                                Toasty.success(getApplicationContext(), "Lấy danh mục " + movies.size() + " sổ thành công !", Toasty.LENGTH_LONG, true).show();
                             } finally {
                                 ActiveAndroid.endTransaction();
                             }

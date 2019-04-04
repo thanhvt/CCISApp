@@ -24,16 +24,28 @@ public class DonGia_DB extends Model implements Serializable {
     @Column(name = "PriceRound")
     public double PriceRound;
 
+    @Column(name = "Price")
+    public double Price;
+
     public DonGia_DB() {
 
     }
 
-    public DonGia_DB(int priceId, String occupationsGroupCode, String description, String time, double priceRound) {
+    public double getPrice() {
+        return Price;
+    }
+
+    public void setPrice(double price) {
+        Price = price;
+    }
+
+    public DonGia_DB(int priceId, String occupationsGroupCode, String description, String time, double priceRound, double price) {
         PriceId = priceId;
         OccupationsGroupCode = occupationsGroupCode;
         Description = description;
         Time = time;
         PriceRound = priceRound;
+        Price = price;
     }
 
     @Override
@@ -44,6 +56,7 @@ public class DonGia_DB extends Model implements Serializable {
                 ", Description='" + Description + '\'' +
                 ", Time='" + Time + '\'' +
                 ", PriceRound=" + PriceRound +
+                ", Price=" + Price +
                 '}';
     }
 

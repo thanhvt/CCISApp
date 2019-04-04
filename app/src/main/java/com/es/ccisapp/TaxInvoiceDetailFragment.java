@@ -23,6 +23,8 @@ import com.es.network.RetrofitInstance;
 import com.es.printer.BluetoothPrinterActivity;
 import com.es.utils.CustomCallBack;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
@@ -124,13 +126,30 @@ public class TaxInvoiceDetailFragment extends Fragment {
 //                    }
                     String vat = taxInvoice.getTaxRatio();
 
-                    Double dSub = Double.parseDouble(lstDB.get(lstDB.size() - 1).getPrice());
-                    Double dVat = dSub * Double.parseDouble(vat) / 100;
-                    Double dTotal = dSub + dVat;
+                    // Double dSub = Double.parseDouble(lstDB.get(lstDB.size() - 1).getPrice());
+                    //Double dVat = dSub * Double.parseDouble(vat) / 100;
+                    //Double dTotal = dSub + dVat;
 
-                    txtVAT.setText(formatNumber(Math.round(dVat)) + " VNĐ");
-                    txtSubTotal.setText(formatNumber(Math.round(dSub)) + " VNĐ");
-                    txtTotal.setText(formatNumber(Math.round(dTotal)) + " VNĐ");
+
+                    BigDecimal a = new BigDecimal(taxInvoice.getAmount());
+                    BigDecimal b = new BigDecimal(m.getPrice());
+                    BigDecimal c = new BigDecimal(tmp.get(0).getTerm());
+                    BigDecimal dSub = a.multiply(b).multiply(c);
+                    dSub = dSub.setScale(2, RoundingMode.CEILING);
+                    BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
+                    dVat = dVat.setScale(2, RoundingMode.CEILING);
+                    BigDecimal dTotal = dSub.add(dVat);
+                    m.setSubTotal(dSub + "");
+                    m.setTotal(dTotal + "");
+
+//                    txtVAT.setText(formatNumber(Math.round(dVat)) + " VNĐ");
+//                    txtSubTotal.setText(formatNumber(Math.round(dSub)) + " VNĐ");
+//                    txtTotal.setText(formatNumber(Math.round(dTotal)) + " VNĐ");
+
+                    txtVAT.setText(formatNumber(dVat.longValue()) + " VNĐ");
+                    txtSubTotal.setText(formatNumber(dSub.longValue()) + " VNĐ");
+                    txtTotal.setText(formatNumber(dTotal.longValue()) + " VNĐ");
+
                     txtTuDen.setText(m.getStartDate() + " - " + m.getEndDate());
 
                     btnInHD.setText("IN HÓA ĐƠN (đã điều chỉnh t.ttin)");

@@ -9,16 +9,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail_DB;
+import com.es.model.DonGia_DB;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.Mobile_Adjust_Informations;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -57,6 +64,9 @@ public class AdjustInformationsFragment extends Fragment {
     EditText edTuNgay;
     @BindView(R.id.edDenNgay)
     EditText edDenNgay;
+    @BindView(R.id.spnDmucDonGia)
+    Spinner spnDmucDonGia;
+
     // constant
     String TAG = "AdjustInformationsFragment";
 
@@ -85,14 +95,36 @@ public class AdjustInformationsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         retrieveExtras();
+
+        // DonGia{PriceId=1, OccupationsGroupCode='HDAN', Description='HDAN - Hộ dân', Time='KT', PriceRound=6000.0, Price=5454.55}
+        List<String> list = new ArrayList<>();
+        List<DonGia_DB> info = new Select().all().from(DonGia_DB.class).execute();
+        for (DonGia_DB item : info) {
+            list.add(item.getDescription() + ": " + item.getPrice());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        spnDmucDonGia.setAdapter(adapter);
+        spnDmucDonGia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i > 0) {
+                    edDonGia.setText(spnDmucDonGia.getSelectedItem().toString().substring(spnDmucDonGia.getSelectedItem().toString().indexOf(": ") + 2));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -125,6 +157,57 @@ public class AdjustInformationsFragment extends Fragment {
     public void btnFab() {
         btnAdjOffline();
     }
+
+    @OnClick(R.id.btnCopy)
+    public void btnCopy() {
+        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+        String strEmployeeCode = pref.getString("EMPLOYEECODE", "");
+
+        List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+
+        int ran = new Random().nextInt();
+        List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
+        while (tmp.size() > 0) {
+            ran = new Random().nextInt();
+            tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
+        }
+
+        Mobile_Adjust_DB m = new Mobile_Adjust_DB();
+        m.setAdjustID(ran + "");
+        m.setAmout(edSL.getText().toString());
+        m.setCustomerAdd(edDC.getText().toString());
+        m.setCustomerID(taxInvoice.getCustomerId());
+        m.setCustomerName(edTenKH.getText().toString());
+        m.setEmployeeCode(strEmployeeCode);
+        m.setIndexSo(edSTT.getText().toString());
+        m.setPrice(edDonGia.getText().toString());
+        m.setType("0");
+        m.setStatus(false);
+        m.setDepartmentId(taxInvoice.getDepartmentId());
+        m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
+        m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
+        m.setFigureBookId(taxInvoice.getFigureBookId() + "");
+        m.setTax(taxInvoice.getTaxRatio());
+        m.setCustomerNew(taxInvoice.getCustomerId());
+
+        String vat = taxInvoice.getTaxRatio();
+        BigDecimal a = new BigDecimal(edSL.getText().toString());
+        BigDecimal b = new BigDecimal(edDonGia.getText().toString());
+        BigDecimal c = new BigDecimal(taxInvoiceDetailDbList.get(0).getTerm());
+        BigDecimal dSub = a.multiply(b).multiply(c);
+        dSub = dSub.setScale(2, RoundingMode.CEILING);
+        BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
+        dVat = dVat.setScale(2, RoundingMode.CEILING);
+        BigDecimal dTotal = dSub.add(dVat);
+        m.setSubTotal(dSub + "");
+        m.setTotal(dTotal + "");
+
+        m.save();
+
+        Toasty.success(getActivity(), "Đã sao chép thông tin offline KH " + taxInvoice.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
+        Log.e("Adjust_Informations", m.toString());
+    }
+
     @OnClick(R.id.btnAdjOffline)
     public void btnAdjOffline() {
         SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
@@ -158,28 +241,17 @@ public class AdjustInformationsFragment extends Fragment {
         m.setCustomerNew("-1");
 
         String vat = taxInvoice.getTaxRatio();
-        Double dSub = Double.parseDouble(m.getAmout()) * Double.parseDouble(m.getPrice()) * taxInvoiceDetailDbList.get(0).getTerm();
-        Double dVat = dSub * Double.parseDouble(vat) / 100;
-        Double dTotal = dSub + dVat;
+        BigDecimal a = new BigDecimal(edSL.getText().toString());
+        BigDecimal b = new BigDecimal(edDonGia.getText().toString());
+        BigDecimal c = new BigDecimal(taxInvoiceDetailDbList.get(0).getTerm());
+        BigDecimal dSub = a.multiply(b).multiply(c);
+        dSub = dSub.setScale(2, RoundingMode.CEILING);
+        BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
+        dVat = dVat.setScale(2, RoundingMode.CEILING);
+        BigDecimal dTotal = dSub.add(dVat);
         m.setSubTotal(dSub + "");
         m.setTotal(dTotal + "");
 
-        /**
-         *    @Column(name = "FigureBookId")
-         *     private String FigureBookId;
-         *
-         *     @Column(name = "SubTotal")
-         *     private String SubTotal;
-         *
-         *     @Column(name = "Tax")
-         *     private String Tax;
-         *
-         *     @Column(name = "Total")
-         *     private String Total;
-         *
-         *     @Column(name = "CustomerNew")
-         *     private String CustomerNew;
-         */
         m.save();
 
         Toasty.success(getActivity(), "Lưu thông tin offline thành công. Duyệt thông tin để đẩy dữ liệu lên Server !", Toasty.LENGTH_LONG, true).show();
@@ -209,12 +281,19 @@ public class AdjustInformationsFragment extends Fragment {
         m.setCustomerNew("-1");
 
         List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+
         String vat = taxInvoice.getTaxRatio();
-        Double dSub = Double.parseDouble(m.getAmout()) * Double.parseDouble(m.getPrice()) * taxInvoiceDetailDbList.get(0).getTerm();
-        Double dVat = dSub * Double.parseDouble(vat) / 100;
-        Double dTotal = dSub + dVat;
+        BigDecimal a = new BigDecimal(edSL.getText().toString());
+        BigDecimal b = new BigDecimal(edDonGia.getText().toString());
+        BigDecimal c = new BigDecimal(taxInvoiceDetailDbList.get(0).getTerm());
+        BigDecimal dSub = a.multiply(b).multiply(c);
+        dSub = dSub.setScale(2, RoundingMode.CEILING);
+        BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
+        dVat = dVat.setScale(2, RoundingMode.CEILING);
+        BigDecimal dTotal = dSub.add(dVat);
         m.setSubTotal(dSub + "");
         m.setTotal(dTotal + "");
+
         Log.e("Adjust_Informations", m.toString());
         insertData(m);
     }

@@ -9,17 +9,28 @@ public class DonGia implements Serializable {
     public String Description;
     public String Time;
     public double PriceRound;
+    public double Price;
+
 
     public DonGia() {
 
     }
 
-    public DonGia(int priceId, String occupationsGroupCode, String description, String time, double priceRound) {
+    public DonGia(int priceId, String occupationsGroupCode, String description, String time, double priceRound, double price) {
         PriceId = priceId;
         OccupationsGroupCode = occupationsGroupCode;
         Description = description;
         Time = time;
         PriceRound = priceRound;
+        Price = price;
+    }
+
+    public double getPrice() {
+        return Price;
+    }
+
+    public void setPrice(double price) {
+        Price = price;
     }
 
     @Override
@@ -30,6 +41,7 @@ public class DonGia implements Serializable {
                 ", Description='" + Description + '\'' +
                 ", Time='" + Time + '\'' +
                 ", PriceRound=" + PriceRound +
+                ", Price=" + Price +
                 '}';
     }
 

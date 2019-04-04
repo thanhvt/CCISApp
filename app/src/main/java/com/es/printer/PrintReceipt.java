@@ -16,6 +16,8 @@ import com.es.model.Mobile_Adjust_DB;
 import com.es.model.SalesModel;
 import com.es.utils.Utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -220,10 +222,22 @@ public class PrintReceipt {
             Mobile_Adjust_DB mThayDoi = new Mobile_Adjust_DB();
             List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID = ?", bill_taxInvoice.getCustomerId()).execute();
             if (lstDB != null && lstDB.size() > 0) {
-                mThayDoi = lstDB.get(0);
+                mThayDoi = lstDB.get(lstDB.size() - 1); // lstDB.get(0);
                 bill_taxInvoice.setCustomerName(mThayDoi.getCustomerName());
                 bill_taxInvoice.setAddress_Pay(mThayDoi.getCustomerAdd());
                 bill_taxInvoice.setAmount(Double.parseDouble(mThayDoi.getAmout()));
+
+                String vat = bill_taxInvoice.getTaxRatio();
+                BigDecimal a = new BigDecimal(mThayDoi.getAmout());
+                BigDecimal b = new BigDecimal(mThayDoi.getPrice());
+                BigDecimal c = new BigDecimal(lstDetail.get(0).getTerm());
+                BigDecimal dSub = a.multiply(b).multiply(c);
+                dSub = dSub.setScale(2, RoundingMode.CEILING);
+                BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
+                dVat = dVat.setScale(2, RoundingMode.CEILING);
+                BigDecimal dTotal = dSub.add(dVat);
+                bill_taxInvoice.setSubTotal(dSub + "");
+                bill_taxInvoice.setTotal(dTotal + "");
 
 //                String vat = bill_taxInvoice.getTaxRatio();
 //

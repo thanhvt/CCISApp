@@ -45,21 +45,41 @@
                 android:hint="Địa chỉ"
                 android:inputType="textPersonName" />
 
-            <TextView
-                android:id="@+id/textView42"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nhân khẩu"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView42"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nhân khẩu"
+                    android:layout_weight="1"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edSL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:layout_weight="1"
+                    android:hint="Số lượng mới"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/textView52"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Danh mục đơn giá"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/edSL"
+            <Spinner
+                android:id="@+id/spnDmucDonGia"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Số lượng mới"
-                android:inputType="numberDecimal" />
-
+                android:layout_height="50dp" />
             <TextView
                 android:id="@+id/textView46"
                 android:layout_width="match_parent"
@@ -73,28 +93,29 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="numberDecimal" />
-
-            <TextView
-                android:id="@+id/textView50"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Số theo lộ trình đi thu" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/textView50"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:text="Số theo lộ trình đi thu" />
+
                 <EditText
                     android:id="@+id/edSTT"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="number"
                     android:text="1" />
             </LinearLayout>
+
 
             <TextView
                 android:id="@+id/textView10"
@@ -123,69 +144,39 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/commit"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnAdjOffline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Lưu lại offline" />
+
+                <Button
+                    android:id="@+id/btnAdjInformation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Đẩy lên Server" />
+
+                <Button
+                    android:id="@+id/btnCopy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sao chép KH" />
+            </LinearLayout>
         </LinearLayout>
+
+
     </ScrollView>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/scroll"
-        android:id="@+id/thaydoi"
-        android:orientation="horizontal">
-
-        <!--<RadioGroup-->
-        <!--android:id="@+id/rgTN"-->
-        <!--android:layout_margin="10dp"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-
-        <!--<RadioButton-->
-        <!--android:id="@+id/rdTT"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="1"-->
-        <!--android:checked="true"-->
-        <!--android:text="Tiếp nhận thông thường" />-->
-
-        <!--<RadioButton-->
-        <!--android:id="@+id/rdDC"-->
-        <!--android:layout_weight="1"-->
-        <!--android:text="Tiếp nhận, để điều chỉnh hóa đơn"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content" />-->
-
-        <!--<RadioButton-->
-        <!--android:id="@+id/rdDCHD"-->
-        <!--android:layout_weight="1"-->
-        <!--android:text="Tiếp nhận, đã điều chỉnh hóa đơn"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content" />-->
-        <!--</RadioGroup>-->
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/thaydoi"
-        android:id="@+id/commit"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnAdjOffline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Lưu lại offline" />
-
-        <Button
-            android:id="@+id/btnAdjInformation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Đẩy lên Server" />
-    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -200,3 +191,13 @@
 
 
 </RelativeLayout>
+
+    <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_below="@+id/scroll"--><!--android:id="@+id/thaydoi"--><!--android:orientation="horizontal">-->
+
+    <!--<RadioGroup--><!--android:id="@+id/rgTN"--><!--android:layout_margin="10dp"--><!--android:orientation="horizontal"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content">-->
+
+    <!--<RadioButton--><!--android:id="@+id/rdTT"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:layout_weight="1"--><!--android:checked="true"--><!--android:text="Tiếp nhận thông thường" />-->
+
+    <!--<RadioButton--><!--android:id="@+id/rdDC"--><!--android:layout_weight="1"--><!--android:text="Tiếp nhận, để điều chỉnh hóa đơn"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content" />-->
+
+    <!--<RadioButton--><!--android:id="@+id/rdDCHD"--><!--android:layout_weight="1"--><!--android:text="Tiếp nhận, đã điều chỉnh hóa đơn"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content" />--><!--</RadioGroup>--><!--</LinearLayout>-->
