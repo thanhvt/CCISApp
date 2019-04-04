@@ -131,7 +131,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                     txtVAT.setText(formatNumber(Math.round(dVat)) + " VNĐ");
                     txtSubTotal.setText(formatNumber(Math.round(dSub)) + " VNĐ");
                     txtTotal.setText(formatNumber(Math.round(dTotal)) + " VNĐ");
-                    txtTuDen.setText(m.getTuNgay() + " - " + m.getDenNgay());
+                    txtTuDen.setText(m.getStartDate() + " - " + m.getEndDate());
 
                     btnInHD.setText("IN HÓA ĐƠN (đã điều chỉnh t.ttin)");
                 } else {

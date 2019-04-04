@@ -231,8 +231,8 @@ public class PrintReceipt {
 
             } else {
 //                List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
-                mThayDoi.setTuNgay(lstDetail.get(0).TuNgay);
-                mThayDoi.setDenNgay(lstDetail.get(0).DenNgay);
+                mThayDoi.setStartDate(lstDetail.get(0).TuNgay);
+                mThayDoi.setEndDate(lstDetail.get(0).DenNgay);
             }
             Log.e(TAG, bill_taxInvoice.toString());
             if (BluetoothPrinterActivity.BLUETOOTH_PRINTER.IsNoConnection()) {
@@ -291,8 +291,8 @@ public class PrintReceipt {
                             "\nTen KH: " + Utils.removeAccent(bill_taxInvoice.getCustomerName()) +
                             "\nDia chi: " + Utils.removeAccent(bill_taxInvoice.getAddress_Pay()) +
                             "\nMa KH: " + bill_taxInvoice.getCustomerCode() +
-                            "\nTu: " + (mThayDoi.getTuNgay() != null ? mThayDoi.getTuNgay() : "") +
-                            "\nDen: " + (mThayDoi.getDenNgay() != null ? mThayDoi.getDenNgay() : ""));
+                            "\nTu: " + (mThayDoi.getStartDate() != null ? mThayDoi.getStartDate() : "") +
+                            "\nDen: " + (mThayDoi.getEndDate() != null ? mThayDoi.getEndDate() : ""));
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();

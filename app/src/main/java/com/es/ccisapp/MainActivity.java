@@ -26,6 +26,8 @@ import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail;
 import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Bill_TaxInvoiceModel;
+import com.es.model.DonGia;
+import com.es.model.DonGia_DB;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.Mobile_Adjust_Informations;
 import com.es.model.SoGCS_User;
@@ -274,7 +276,9 @@ public class MainActivity extends AppCompatActivity
             if (tmp.size() > 0) {
                 for (Mobile_Adjust_DB mo : tmp) {
                     final Mobile_Adjust_Informations mobile = new Mobile_Adjust_Informations(mo.getStatus(), mo.getIndexSo(), mo.getType(), mo.getPrice(), mo.getCustomerID(), mo.getCustomerAdd(),
-                            mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(), "1", mo.getAmout(), mo.getAdjustID());
+                            mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(),
+                            "1", mo.getAmout(), mo.getAdjustID(), mo.getFigureBookId(), mo.getStartDate(), mo.getEndDate(), mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1");
+                    //, String amout, String adjustID, String figureBookId, String startDate, String endDate, String subTotal, String tax, String total, String customerNew) {
                     lstInsert.add(mobile);
                     try {
                         Call<String> call = apiService.Post(mobile);
@@ -379,6 +383,51 @@ public class MainActivity extends AppCompatActivity
             });
             AlertDialog alert = builder.create();
             alert.show();
+        } else if (id == R.id.nav_dongia) {
+            Call<List<DonGia>> call = apiService.getDonGia();
+
+            call.enqueue(new CustomCallBack<List<DonGia>>(mContext, "Đang lấy danh mục đơn giá từ Server") {
+                @Override
+                public void onResponse(Call<List<DonGia>> call, Response<List<DonGia>> response) {
+
+                    if (response != null && response.body() != null) {
+                        List<DonGia> movies = response.body();
+                        if (movies.size() > 0) {
+                            Log.e(TAG, movies.size() + " -- " + movies.get(0).toString());
+                            new Delete().from(DonGia_DB.class).execute();
+                            ActiveAndroid.beginTransaction();
+                            try {
+                                for (DonGia b : movies) {
+                                    DonGia_DB c = new DonGia_DB(b.PriceId, b.OccupationsGroupCode, b.Description, b.Time, b.PriceRound);
+                                    c.save();
+                                }
+
+                                ActiveAndroid.setTransactionSuccessful();
+                            } finally {
+                                ActiveAndroid.endTransaction();
+                            }
+                        } else {
+                            Toasty.warning(getApplicationContext(), "Không có dữ liệu đơn giá !", Toasty.LENGTH_LONG, true).show();
+                        }
+                    } else {
+                        Log.e(TAG, response.message());
+                        Toasty.error(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
+                    }
+                    this.mProgressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<List<DonGia>> call, Throwable t) {
+                    // Log error here since request failed
+                    Log.e(TAG, t.getMessage());
+                    if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+                        Toasty.error(getApplicationContext(), "Không có dữ liệu đơn giá. Đề nghị kiểm tra lại !", Toasty.LENGTH_LONG, true).show();
+                    } else {
+                        Toasty.error(getApplicationContext(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
+                    }
+                    this.mProgressDialog.dismiss();
+                }
+            });
         } else if (id == R.id.nav_so) {
             Call<List<SoGCS_User>> call = apiService.getSo_User(strUserID);
 

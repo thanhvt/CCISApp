@@ -41,11 +41,26 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
     @Column(name = "AdjustID")
     private String AdjustID;
 
-    @Column(name = "TuNgay")
-    private String TuNgay;
+    @Column(name = "StartDate")
+    private String StartDate;
 
-    @Column(name = "DenNgay")
-    private String DenNgay;
+    @Column(name = "EndDate")
+    private String EndDate;
+
+    @Column(name = "FigureBookId")
+    private String FigureBookId;
+
+    @Column(name = "SubTotal")
+    private String SubTotal;
+
+    @Column(name = "Tax")
+    private String Tax;
+
+    @Column(name = "Total")
+    private String Total;
+
+    @Column(name = "CustomerNew")
+    private String CustomerNew;
 
     public Mobile_Adjust_DB() {
     }
@@ -64,20 +79,64 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
         AdjustID = adjustID;
     }
 
-    public String getTuNgay() {
-        return TuNgay;
+    public boolean isStatus() {
+        return Status;
     }
 
-    public void setTuNgay(String tuNgay) {
-        TuNgay = tuNgay;
+    public String getFigureBookId() {
+        return FigureBookId;
     }
 
-    public String getDenNgay() {
-        return DenNgay;
+    public void setFigureBookId(String figureBookId) {
+        FigureBookId = figureBookId;
     }
 
-    public void setDenNgay(String denNgay) {
-        DenNgay = denNgay;
+    public String getSubTotal() {
+        return SubTotal;
+    }
+
+    public void setSubTotal(String subTotal) {
+        SubTotal = subTotal;
+    }
+
+    public String getTax() {
+        return Tax;
+    }
+
+    public void setTax(String tax) {
+        Tax = tax;
+    }
+
+    public String getTotal() {
+        return Total;
+    }
+
+    public void setTotal(String total) {
+        Total = total;
+    }
+
+    public String getCustomerNew() {
+        return CustomerNew;
+    }
+
+    public void setCustomerNew(String customerNew) {
+        CustomerNew = customerNew;
+    }
+
+    public String getStartDate() {
+        return StartDate;
+    }
+
+    public void setStartDate(String startDate) {
+        StartDate = startDate;
+    }
+
+    public String getEndDate() {
+        return EndDate;
+    }
+
+    public void setEndDate(String endDate) {
+        EndDate = endDate;
     }
 
     public boolean getStatus() {

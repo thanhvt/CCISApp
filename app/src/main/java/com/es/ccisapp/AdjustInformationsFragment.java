@@ -130,6 +130,8 @@ public class AdjustInformationsFragment extends Fragment {
         SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
         String strEmployeeCode = pref.getString("EMPLOYEECODE", "");
 
+        List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+
         int ran = new Random().nextInt();
         List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
         while (tmp.size() > 0) {
@@ -149,8 +151,35 @@ public class AdjustInformationsFragment extends Fragment {
         m.setType("0");
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
-        m.setTuNgay(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
-        m.setDenNgay(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
+        m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
+        m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
+        m.setFigureBookId(taxInvoice.getFigureBookId() + "");
+        m.setTax(taxInvoice.getTaxRatio());
+        m.setCustomerNew("-1");
+
+        String vat = taxInvoice.getTaxRatio();
+        Double dSub = Double.parseDouble(m.getAmout()) * Double.parseDouble(m.getPrice()) * taxInvoiceDetailDbList.get(0).getTerm();
+        Double dVat = dSub * Double.parseDouble(vat) / 100;
+        Double dTotal = dSub + dVat;
+        m.setSubTotal(dSub + "");
+        m.setTotal(dTotal + "");
+
+        /**
+         *    @Column(name = "FigureBookId")
+         *     private String FigureBookId;
+         *
+         *     @Column(name = "SubTotal")
+         *     private String SubTotal;
+         *
+         *     @Column(name = "Tax")
+         *     private String Tax;
+         *
+         *     @Column(name = "Total")
+         *     private String Total;
+         *
+         *     @Column(name = "CustomerNew")
+         *     private String CustomerNew;
+         */
         m.save();
 
         Toasty.success(getActivity(), "Lưu thông tin offline thành công. Duyệt thông tin để đẩy dữ liệu lên Server !", Toasty.LENGTH_LONG, true).show();
@@ -172,6 +201,20 @@ public class AdjustInformationsFragment extends Fragment {
         m.setType("0");
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
+
+        m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
+        m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
+        m.setFigureBookId(taxInvoice.getFigureBookId() + "");
+        m.setTax(taxInvoice.getTaxRatio());
+        m.setCustomerNew("-1");
+
+        List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+        String vat = taxInvoice.getTaxRatio();
+        Double dSub = Double.parseDouble(m.getAmout()) * Double.parseDouble(m.getPrice()) * taxInvoiceDetailDbList.get(0).getTerm();
+        Double dVat = dSub * Double.parseDouble(vat) / 100;
+        Double dTotal = dSub + dVat;
+        m.setSubTotal(dSub + "");
+        m.setTotal(dTotal + "");
         Log.e("Adjust_Informations", m.toString());
         insertData(m);
     }

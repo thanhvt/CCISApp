@@ -9,6 +9,10 @@
             android:icon="@drawable/book"
             android:title="Lấy danh mục Sổ" />
         <item
+            android:id="@+id/nav_dongia"
+            android:icon="@drawable/book"
+            android:title="Lấy danh mục Đơn giá" />
+        <item
             android:id="@+id/nav_down"
             android:icon="@drawable/down"
             android:title="Lấy số liệu từ Server" />

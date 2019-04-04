@@ -2,6 +2,7 @@ package com.es.network;
 
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail;
+import com.es.model.DonGia;
 import com.es.model.Mobile_Adjust_Informations;
 import com.es.model.SoGCS_User;
 import com.es.model.UserProfile;
@@ -48,4 +49,7 @@ public interface CCISDataService {
 
     @GET("getSo_User/{userid}")
     Call<List<SoGCS_User>> getSo_User(@Path("userid") int userid);
+
+    @GET("getDonGia")
+    Call<List<DonGia>> getDonGia();
 }
