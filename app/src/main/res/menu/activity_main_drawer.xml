@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Màn hình chính" />
+        <item
             android:id="@+id/nav_so"
             android:icon="@drawable/book"
             android:title="Lấy danh mục Sổ" />
@@ -24,6 +28,10 @@
             android:id="@+id/nav_duyet"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Duyệt thay đổi thông tin KH" />
+        <item
+            android:id="@+id/nav_khmoi"
+            android:icon="@drawable/newcus"
+            android:title="Danh sách khách hàng mới" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/del"

@@ -13,6 +13,7 @@ import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -29,6 +30,27 @@ public class Utils {
     public static final String Login_Fragment = "Login_Fragment";
     public static final String SignUp_Fragment = "SignUp_Fragment";
     public static final String ForgotPassword_Fragment = "ForgotPassword_Fragment";
+
+
+    public static int CalculateTotalPartialMonth(Date d2, Date d1) {
+        try {
+            Calendar c2 = Calendar.getInstance();
+            c2.setTime(d2);
+
+            Calendar c1 = Calendar.getInstance();
+            c1.setTime(d1);
+            double monthsApart = Math.abs(12 * (c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR)) + c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH)) - 1;
+            int daysInMonth1 = c1.getActualMaximum(Calendar.DATE);
+            ;// DateTime.DaysInMonth(d1.Year, d1.Month);
+            int daysInMonth2 = c2.getActualMaximum(Calendar.DATE);
+            ; // DateTime.DaysInMonth(d2.Year, d2.Month);
+
+            double dayPercentage = ((double) (daysInMonth1 - c1.get(Calendar.DAY_OF_MONTH) + 1) / (double) daysInMonth1) + (c2.get(Calendar.DAY_OF_MONTH) / daysInMonth2);
+            return (int) Math.round((monthsApart + dayPercentage) < 1 ? 1 : (monthsApart + dayPercentage));
+        } catch (Exception ex) {
+            return 0;
+        }
+    }
 
     public static String removeAccent(String s) {
 

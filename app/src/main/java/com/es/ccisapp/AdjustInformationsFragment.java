@@ -1,5 +1,8 @@
 package com.es.ccisapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,11 +20,13 @@ import android.widget.Spinner;
 import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail_DB;
+import com.es.model.Bill_TaxInvoiceModel;
 import com.es.model.DonGia_DB;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.Mobile_Adjust_Informations;
 import com.es.network.CCISDataService;
 import com.es.network.RetrofitInstance;
+import com.es.printer.BluetoothPrinterActivity;
 import com.es.utils.Utils;
 
 import java.math.BigDecimal;
@@ -144,7 +149,8 @@ public class AdjustInformationsFragment extends Fragment {
             edDC.setText(taxInvoice.getTaxInvoiceAddress());
             edTenKH.setText(taxInvoice.getCustomerName());
             edSL.setText(taxInvoice.getAmount() + "");
-            edDonGia.setText(taxInvoice.getSubTotal());
+            //edDonGia.setText(taxInvoice.getSubTotal());
+            edDonGia.setText(tmp.get(0).getPrice() + "");
             edSTT.setText(taxInvoice.getINDEX_THU());
             if (tmp.size() > 0) {
                 edTuNgay.setText(tmp.get(0).TuNgay);
@@ -162,52 +168,79 @@ public class AdjustInformationsFragment extends Fragment {
 
     @OnClick(R.id.btnCopy)
     public void btnCopy() {
-        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
-        String strEmployeeCode = pref.getString("EMPLOYEECODE", "");
 
-        List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(R.drawable.logo);
+        List<Bill_TaxInvoiceModel> info = new Select().all().from(Bill_TaxInvoiceModel.class).where("IsThuOffline = ?", true).execute();
 
-        int ran = new Random().nextInt();
-        List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
-        while (tmp.size() > 0) {
-            ran = new Random().nextInt();
-            tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
-        }
+        builder.setMessage("Anh/Chị xác nhận sao chép thông tin KH " + taxInvoice.getCustomerName() + " và thu tiền, in hóa đơn KH mới: " + edTenKH.getText().toString() + " ?");
+        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+                String strEmployeeCode = pref.getString("EMPLOYEECODE", "");
+                List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
 
-        Mobile_Adjust_DB m = new Mobile_Adjust_DB();
-        m.setAdjustID(ran + "");
-        m.setAmout(edSL.getText().toString());
-        m.setCustomerAdd(edDC.getText().toString());
-        m.setCustomerID(taxInvoice.getCustomerId());
-        m.setCustomerName(edTenKH.getText().toString());
-        m.setEmployeeCode(strEmployeeCode);
-        m.setIndexSo(edSTT.getText().toString());
-        m.setPrice(edDonGia.getText().toString());
-        m.setType("0");
-        m.setStatus(false);
-        m.setDepartmentId(taxInvoice.getDepartmentId());
-        m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
-        m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
-        m.setFigureBookId(taxInvoice.getFigureBookId() + "");
-        m.setTax(taxInvoice.getTaxRatio());
-        m.setCustomerNew(taxInvoice.getCustomerId());
+                int ran = new Random().nextInt();
+                List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
+                while (tmp.size() > 0) {
+                    ran = new Random().nextInt();
+                    tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
+                }
 
-        String vat = taxInvoice.getTaxRatio();
-        BigDecimal a = new BigDecimal(edSL.getText().toString());
-        BigDecimal b = new BigDecimal(edDonGia.getText().toString());
-        BigDecimal c = new BigDecimal(taxInvoiceDetailDbList.get(0).getTerm());
-        BigDecimal dSub = a.multiply(b).multiply(c);
-        dSub = dSub.setScale(2, RoundingMode.CEILING);
-        BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
-        dVat = dVat.setScale(2, RoundingMode.CEILING);
-        BigDecimal dTotal = dSub.add(dVat);
-        m.setSubTotal(dSub + "");
-        m.setTotal(dTotal + "");
+                Mobile_Adjust_DB m = new Mobile_Adjust_DB();
+                m.setAdjustID(ran + "");
+                m.setAmout(edSL.getText().toString());
+                m.setCustomerAdd(edDC.getText().toString());
+                m.setCustomerID("NEW");
+                m.setCustomerName(edTenKH.getText().toString());
+                m.setEmployeeCode(strEmployeeCode);
+                m.setIndexSo(edSTT.getText().toString());
+                m.setPrice(edDonGia.getText().toString());
+                m.setType("0");
+                m.setStatus(false);
+                m.setDepartmentId(taxInvoice.getDepartmentId());
+                m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
+                m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
+                m.setFigureBookId(taxInvoice.getFigureBookId() + "");
+                m.setCustomerNew(taxInvoice.getCustomerId());
 
-        m.save();
+                String vat = taxInvoice.getTaxRatio();
+                BigDecimal a = new BigDecimal(edSL.getText().toString());
+                BigDecimal b = new BigDecimal(edDonGia.getText().toString());
+                int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
 
-        Toasty.success(getActivity(), "Đã sao chép thông tin offline KH " + taxInvoice.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
-        Log.e("Adjust_Informations", m.toString());
+                BigDecimal c = new BigDecimal(mTerm);
+                Log.e(TAG + " tinh toan", a + " - " + b + " - " + c);
+                BigDecimal dSub = a.multiply(b).multiply(c);
+                Log.e(TAG + " tinh dSub", dSub + "");
+                dSub = dSub.setScale(2, RoundingMode.CEILING);
+                BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
+                dVat = dVat.setScale(2, RoundingMode.CEILING);
+                BigDecimal dTotal = dSub.add(dVat);
+                m.setSubTotal(dSub + "");
+                m.setTotal(dTotal + "");
+                m.setTax(dVat + "");
+                m.save();
+
+                Toasty.success(getActivity(), "Đã sao chép thông tin offline KH " + taxInvoice.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
+                Log.e("Adjust_Informations", m.toString());
+                Intent intent = new Intent(getActivity().getApplicationContext(), BluetoothPrinterActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("TAX", taxInvoice);
+                bundle.putInt("KIEU", 3);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @OnClick(R.id.btnAdjOffline)
@@ -239,8 +272,12 @@ public class AdjustInformationsFragment extends Fragment {
         m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
         m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
         m.setFigureBookId(taxInvoice.getFigureBookId() + "");
-        m.setTax(taxInvoice.getTaxRatio());
+
         m.setCustomerNew("-1");
+
+        int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
+        taxInvoiceDetailDbList.get(0).setTerm(mTerm);
+        taxInvoiceDetailDbList.get(0).save();
 
         String vat = taxInvoice.getTaxRatio();
         BigDecimal a = new BigDecimal(edSL.getText().toString());
@@ -254,10 +291,22 @@ public class AdjustInformationsFragment extends Fragment {
         m.setSubTotal(dSub + "");
         m.setTotal(dTotal + "");
 
+        m.setTax(dVat + "");
         m.save();
 
         Toasty.success(getActivity(), "Lưu thông tin offline thành công. Duyệt thông tin để đẩy dữ liệu lên Server !", Toasty.LENGTH_LONG, true).show();
         Log.e("Adjust_Informations", m.toString());
+
+        List<Bill_TaxInvoiceModel> model = new Select().all().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+        Bill_TaxInvoiceModel cu = model.get(0);
+//        cu.setAmount(edSL.getText().toString());
+        cu.setCustomerName(m.getCustomerName());
+        cu.setTaxInvoiceAddress(m.getCustomerAdd());
+        cu.setINDEX_THU(m.getIndexSo());
+        cu.setSubTotal(dSub + "");
+        cu.setTotal(dTotal + "");
+        cu.setVAT(dVat + "");
+        cu.save();
     }
 
     @OnClick(R.id.btnAdjInformation)
@@ -279,7 +328,7 @@ public class AdjustInformationsFragment extends Fragment {
         m.setStartDate(edTuNgay.getText() != null ? Utils.parseDate(edTuNgay.getText().toString()) : null);
         m.setEndDate(edDenNgay.getText() != null ? Utils.parseDate(edDenNgay.getText().toString()) : null);
         m.setFigureBookId(taxInvoice.getFigureBookId() + "");
-        m.setTax(taxInvoice.getTaxRatio());
+
         m.setCustomerNew("-1");
 
         List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
@@ -296,6 +345,7 @@ public class AdjustInformationsFragment extends Fragment {
         m.setSubTotal(dSub + "");
         m.setTotal(dTotal + "");
 
+        m.setTax(dVat + "");
         Log.e("Adjust_Informations", m.toString());
         insertData(m);
     }

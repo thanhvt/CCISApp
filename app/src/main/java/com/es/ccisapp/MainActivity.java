@@ -102,6 +102,14 @@ public class MainActivity extends AppCompatActivity
         return fragment;
     }
 
+    private NewCustomerFragment buildFragment_NewCustomer() {
+        NewCustomerFragment fragment = new NewCustomerFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("TAX", taxInvoice);
+//        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     private void switchFragment(Fragment pos, String tag) {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -148,7 +156,9 @@ public class MainActivity extends AppCompatActivity
         final int id = item.getItemId();
         SharedPreferences pref = getSharedPreferences("LOGIN", 0);
         final int strUserID = pref.getInt("USERID", -1);
-        if (id == R.id.nav_down) {
+        if (id == R.id.nav_home) {
+            switchFragment(buildFragment_CCIS(), "ABC");
+        } else if (id == R.id.nav_down) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(R.string.app_name);
@@ -486,6 +496,8 @@ public class MainActivity extends AppCompatActivity
                     this.mProgressDialog.dismiss();
                 }
             });
+        } else if (id == R.id.nav_khmoi) {
+            switchFragment(buildFragment_NewCustomer(), "ABC");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
