@@ -304,7 +304,6 @@ public class MainActivity extends AppCompatActivity
                                     Log.e("CHECK PUT", postCheck + "");
                                     if (postCheck.equals("OK")) {
                                         Toasty.success(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
-                                        //List<Mobile_Adjust_DB> info = new Delete().from(Mobile_Adjust_DB.class).where("AdjustID = ?", mobile.getAdjustID()).execute();
                                     } else {
                                         Toasty.error(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " không thành công !", Toasty.LENGTH_LONG, true).show();
                                     }
