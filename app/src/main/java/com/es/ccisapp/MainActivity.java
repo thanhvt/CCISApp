@@ -282,11 +282,11 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         } else if (id == R.id.nav_duyet) {
-            List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).execute();
+            List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).where("IS_SUBMIT IS NULL").execute();
 
             List<Mobile_Adjust_Informations> lstInsert = new ArrayList<>();
             if (tmp.size() > 0) {
-                for (Mobile_Adjust_DB mo : tmp) {
+                for (final Mobile_Adjust_DB mo : tmp) {
                     final Mobile_Adjust_Informations mobile = new Mobile_Adjust_Informations(mo.getStatus(), mo.getIndexSo(), mo.getType(), mo.getPrice(), mo.getCustomerID(), mo.getCustomerAdd(),
                             mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(),
                             "1", mo.getAmout(), mo.getAdjustID(), mo.getFigureBookId(), Utils.parseDate(mo.getStartDate()), Utils.parseDate(mo.getEndDate()), mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1");
@@ -304,6 +304,8 @@ public class MainActivity extends AppCompatActivity
                                     Log.e("CHECK PUT", postCheck + "");
                                     if (postCheck.equals("OK")) {
                                         Toasty.success(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
+                                        mo.setIS_SUBMIT("1");
+                                        mo.save();
                                     } else {
                                         Toasty.error(getApplicationContext(), "Đẩy thông tin KH " + mobile.getCustomerName() + " không thành công !", Toasty.LENGTH_LONG, true).show();
                                     }
@@ -326,6 +328,7 @@ public class MainActivity extends AppCompatActivity
                         });
                     } catch (Exception e) {
 
+                        Log.e(TAG, e.getMessage());
                     }
                 }
             } else {

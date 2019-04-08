@@ -403,7 +403,7 @@ public class PrintReceipt {
             TEN_NVTHU = Utils.removeAccent(TEN_NVTHU);
 
             Mobile_Adjust_DB mThayDoi = new Mobile_Adjust_DB();
-            List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID = ?", bill_taxInvoice.getCustomerId()).execute();
+            List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID != 'NEW' and CustomerID = ?", bill_taxInvoice.getCustomerId()).execute();
             if (lstDB != null && lstDB.size() > 0) {
                 mThayDoi = lstDB.get(lstDB.size() - 1); // lstDB.get(0);
                 bill_taxInvoice.setCustomerName(mThayDoi.getCustomerName());

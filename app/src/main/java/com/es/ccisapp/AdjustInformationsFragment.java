@@ -193,12 +193,12 @@ public class AdjustInformationsFragment extends Fragment {
                 m.setAdjustID(ran + "");
                 m.setAmout(edSL.getText().toString());
                 m.setCustomerAdd(edDC.getText().toString());
-                m.setCustomerID("NEW");
+                m.setCustomerID(taxInvoice.getCustomerId());
                 m.setCustomerName(edTenKH.getText().toString());
                 m.setEmployeeCode(strEmployeeCode);
                 m.setIndexSo(edSTT.getText().toString());
                 m.setPrice(edDonGia.getText().toString());
-                m.setType("0");
+                m.setType("3");
                 m.setStatus(false);
                 m.setDepartmentId(taxInvoice.getDepartmentId());
                 m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");

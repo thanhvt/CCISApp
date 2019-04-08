@@ -62,6 +62,9 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
     @Column(name = "CustomerNew")
     private String CustomerNew;
 
+    @Column(name = "IS_SUBMIT")
+    private String IS_SUBMIT;
+
     public Mobile_Adjust_DB() {
     }
 
@@ -77,6 +80,14 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
         CustomerName = customerName;
         Amout = amout;
         AdjustID = adjustID;
+    }
+
+    public String getIS_SUBMIT() {
+        return IS_SUBMIT;
+    }
+
+    public void setIS_SUBMIT(String IS_SUBMIT) {
+        this.IS_SUBMIT = IS_SUBMIT;
     }
 
     public boolean isStatus() {

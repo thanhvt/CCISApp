@@ -279,8 +279,7 @@ public class CCISFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        List<Mobile_Adjust_DB> lstDieuChinhTmp = new Select().all().from(Mobile_Adjust_DB.class).execute();
-        Log.d(TAG + " size", lstDieuChinhTmp.size() + "");
+
         lstTaxInvoiceData.clear();  //Reset before update adapter to avoid duplication of list
         List<Bill_TaxInvoiceModel> lstDB = new Select().all().from(Bill_TaxInvoiceModel.class).execute();
         if (lstDB.size() == 0) {
@@ -294,7 +293,7 @@ public class CCISFragment extends Fragment {
                 b.setChecked(false);
                 stt++;
 
-                List<Mobile_Adjust_DB> lstDieuChinh = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID = ?", b.getCustomerId()).execute();
+                List<Mobile_Adjust_DB> lstDieuChinh = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID != 'NEW' and CustomerID = ?", b.getCustomerId()).execute();
                 if (lstDieuChinh != null && lstDieuChinh.size() > 0) {
                     Mobile_Adjust_DB m = lstDieuChinh.get(lstDieuChinh.size() - 1);
                     b.setCustomerName(m.getCustomerName());
