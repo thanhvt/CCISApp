@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,8 +64,8 @@ public class AdjustInformationsFragment extends Fragment {
     RadioButton rdTT;
     @BindView(R.id.rdDCHD)
     RadioButton rdDCHD;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+    //    @BindView(R.id.fab)
+//    FloatingActionButton fab;
     @BindView(R.id.edTuNgay)
     EditText edTuNgay;
     @BindView(R.id.edDenNgay)
