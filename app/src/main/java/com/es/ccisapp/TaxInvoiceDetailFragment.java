@@ -112,7 +112,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                 List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
                 Log.e(TAG, "Bill_TaxInvoiceDetail_DB: " + tmp.size());
 
-                List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID != 'NEW' and CustomerID = ?", taxInvoice.getCustomerId()).execute();
+                List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("TYPE != '3' and CustomerID = ?", taxInvoice.getCustomerId()).execute();
                 if (lstDB != null && lstDB.size() > 0) {
                     Mobile_Adjust_DB m = lstDB.get(lstDB.size() - 1);
                     taxInvoice.setCustomerName(m.getCustomerName());

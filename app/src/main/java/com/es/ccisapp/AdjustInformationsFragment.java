@@ -172,7 +172,6 @@ public class AdjustInformationsFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.app_name);
         builder.setIcon(R.drawable.logo);
-        List<Bill_TaxInvoiceModel> info = new Select().all().from(Bill_TaxInvoiceModel.class).where("IsThuOffline = ?", true).execute();
 
         builder.setMessage("Anh/Chị xác nhận sao chép thông tin KH " + taxInvoice.getCustomerName() + " và thu tiền, in hóa đơn KH mới: " + edTenKH.getText().toString() + " ?");
         builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
@@ -180,7 +179,6 @@ public class AdjustInformationsFragment extends Fragment {
                 dialog.dismiss();
                 SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
                 String strEmployeeCode = pref.getString("EMPLOYEECODE", "");
-                List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
 
                 int ran = new Random().nextInt();
                 List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();

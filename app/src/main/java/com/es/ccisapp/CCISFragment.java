@@ -293,7 +293,7 @@ public class CCISFragment extends Fragment {
                 b.setChecked(false);
                 stt++;
 
-                List<Mobile_Adjust_DB> lstDieuChinh = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerID != 'NEW' and CustomerID = ?", b.getCustomerId()).execute();
+                List<Mobile_Adjust_DB> lstDieuChinh = new Select().all().from(Mobile_Adjust_DB.class).where("TYPE != '3' and CustomerID = ?", b.getCustomerId()).execute();
                 if (lstDieuChinh != null && lstDieuChinh.size() > 0) {
                     Mobile_Adjust_DB m = lstDieuChinh.get(lstDieuChinh.size() - 1);
                     b.setCustomerName(m.getCustomerName());
