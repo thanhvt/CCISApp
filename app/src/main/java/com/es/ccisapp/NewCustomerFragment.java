@@ -40,8 +40,8 @@ RecyclerView recyclerView;
     MyNewCustomerRecyclerViewAdapter taxInvoiceAdapter;
     @BindView(R.id.txtSoKH)
     TextView txtSoKH;
-    @BindView(R.id.txtTienThu)
-    TextView txtTienThu;
+    //    @BindView(R.id.txtTienThu)
+//    TextView txtTienThu;
     @BindView(R.id.txtTienCoVAT)
     TextView txtTienCoVAT;
     /**
@@ -104,7 +104,7 @@ RecyclerView recyclerView;
                 tongTien += new BigDecimal(bill.getTotal()).longValue(); // Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
             }
             txtSoKH.setText("Đã thu: " + daThu + "/" + lstMobile.size() + " KH");
-            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+//            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
             txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
         } catch (Exception e) {
 

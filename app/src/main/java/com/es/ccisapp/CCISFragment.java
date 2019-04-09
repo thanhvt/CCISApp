@@ -58,8 +58,8 @@ public class CCISFragment extends Fragment {
     TextView txtEmpty;
     @BindView(R.id.txtSoKH)
     TextView txtSoKH;
-    @BindView(R.id.txtTienThu)
-    TextView txtTienThu;
+    //    @BindView(R.id.txtTienThu)
+//    TextView txtTienThu;
     @BindView(R.id.txtTienCoVAT)
     TextView txtTienCoVAT;
     @BindView(R.id.spnSo)
@@ -139,7 +139,7 @@ public class CCISFragment extends Fragment {
         ButterKnife.bind(this, rootView);
         lstTaxInvoiceData = new ArrayList<>();
         txtSoKH.setText("Đã thu: ");
-        txtTienThu.setText("Tiền thu: ");
+//        txtTienThu.setText("Tiền thu: ");
         txtTienCoVAT.setText("Tổng tiền: ");
         recyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -179,7 +179,7 @@ public class CCISFragment extends Fragment {
                     }
                 }
                 txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
-                txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+//                txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
                 txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
             } catch (Exception e) {
 
@@ -249,7 +249,7 @@ public class CCISFragment extends Fragment {
                                 }
                             }
                             txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
-                            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+//                            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
                             txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
                         }
                     } else {
@@ -330,7 +330,7 @@ public class CCISFragment extends Fragment {
                     }
                 }
                 txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
-                txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+//                txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
                 txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
             } catch (Exception e) {
 
@@ -474,7 +474,7 @@ public class CCISFragment extends Fragment {
                                 }
                             }
                             txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
-                            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+//                            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
                             txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
                             // Update Data
                         }

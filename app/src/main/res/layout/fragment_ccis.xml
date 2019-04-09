@@ -25,17 +25,17 @@
             android:textColor="#1500FF"
             android:text="Đã thu: 18/200 KH" />
 
-        <TextView
-            android:id="@+id/txtTienThu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right|top"
-            android:visibility="visible"
-            android:layout_weight="2"
-            android:textStyle="bold"
-            android:textColor="#1500FF"
-            android:layout_toRightOf="@id/txtSoKH"
-            android:text="Tiền thu: 999.999.999 VNĐ" />
+        <!--<TextView-->
+        <!--android:id="@+id/txtTienThu"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="right|top"-->
+        <!--android:visibility="visible"-->
+        <!--android:layout_weight="2"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textColor="#1500FF"-->
+        <!--android:layout_toRightOf="@id/txtSoKH"-->
+        <!--android:text="Tiền thu: 999.999.999 VNĐ" />-->
 
         <TextView
             android:id="@+id/txtTienCoVAT"

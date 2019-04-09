@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.activeandroid.query.Select;
@@ -58,12 +59,12 @@ public class AdjustInformationsFragment extends Fragment {
     EditText edSTT;
     @BindView(R.id.edDonGia)
     EditText edDonGia;
-    //    @BindView(R.id.rdDC)
-//    RadioButton rdDC;
-//    @BindView(R.id.rdTT)
-//    RadioButton rdTT;
-//    @BindView(R.id.rdDCHD)
-//    RadioButton rdDCHD;
+    @BindView(R.id.rdDC)
+    RadioButton rdDC;
+    @BindView(R.id.rdTT)
+    RadioButton rdTT;
+    @BindView(R.id.rdDCHD)
+    RadioButton rdDCHD;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @BindView(R.id.edTuNgay)
@@ -161,10 +162,10 @@ public class AdjustInformationsFragment extends Fragment {
     }
 
 
-    @OnClick(R.id.fab)
-    public void btnFab() {
-        btnAdjOffline();
-    }
+//    @OnClick(R.id.fab)
+//    public void btnFab() {
+//        btnAdjOffline();
+//    }
 
     @OnClick(R.id.btnCopy)
     public void btnCopy() {
@@ -264,7 +265,7 @@ public class AdjustInformationsFragment extends Fragment {
         m.setEmployeeCode(strEmployeeCode);
         m.setIndexSo(edSTT.getText().toString());
         m.setPrice(edDonGia.getText().toString());
-        m.setType("0");
+        m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
         m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
@@ -280,7 +281,7 @@ public class AdjustInformationsFragment extends Fragment {
         String vat = taxInvoice.getTaxRatio();
         BigDecimal a = new BigDecimal(edSL.getText().toString());
         BigDecimal b = new BigDecimal(edDonGia.getText().toString());
-        BigDecimal c = new BigDecimal(taxInvoiceDetailDbList.get(0).getTerm());
+        BigDecimal c = new BigDecimal(mTerm);
         BigDecimal dSub = a.multiply(b).multiply(c);
         dSub = dSub.setScale(2, RoundingMode.CEILING);
         BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
@@ -319,7 +320,7 @@ public class AdjustInformationsFragment extends Fragment {
         m.setEmployeeCode(strEmployeeCode);
         m.setIndex(edSTT.getText().toString());
         m.setPrice(edDonGia.getText().toString());
-        m.setType("0");
+        m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
 
@@ -328,13 +329,13 @@ public class AdjustInformationsFragment extends Fragment {
         m.setFigureBookId(taxInvoice.getFigureBookId() + "");
 
         m.setCustomerNew("-1");
-
+        int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
         List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
 
         String vat = taxInvoice.getTaxRatio();
         BigDecimal a = new BigDecimal(edSL.getText().toString());
         BigDecimal b = new BigDecimal(edDonGia.getText().toString());
-        BigDecimal c = new BigDecimal(taxInvoiceDetailDbList.get(0).getTerm());
+        BigDecimal c = new BigDecimal(mTerm);
         BigDecimal dSub = a.multiply(b).multiply(c);
         dSub = dSub.setScale(2, RoundingMode.CEILING);
         BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
@@ -346,6 +347,9 @@ public class AdjustInformationsFragment extends Fragment {
         m.setTax(dVat + "");
         Log.e("Adjust_Informations", m.toString());
         insertData(m);
+
+        taxInvoiceDetailDbList.get(0).setTerm(mTerm);
+        taxInvoiceDetailDbList.get(0).save();
     }
 
     private void insertData(Mobile_Adjust_Informations devices) {

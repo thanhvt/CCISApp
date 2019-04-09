@@ -56,8 +56,8 @@ public class TaxInvoiceDetailFragment extends Fragment {
     TextView txtVAT;
     @BindView(R.id.txtTinhTrangThu)
     TextView txtTinhTrangThu;
-    @BindView(R.id.txtKy)
-    TextView txtKy;
+    //    @BindView(R.id.txtKy)
+//    TextView txtKy;
     @BindView(R.id.txtSoNhanKhau)
     TextView txtSoNhanKhau;
     @BindView(R.id.txtTuDen)
@@ -166,7 +166,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                 txtTenKH.setText(taxInvoice.getCustomerName());
                 txtDiaChi.setText(taxInvoice.getTaxInvoiceAddress());
                 txtTinhTrangThu.setText(taxInvoice.isThuOffline() ? "Đã thu offline" : "Chưa thu");
-                txtKy.setText(taxInvoice.getMonth() + "/" + taxInvoice.getYear());
+//                txtKy.setText(taxInvoice.getMonth() + "/" + taxInvoice.getYear());
                 txtSoNhanKhau.setText(taxInvoice.getAmount() + "");
 
 
