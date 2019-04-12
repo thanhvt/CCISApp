@@ -349,6 +349,20 @@ public class AdjustInformationsFragment extends Fragment {
 
         taxInvoiceDetailDbList.get(0).setTerm(mTerm);
         taxInvoiceDetailDbList.get(0).save();
+
+        try {
+            List<Bill_TaxInvoiceModel> model = new Select().all().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+            Bill_TaxInvoiceModel cu = model.get(0);
+            cu.setCustomerName(m.getCustomerName());
+            cu.setTaxInvoiceAddress(m.getCustomerAdd());
+            cu.setINDEX_THU(edSTT.getText().toString());
+            cu.setSubTotal(dSub + "");
+            cu.setTotal(dTotal + "");
+            cu.setVAT(dVat + "");
+            cu.save();
+        } catch (Exception e) {
+            Log.e("ADJ", e.getMessage() + "");
+        }
     }
 
     private void insertData(Mobile_Adjust_Informations devices) {
