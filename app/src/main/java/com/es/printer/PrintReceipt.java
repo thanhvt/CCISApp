@@ -529,6 +529,7 @@ public class PrintReceipt {
 
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             String strXFix = "Thue GTGT " + bill_taxInvoice.getTaxRatio() + "%";
             String strVat = bill_taxInvoice.getVAT();
             int so0 = 32 - strXFix.length() - strVat.length();
@@ -550,6 +551,7 @@ public class PrintReceipt {
             String tienChu = Utils.numberToString(d);
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(tienChu);
 //        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Ho|3 |3    |180,180 |1,540,540");
 
