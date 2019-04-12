@@ -345,6 +345,10 @@ public class AdjustInformationsFragment extends Fragment {
 
         m.setTax(dVat + "");
         Log.e("Adjust_Informations", m.toString());
+
+        m.setMonth(Integer.parseInt(taxInvoice.getMonth()));
+        m.setYear(Integer.parseInt(taxInvoice.getYear()));
+
         insertData(m);
 
         taxInvoiceDetailDbList.get(0).setTerm(mTerm);

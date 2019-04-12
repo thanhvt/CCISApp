@@ -42,6 +42,10 @@ public class Mobile_Adjust_Informations implements Serializable {
 
     private String CustomerNew;
 
+    private int Month;
+
+    private int Year;
+
 //    public Nullable<int> FigureBookId { get; set; }
 //    public Nullable<System.DateTime> StartDate { get; set; }
 //    public Nullable<System.DateTime> EndDate { get; set; }
@@ -71,6 +75,22 @@ public class Mobile_Adjust_Informations implements Serializable {
         Tax = tax;
         Total = total;
         CustomerNew = customerNew;
+    }
+
+    public int getMonth() {
+        return Month;
+    }
+
+    public void setMonth(int month) {
+        Month = month;
+    }
+
+    public int getYear() {
+        return Year;
+    }
+
+    public void setYear(int year) {
+        Year = year;
     }
 
     public boolean isStatus() {

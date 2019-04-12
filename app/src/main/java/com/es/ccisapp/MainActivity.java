@@ -38,6 +38,7 @@ import com.es.utils.CustomCallBack;
 import com.es.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -290,6 +291,21 @@ public class MainActivity extends AppCompatActivity
                     final Mobile_Adjust_Informations mobile = new Mobile_Adjust_Informations(mo.getStatus(), mo.getIndexSo(), mo.getType(), mo.getPrice(), mo.getCustomerID(), mo.getCustomerAdd(),
                             mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(),
                             "1", mo.getAmout(), mo.getAdjustID(), mo.getFigureBookId(), Utils.parseDate(mo.getStartDate()), Utils.parseDate(mo.getEndDate()), mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1");
+                    if (mobile.getType().equals("3")) {
+                        Calendar c = Calendar.getInstance();
+                        mobile.setMonth(c.get(Calendar.MONTH) + 1);
+                        mobile.setYear(c.get(Calendar.YEAR));
+                    } else {
+                        List<Bill_TaxInvoiceModel> info = new Select().from(Bill_TaxInvoiceModel.class).where("CustomerId = ?", mo.getCustomerID()).orderBy("TaxInvoiceId DESC").execute();
+                        if (info.size() > 0) {
+                            mobile.setMonth(Integer.parseInt(info.get(0).getMonth()));
+                            mobile.setYear(Integer.parseInt(info.get(0).getYear()));
+                        } else {
+                            Calendar c = Calendar.getInstance();
+                            mobile.setMonth(c.get(Calendar.MONTH) + 1);
+                            mobile.setYear(c.get(Calendar.YEAR));
+                        }
+                    }
                     //, String amout, String adjustID, String figureBookId, String startDate, String endDate, String subTotal, String tax, String total, String customerNew) {
                     lstInsert.add(mobile);
                     try {
