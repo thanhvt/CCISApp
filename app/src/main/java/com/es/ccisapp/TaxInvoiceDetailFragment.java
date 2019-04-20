@@ -181,6 +181,9 @@ public class TaxInvoiceDetailFragment extends Fragment {
                     btnThuOff.setEnabled(false);
                     btnThuTien.setEnabled(false);
                 }
+                if (taxInvoice.isThuOffline() == 2) {
+                    btnThuOff.setEnabled(false);
+                }
 //                CCISDataService apiService =
 //                        RetrofitInstance.getRetrofitInstance(getActivity()).create(CCISDataService.class);
 //

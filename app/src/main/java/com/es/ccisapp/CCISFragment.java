@@ -314,9 +314,27 @@ public class CCISFragment extends Fragment {
                         b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(),
                         b.isThuOffline(), stt, b.getAmount(), b.getServiceTypeId(), b.getServiceName(), b.getINDEX_THU(), b.getKIEU(), b.getPriceId()));
             }
-            taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
-            recyclerView.setAdapter(taxInvoiceAdapter);
-            taxInvoiceAdapter.notifyDataSetChanged();
+
+
+            if (spnSo.getSelectedItemPosition() > 0) {
+                List<Bill_TaxInvoice> lstTmp = new ArrayList<Bill_TaxInvoice>();
+                for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
+                    for (SoGCS_User_DB item : info) {
+                        if (item.getBookCode().equals(spnSo.getSelectedItem().toString().split(":")[0])) {
+                            if (bill.getFigureBookId() == item.getFigureBookId()) {
+                                lstTmp.add(bill);
+                            }
+                        }
+                    }
+                }
+                taxInvoiceAdapter = new TaxInvoiceAdapter(lstTmp, R.layout.list_taxinvoice, getContext());
+                recyclerView.setAdapter(taxInvoiceAdapter);
+                taxInvoiceAdapter.notifyDataSetChanged();
+            } else {
+                taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
+                recyclerView.setAdapter(taxInvoiceAdapter);
+                taxInvoiceAdapter.notifyDataSetChanged();
+            }
             try {
                 int daThu = 0;
                 long tienThu = 0L;

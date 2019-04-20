@@ -81,6 +81,7 @@ public class AdjustInformationsFragment extends Fragment {
     public static final String EXTRA_DATA = "DATA_CONTENT";
     Bill_TaxInvoice taxInvoice;
     private String content;
+    boolean checkDayServer = false;
 
     public static AdjustInformationsFragment newInstance(String data) {
         AdjustInformationsFragment fragment = new AdjustInformationsFragment();
@@ -248,8 +249,7 @@ public class AdjustInformationsFragment extends Fragment {
         alert.show();
     }
 
-    @OnClick(R.id.btnAdjOffline)
-    public void btnAdjOffline() {
+    public void pushOffline() {
         SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
         String strEmployeeCode = pref.getString("EMPLOYEECODE", "");
 
@@ -312,6 +312,49 @@ public class AdjustInformationsFragment extends Fragment {
         cu.setVAT(dVat + "");
         cu.setPriceId(priceId);
         cu.save();
+    }
+
+    @OnClick(R.id.btnAdjOffline)
+    public void btnAdjOffline() {
+        if (checkDayServer) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.app_name);
+            builder.setIcon(R.drawable.logo);
+
+            builder.setMessage("Anh/Chị đã đẩy thông tin lên server. Anh chị muốn tiếp tục lưu offline ?");
+            builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    pushOffline();
+                }
+            });
+            builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.app_name);
+            builder.setIcon(R.drawable.logo);
+
+            builder.setMessage("Anh/Chị muốn thay đổi thông tin khách hàng và lưu trữ offline ?");
+            builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    pushOffline();
+                }
+            });
+            builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
     }
 
     @OnClick(R.id.btnAdjInformation)
@@ -391,6 +434,7 @@ public class AdjustInformationsFragment extends Fragment {
                         Log.e("CHECK PUT", postCheck + "");
                         if (postCheck.equals("OK")) {
                             Toasty.success(getActivity(), "Lưu thông tin khách hàng thành công !", Toasty.LENGTH_LONG, true).show();
+                            checkDayServer = true;
                         } else {
                             Toasty.error(getActivity(), "Lưu thông tin khách hàng không thành công !", Toasty.LENGTH_LONG, true).show();
                         }
