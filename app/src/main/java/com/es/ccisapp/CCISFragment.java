@@ -2,7 +2,6 @@ package com.es.ccisapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,11 +21,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.es.adapter.TaxInvoiceAdapter;
 import com.es.model.Bill_TaxInvoice;
-import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Bill_TaxInvoiceModel;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.SoGCS_User_DB;
@@ -173,7 +170,7 @@ public class CCISFragment extends Fragment {
                 long tienThu = 0L;
                 long tongTien = 0L;
                 for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
-                    if (bill.isThuOffline()) {
+                    if (bill.isThuOffline() > 0) {
                         daThu++;
                         tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
                         tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
@@ -215,67 +212,67 @@ public class CCISFragment extends Fragment {
         }
     }
 
-    public void getDataTaxInvoice(int trangThai) {
-        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
-        int strUserID = pref.getInt("USERID", -1);
-        Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(trangThai, strUserID);
-        Log.wtf("URL Called", call.request().url() + "");
-        call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(getActivity()) {
-            @Override
-            public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
-                try {
-                    if (response != null && response.body() != null) {
-                        lstTaxInvoiceData = response.body();
-                        if (lstTaxInvoiceData.size() > 0) {
-                            int stt = 0;
-                            for (Bill_TaxInvoice b : lstTaxInvoiceData) {
-                                b.setChecked(false);
-                                stt++;
-                                b.setSTT(stt);
-                            }
-                            Log.e(TAG, "Bill_TaxInvoice[0] received: " + lstTaxInvoiceData.get(0).toString());
-                            taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
-                            recyclerView.setAdapter(taxInvoiceAdapter);
-                            taxInvoiceAdapter.notifyDataSetChanged();
-                            recyclerView.setVisibility(View.VISIBLE);
-                            txtEmpty.setVisibility(View.GONE);
-                            int daThu = 0;
-                            long tienThu = 0L;
-                            long tongTien = 0L;
-                            for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
-                                if (bill.isThuOffline()) {
-                                    daThu++;
-                                    tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
-                                    tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
-                                }
-                            }
-                            txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
-//                            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
-                            txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
-                        }
-                    } else {
-                        Log.e(TAG, response.message());
-                        Toasty.error(getActivity(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                } finally {
-                    this.mProgressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
-                // Log error here since request failed
-                if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
-                    Toasty.error(getActivity(), "Không có dữ liệu. Đề nghị kiểm tra lại !", Toasty.LENGTH_LONG, true).show();
-                } else
-                    Toasty.error(getActivity(), "Xảy ra lỗi quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
-                Log.e(TAG, t.toString());
-                this.mProgressDialog.dismiss();
-            }
-        });
-    }
+//    public void getDataTaxInvoice(int trangThai) {
+//        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+//        int strUserID = pref.getInt("USERID", -1);
+//        Call<List<Bill_TaxInvoice>> call = apiService.getBill_TaxInvoice(trangThai, strUserID);
+//        Log.wtf("URL Called", call.request().url() + "");
+//        call.enqueue(new CustomCallBack<List<Bill_TaxInvoice>>(getActivity()) {
+//            @Override
+//            public void onResponse(Call<List<Bill_TaxInvoice>> call, Response<List<Bill_TaxInvoice>> response) {
+//                try {
+//                    if (response != null && response.body() != null) {
+//                        lstTaxInvoiceData = response.body();
+//                        if (lstTaxInvoiceData.size() > 0) {
+//                            int stt = 0;
+//                            for (Bill_TaxInvoice b : lstTaxInvoiceData) {
+//                                b.setChecked(false);
+//                                stt++;
+//                                b.setSTT(stt);
+//                            }
+//                            Log.e(TAG, "Bill_TaxInvoice[0] received: " + lstTaxInvoiceData.get(0).toString());
+//                            taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
+//                            recyclerView.setAdapter(taxInvoiceAdapter);
+//                            taxInvoiceAdapter.notifyDataSetChanged();
+//                            recyclerView.setVisibility(View.VISIBLE);
+//                            txtEmpty.setVisibility(View.GONE);
+//                            int daThu = 0;
+//                            long tienThu = 0L;
+//                            long tongTien = 0L;
+//                            for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
+//                                if (bill.isThuOffline()) {
+//                                    daThu++;
+//                                    tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+//                                    tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
+//                                }
+//                            }
+//                            txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
+////                            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+//                            txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
+//                        }
+//                    } else {
+//                        Log.e(TAG, response.message());
+//                        Toasty.error(getActivity(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
+//                    }
+//                } catch (Exception e) {
+//                    Log.e(TAG, e.getMessage());
+//                } finally {
+//                    this.mProgressDialog.dismiss();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Bill_TaxInvoice>> call, Throwable t) {
+//                // Log error here since request failed
+//                if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+//                    Toasty.error(getActivity(), "Không có dữ liệu. Đề nghị kiểm tra lại !", Toasty.LENGTH_LONG, true).show();
+//                } else
+//                    Toasty.error(getActivity(), "Xảy ra lỗi quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
+//                Log.e(TAG, t.toString());
+//                this.mProgressDialog.dismiss();
+//            }
+//        });
+//    }
 
     @Override
     public void onResume() {
@@ -325,7 +322,7 @@ public class CCISFragment extends Fragment {
                 long tienThu = 0L;
                 long tongTien = 0L;
                 for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
-                    if (bill.isThuOffline()) {
+                    if (bill.isThuOffline() > 0) {
                         daThu++;
                         tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
                         tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
@@ -445,10 +442,10 @@ public class CCISFragment extends Fragment {
                             List<Bill_TaxInvoice> stList = taxInvoiceAdapter.getLstTaxInvoice();
                             for (final Bill_TaxInvoice b : stList) {
                                 if (b.isChecked()) {
-                                    Bill_TaxInvoiceModel details = new Select().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).executeSingle();
-                                    if (details != null) {
-                                        details.setThuOffline(true);
-                                        details.save();
+                                    Bill_TaxInvoiceModel billTaxInvoiceModel = new Select().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).executeSingle();
+                                    if (billTaxInvoiceModel != null) {
+                                        billTaxInvoiceModel.setThuOffline(1);
+                                        billTaxInvoiceModel.save();
                                         Log.e(TAG + " update ", "1");
                                     } else {
                                         Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
@@ -456,11 +453,11 @@ public class CCISFragment extends Fragment {
                                                 b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
                                                 b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
                                                 b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(),
-                                                true, b.getAmount(), b.getServiceTypeId(), b.getServiceName(), b.getINDEX_THU(), b.getKIEU(), b.getPriceId());
+                                                1, b.getAmount(), b.getServiceTypeId(), b.getServiceName(), b.getINDEX_THU(), b.getKIEU(), b.getPriceId());
                                         c.save();
                                         Log.e(TAG + " insert ", "2");
                                     }
-                                    b.setThuOffline(true);
+                                    b.setThuOffline(1);
                                     taxInvoiceAdapter.notifyDataSetChanged();
                                     Toasty.success(getActivity(), "Thu tiền offline khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
                                 }
@@ -470,7 +467,7 @@ public class CCISFragment extends Fragment {
                             long tienThu = 0L;
                             long tongTien = 0L;
                             for (Bill_TaxInvoice bill : stList) {
-                                if (bill.isThuOffline()) {
+                                if (bill.isThuOffline() > 0) {
                                     daThu++;
                                     tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
                                     tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
@@ -479,14 +476,13 @@ public class CCISFragment extends Fragment {
                             txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
 //                            txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
                             txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
-                            // Update Data
                         }
                     });
                     builder.setNegativeButton("Thu online", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
 
-                            List<Bill_TaxInvoice> stList = taxInvoiceAdapter.getLstTaxInvoice();
+                            final List<Bill_TaxInvoice> stList = taxInvoiceAdapter.getLstTaxInvoice();
                             for (final Bill_TaxInvoice b : stList) {
                                 if (b.isChecked()) {
                                     Log.e(TAG, b.toString());
@@ -498,9 +494,29 @@ public class CCISFragment extends Fragment {
                                             Integer movies = response.body();
                                             Log.d(TAG, "movies: " + movies);
                                             if (movies == 1) {
-                                                List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
-                                                new Delete().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+//                                                List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
+//                                                new Delete().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
+                                                Bill_TaxInvoiceModel billTaxInvoiceModel = new Select().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).executeSingle();
+                                                billTaxInvoiceModel.setThuOffline(2);
+                                                billTaxInvoiceModel.save();
+                                                b.setThuOffline(2);
+                                                taxInvoiceAdapter.notifyDataSetChanged();
                                                 Toasty.success(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
+
+                                                int daThu = 0;
+                                                long tienThu = 0L;
+                                                long tongTien = 0L;
+                                                for (Bill_TaxInvoice bill : stList) {
+                                                    if (bill.isThuOffline() > 0) {
+                                                        daThu++;
+                                                        tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                                                        tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
+                                                    }
+                                                }
+                                                txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
+//                                              txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+                                                txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
+
                                             } else {
                                                 Toasty.error(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
                                             }
@@ -515,6 +531,7 @@ public class CCISFragment extends Fragment {
                                     });
                                 }
                             }
+
                         }
                     });
                     AlertDialog alert = builder.create();

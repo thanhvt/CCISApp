@@ -87,7 +87,7 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
     private boolean IsChecked;
 
     @Column(name = "IsThuOffline")
-    private boolean IsThuOffline;
+    private int IsThuOffline;
 
     @Column(name = "Amount")
     private double Amount;
@@ -110,7 +110,7 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
     public Bill_TaxInvoiceModel() {
     }
 
-    public Bill_TaxInvoiceModel(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, double amount, int serviceTypeId, String serviceName, String INDEX_THU, String KIEU, int priceId) {
+    public Bill_TaxInvoiceModel(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, int isThuOffline, double amount, int serviceTypeId, String serviceName, String INDEX_THU, String KIEU, int priceId) {
         TaxCode = taxCode;
         CustomerCode = customerCode;
         BankName = bankName;
@@ -170,11 +170,11 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
         this.KIEU = KIEU;
     }
 
-    public boolean isThuOffline() {
+    public int isThuOffline() {
         return IsThuOffline;
     }
 
-    public void setThuOffline(boolean thuOffline) {
+    public void setThuOffline(int thuOffline) {
         IsThuOffline = thuOffline;
     }
 

@@ -5,13 +5,11 @@ import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
-import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.es.ccisapp.R;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail;
 import com.es.model.Bill_TaxInvoiceDetail_DB;
-import com.es.model.Bill_TaxInvoiceModel;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.SalesModel;
 import com.es.utils.Utils;
@@ -193,8 +191,10 @@ public class PrintReceipt {
 
         }
         if (kieu == 1) {
-            List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", bill_taxInvoice.getTaxInvoiceId()).execute();
-            new Delete().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", bill_taxInvoice.getTaxInvoiceId()).execute();
+//            List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", bill_taxInvoice.getTaxInvoiceId()).execute();
+//            info.get(0).setThuOffline(2);
+//            info.get(0).save();
+//            new Delete().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", bill_taxInvoice.getTaxInvoiceId()).execute();
         }
 
         return true;

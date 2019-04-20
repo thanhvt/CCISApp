@@ -64,6 +64,14 @@ public class TaxInvoiceDetailFragment extends Fragment {
     TextView txtTuDen;
     @BindView(R.id.btnInHD)
     Button btnInHD;
+
+    @BindView(R.id.btnThuOff)
+    Button btnThuOff;
+
+    @BindView(R.id.btnThuTien)
+    Button btnThuTien;
+
+
     private Unbinder unbinder;
     // constant
     String TAG = "TaxInvoiceDetailFragment";
@@ -165,11 +173,14 @@ public class TaxInvoiceDetailFragment extends Fragment {
                 txtMaKH.setText(taxInvoice.getCustomerCode());
                 txtTenKH.setText(taxInvoice.getCustomerName());
                 txtDiaChi.setText(taxInvoice.getTaxInvoiceAddress());
-                txtTinhTrangThu.setText(taxInvoice.isThuOffline() ? "Đã thu offline" : "Chưa thu");
+                txtTinhTrangThu.setText(taxInvoice.isThuOffline() == 1 ? "Đã thu offline" : taxInvoice.isThuOffline() == 2 ? "Đã thu online" : "Chưa thu");
 //                txtKy.setText(taxInvoice.getMonth() + "/" + taxInvoice.getYear());
                 txtSoNhanKhau.setText(taxInvoice.getAmount() + "");
 
-
+                if (taxInvoice.isThuOffline() > 0) {
+                    btnThuOff.setEnabled(false);
+                    btnThuTien.setEnabled(false);
+                }
 //                CCISDataService apiService =
 //                        RetrofitInstance.getRetrofitInstance(getActivity()).create(CCISDataService.class);
 //
@@ -215,7 +226,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                 dialog.dismiss();
                 Bill_TaxInvoiceModel details = new Select().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).executeSingle();
                 if (details != null) {
-                    details.setThuOffline(true);
+                    details.setThuOffline(1);
                     details.save();
                     Log.e(TAG + " update ", "1");
                 } else {
@@ -223,7 +234,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                             taxInvoice.getBankName(), taxInvoice.getMonth(), taxInvoice.getSerialNumber(), taxInvoice.getYear(), taxInvoice.getCustomerId(), taxInvoice.getDepartmentId(),
                             taxInvoice.getTaxInvoiceAddress(), taxInvoice.getTaxInvoiceId(), taxInvoice.getIdDevice(), taxInvoice.getContractId(), taxInvoice.getFigureBookId(), taxInvoice.getSerialCode(),
                             taxInvoice.getCustomerName(), taxInvoice.getCustomerCode_Pay(), taxInvoice.getSubTotal(), taxInvoice.getAddress_Pay(), taxInvoice.getBankAccount(), taxInvoice.getVAT(),
-                            taxInvoice.getTaxRatio(), taxInvoice.getCustomerId_Pay(), taxInvoice.getBillType(), taxInvoice.getCustomerName_Pay(), taxInvoice.getTotal(), taxInvoice.isChecked(), true, taxInvoice.getAmount(), taxInvoice.getServiceTypeId(), taxInvoice.getServiceName(),
+                            taxInvoice.getTaxRatio(), taxInvoice.getCustomerId_Pay(), taxInvoice.getBillType(), taxInvoice.getCustomerName_Pay(), taxInvoice.getTotal(), taxInvoice.isChecked(), 1, taxInvoice.getAmount(), taxInvoice.getServiceTypeId(), taxInvoice.getServiceName(),
                             taxInvoice.getINDEX_THU(), taxInvoice.getKIEU(), taxInvoice.getPriceId());
                     c.save();
                     Log.e(TAG + " insert ", "2");
@@ -265,6 +276,14 @@ public class TaxInvoiceDetailFragment extends Fragment {
                         Integer movies = response.body();
                         Log.d(TAG, "movies: " + movies);
                         if (movies == 1) {
+
+                            Bill_TaxInvoiceModel details = new Select().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).executeSingle();
+                            if (details != null) {
+                                details.setThuOffline(2);
+                                details.save();
+                                Log.e(TAG + " update ", "1");
+                            }
+
                             txtTinhTrangThu.setText("Đã thu online");
                             Toasty.success(getActivity(), "Đã thu tiền và đẩy dữ liệu khách hàng " + txtTenKH.getText() + " lên server thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
                             kieu = 1;

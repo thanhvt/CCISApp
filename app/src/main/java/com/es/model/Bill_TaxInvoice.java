@@ -55,17 +55,17 @@ public class Bill_TaxInvoice implements Serializable {
 
     private String Total;
 
-    public boolean isThuOffline() {
+    public int isThuOffline() {
         return IsThuOffline;
     }
 
-    public void setThuOffline(boolean thuOffline) {
+    public void setThuOffline(int thuOffline) {
         IsThuOffline = thuOffline;
     }
 
     private boolean IsChecked;
 
-    private boolean IsThuOffline;
+    private int IsThuOffline;
 
     private int STT;
 
@@ -88,7 +88,7 @@ public class Bill_TaxInvoice implements Serializable {
     public Bill_TaxInvoice() {
     }
 
-    public Bill_TaxInvoice(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String $id, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, int STT, double amount, int serviceTypeId, String serviceName, String INDEX_THU, String KIEU, int priceId) {
+    public Bill_TaxInvoice(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String $id, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, int isThuOffline, int STT, double amount, int serviceTypeId, String serviceName, String INDEX_THU, String KIEU, int priceId) {
         TaxCode = taxCode;
         CustomerCode = customerCode;
         BankName = bankName;

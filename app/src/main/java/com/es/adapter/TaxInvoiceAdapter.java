@@ -2,6 +2,7 @@ package com.es.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
     private int rowLayout;
     private Context context;
     private ContactFilter filter;
+
     public class TaxInvoiceHolder extends RecyclerView.ViewHolder {
         LinearLayout moviesLayout;
         TextView movieTitle;
@@ -71,7 +73,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
 
     @Override
     public TaxInvoiceAdapter.TaxInvoiceHolder onCreateViewHolder(ViewGroup parent,
-                                                            int viewType) {
+                                                                 int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
         return new TaxInvoiceHolder(view);
     }
@@ -82,7 +84,11 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
         holder.data.setText("Đơn giá: " + lstTaxInvoice.get(position).getSubTotal() + " VAT: " + lstTaxInvoice.get(position).getVAT());
         holder.movieDescription.setText(lstTaxInvoice.get(position).getTaxInvoiceAddress());
         holder.isChecked.setChecked(lstTaxInvoice.get(position).isChecked());
-        holder.txtOffline.setVisibility(lstTaxInvoice.get(position).isThuOffline() ? View.VISIBLE : View.INVISIBLE);
+        holder.txtOffline.setVisibility(lstTaxInvoice.get(position).isThuOffline() > 0 ? View.VISIBLE : View.INVISIBLE);
+        if (lstTaxInvoice.get(position).isThuOffline() == 2) {
+            holder.txtOffline.setText("Đã thu online");
+            holder.txtOffline.setTextColor(Color.MAGENTA);
+        }
         holder.isChecked.setTag(lstTaxInvoice.get(position));
         holder.isChecked.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity
                                                         b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
                                                         b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
                                                         b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                                                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), false, b.getAmount(), b.getServiceTypeId(), b.getServiceName(),
+                                                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), 0, b.getAmount(), b.getServiceTypeId(), b.getServiceName(),
                                                         b.getINDEX_THU(), b.getKIEU(), b.getPriceId());
                                                 stt++;
                                                 b.setSTT(stt);
@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity
                 Toasty.error(getApplicationContext(), "Chưa có thu tiền của KH. Chưa thể đẩy !!", Toasty.LENGTH_LONG, true).show();
             } else {
                 for (final Bill_TaxInvoiceModel b : tmp) {
-                    if (b.isThuOffline()) {
+                    if (b.isThuOffline() == 1) {
                         Log.e(TAG, b.toString());
                         Call<Integer> call = apiService.ThuTien((b.getTaxInvoiceId()));
                         call.enqueue(new CustomCallBack<Integer>(mContext) {
