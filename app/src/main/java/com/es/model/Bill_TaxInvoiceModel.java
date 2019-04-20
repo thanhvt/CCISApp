@@ -104,10 +104,13 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
     @Column(name = "KIEU")
     private String KIEU;
 
+    @Column(name = "PriceId")
+    private int PriceId;
+
     public Bill_TaxInvoiceModel() {
     }
 
-    public Bill_TaxInvoiceModel(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, double amount, int serviceTypeId, String serviceName, String INDEX_THU, String KIEU) {
+    public Bill_TaxInvoiceModel(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, double amount, int serviceTypeId, String serviceName, String INDEX_THU, String KIEU, int priceId) {
         TaxCode = taxCode;
         CustomerCode = customerCode;
         BankName = bankName;
@@ -140,6 +143,15 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
         ServiceName = serviceName;
         this.INDEX_THU = INDEX_THU;
         this.KIEU = KIEU;
+        PriceId = priceId;
+    }
+
+    public int getPriceId() {
+        return PriceId;
+    }
+
+    public void setPriceId(int priceId) {
+        PriceId = priceId;
     }
 
     public String getINDEX_THU() {
@@ -398,6 +410,7 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
         ServiceName = serviceName;
     }
 
+
     @Override
     public String toString() {
         return "Bill_TaxInvoiceModel{" +
@@ -430,7 +443,10 @@ public class Bill_TaxInvoiceModel extends Model implements Serializable {
                 ", IsThuOffline=" + IsThuOffline +
                 ", Amount=" + Amount +
                 ", ServiceTypeId=" + ServiceTypeId +
-                ", ServiceName=" + ServiceName +
+                ", ServiceName='" + ServiceName + '\'' +
+                ", INDEX_THU='" + INDEX_THU + '\'' +
+                ", KIEU='" + KIEU + '\'' +
+                ", PriceId=" + PriceId +
                 '}';
     }
 }

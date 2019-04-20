@@ -79,6 +79,8 @@ public class Bill_TaxInvoice implements Serializable {
 
     private String KIEU;
 
+    private int PriceId;
+
 //    i.Amount,
 //    i.ServiceTypeId,
 //    i.ServiceName
@@ -86,7 +88,7 @@ public class Bill_TaxInvoice implements Serializable {
     public Bill_TaxInvoice() {
     }
 
-    public Bill_TaxInvoice(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String $id, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, int STT, double amount, int serviceTypeId, String serviceName, String INDEX_THU, String KIEU) {
+    public Bill_TaxInvoice(String taxCode, String customerCode, String bankName, String month, String serialNumber, String year, String customerId, String departmentId, String $id, String taxInvoiceAddress, int taxInvoiceId, int idDevice, String contractId, int figureBookId, String serialCode, String customerName, String customerCode_Pay, String subTotal, String address_Pay, String bankAccount, String VAT, String taxRatio, String customerId_Pay, String billType, String customerName_Pay, String total, boolean isChecked, boolean isThuOffline, int STT, double amount, int serviceTypeId, String serviceName, String INDEX_THU, String KIEU, int priceId) {
         TaxCode = taxCode;
         CustomerCode = customerCode;
         BankName = bankName;
@@ -121,6 +123,15 @@ public class Bill_TaxInvoice implements Serializable {
         ServiceName = serviceName;
         this.INDEX_THU = INDEX_THU;
         this.KIEU = KIEU;
+        PriceId = priceId;
+    }
+
+    public int getPriceId() {
+        return PriceId;
+    }
+
+    public void setPriceId(int priceId) {
+        PriceId = priceId;
     }
 
     public String getINDEX_THU() {
@@ -476,6 +487,7 @@ public class Bill_TaxInvoice implements Serializable {
                 ", ServiceName='" + ServiceName + '\'' +
                 ", INDEX_THU='" + INDEX_THU + '\'' +
                 ", KIEU='" + KIEU + '\'' +
+                ", PriceId=" + PriceId +
                 '}';
     }
 }

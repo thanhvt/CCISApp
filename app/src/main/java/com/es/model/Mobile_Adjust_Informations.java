@@ -46,6 +46,8 @@ public class Mobile_Adjust_Informations implements Serializable {
 
     private int Year;
 
+    private int PriceId;
+
 //    public Nullable<int> FigureBookId { get; set; }
 //    public Nullable<System.DateTime> StartDate { get; set; }
 //    public Nullable<System.DateTime> EndDate { get; set; }
@@ -55,7 +57,7 @@ public class Mobile_Adjust_Informations implements Serializable {
 //    public Nullable<int> CustomerNew { get; set; }
 
 
-    public Mobile_Adjust_Informations(boolean status, String index, String type, String price, String customerID, String customerAdd, String departmentId, String employeeCode, String customerName, String $id, String amout, String adjustID, String figureBookId, Date startDate, Date endDate, String subTotal, String tax, String total, String customerNew) {
+    public Mobile_Adjust_Informations(boolean status, String index, String type, String price, String customerID, String customerAdd, String departmentId, String employeeCode, String customerName, String $id, String amout, String adjustID, String figureBookId, Date startDate, Date endDate, String subTotal, String tax, String total, String customerNew, int priceId) {
         Status = status;
         Index = index;
         Type = type;
@@ -75,6 +77,15 @@ public class Mobile_Adjust_Informations implements Serializable {
         Tax = tax;
         Total = total;
         CustomerNew = customerNew;
+        PriceId = priceId;
+    }
+
+    public int getPriceId() {
+        return PriceId;
+    }
+
+    public void setPriceId(int priceId) {
+        PriceId = priceId;
     }
 
     public int getMonth() {

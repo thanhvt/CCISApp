@@ -65,10 +65,13 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
     @Column(name = "IS_SUBMIT")
     private String IS_SUBMIT;
 
+    @Column(name = "PriceId")
+    private int PriceId;
+
     public Mobile_Adjust_DB() {
     }
 
-    public Mobile_Adjust_DB(boolean status, String indexSo, String type, String price, String customerID, String customerAdd, String departmentId, String employeeCode, String customerName, String amout, String adjustID) {
+    public Mobile_Adjust_DB(boolean status, String indexSo, String type, String price, String customerID, String customerAdd, String departmentId, String employeeCode, String customerName, String amout, String adjustID, String startDate, String endDate, String figureBookId, String subTotal, String tax, String total, String customerNew, String IS_SUBMIT, int PriceId) {
         Status = status;
         IndexSo = indexSo;
         Type = type;
@@ -80,6 +83,23 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
         CustomerName = customerName;
         Amout = amout;
         AdjustID = adjustID;
+        StartDate = startDate;
+        EndDate = endDate;
+        FigureBookId = figureBookId;
+        SubTotal = subTotal;
+        Tax = tax;
+        Total = total;
+        CustomerNew = customerNew;
+        this.IS_SUBMIT = IS_SUBMIT;
+        this.PriceId = PriceId;
+    }
+
+    public int getPriceId() {
+        return PriceId;
+    }
+
+    public void setPriceId(int priceId) {
+        this.PriceId = priceId;
     }
 
     public String getIS_SUBMIT() {
@@ -240,6 +260,27 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
 
     @Override
     public String toString() {
-        return "ClassPojo [Status = " + Status + ", IndexSo = " + IndexSo + ", Type = " + Type + ", Price = " + Price + ", CustomerID = " + CustomerID + ", CustomerAdd = " + CustomerAdd + ", DepartmentId = " + DepartmentId + ", EmployeeCode = " + EmployeeCode + ", CustomerName = " + CustomerName + ", Amout = " + Amout + ", AdjustID = " + AdjustID + "]";
+        return "Mobile_Adjust_DB{" +
+                "Status=" + Status +
+                ", IndexSo='" + IndexSo + '\'' +
+                ", Type='" + Type + '\'' +
+                ", Price='" + Price + '\'' +
+                ", CustomerID='" + CustomerID + '\'' +
+                ", CustomerAdd='" + CustomerAdd + '\'' +
+                ", DepartmentId='" + DepartmentId + '\'' +
+                ", EmployeeCode='" + EmployeeCode + '\'' +
+                ", CustomerName='" + CustomerName + '\'' +
+                ", Amout='" + Amout + '\'' +
+                ", AdjustID='" + AdjustID + '\'' +
+                ", StartDate='" + StartDate + '\'' +
+                ", EndDate='" + EndDate + '\'' +
+                ", FigureBookId='" + FigureBookId + '\'' +
+                ", SubTotal='" + SubTotal + '\'' +
+                ", Tax='" + Tax + '\'' +
+                ", Total='" + Total + '\'' +
+                ", CustomerNew='" + CustomerNew + '\'' +
+                ", IS_SUBMIT='" + IS_SUBMIT + '\'' +
+                ", PriceId='" + PriceId + '\'' +
+                '}';
     }
 }

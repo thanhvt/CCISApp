@@ -76,6 +76,8 @@ public class AdjustInformationsFragment extends Fragment {
     // constant
     String TAG = "AdjustInformationsFragment";
 
+    int priceId = -1;
+
     public static final String EXTRA_DATA = "DATA_CONTENT";
     Bill_TaxInvoice taxInvoice;
     private String content;
@@ -112,17 +114,19 @@ public class AdjustInformationsFragment extends Fragment {
         List<String> list = new ArrayList<>();
         List<DonGia_DB> info = new Select().all().from(DonGia_DB.class).execute();
         for (DonGia_DB item : info) {
-            list.add(item.getDescription() + ": " + item.getPrice());
+            list.add(item.getPriceId() + ". " + item.getDescription() + ": " + item.getPrice());
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         spnDmucDonGia.setAdapter(adapter);
+//        spnDmucDonGia.setTag();
         spnDmucDonGia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i > 0) {
                     edDonGia.setText(spnDmucDonGia.getSelectedItem().toString().substring(spnDmucDonGia.getSelectedItem().toString().indexOf(": ") + 2));
+                    priceId = Integer.parseInt(spnDmucDonGia.getSelectedItem().toString().substring(0, spnDmucDonGia.getSelectedItem().toString().indexOf(". ")));
                 }
             }
 
@@ -146,6 +150,8 @@ public class AdjustInformationsFragment extends Fragment {
             List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
             Log.e(TAG, "Bill_TaxInvoiceDetail_DB: " + tmp.size());
             Log.e(TAG, "taxInvoice: " + taxInvoice.toString());
+
+            priceId = taxInvoice.getPriceId();
             edDC.setText(taxInvoice.getTaxInvoiceAddress());
             edTenKH.setText(taxInvoice.getCustomerName());
             edSL.setText(taxInvoice.getAmount() + "");
@@ -203,6 +209,7 @@ public class AdjustInformationsFragment extends Fragment {
                 m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
                 m.setFigureBookId(taxInvoice.getFigureBookId() + "");
                 m.setCustomerNew(taxInvoice.getCustomerId());
+                m.setPriceId(priceId);
 
                 String vat = taxInvoice.getTaxRatio();
                 BigDecimal a = new BigDecimal(edSL.getText().toString());
@@ -270,7 +277,7 @@ public class AdjustInformationsFragment extends Fragment {
         m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
         m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
         m.setFigureBookId(taxInvoice.getFigureBookId() + "");
-
+        m.setPriceId(priceId);
         m.setCustomerNew("-1");
 
         int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
@@ -297,13 +304,13 @@ public class AdjustInformationsFragment extends Fragment {
 
         List<Bill_TaxInvoiceModel> model = new Select().all().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
         Bill_TaxInvoiceModel cu = model.get(0);
-//        cu.setAmount(edSL.getText().toString());
         cu.setCustomerName(m.getCustomerName());
         cu.setTaxInvoiceAddress(m.getCustomerAdd());
         cu.setINDEX_THU(m.getIndexSo());
         cu.setSubTotal(dSub + "");
         cu.setTotal(dTotal + "");
         cu.setVAT(dVat + "");
+        cu.setPriceId(priceId);
         cu.save();
     }
 
@@ -326,7 +333,7 @@ public class AdjustInformationsFragment extends Fragment {
         m.setStartDate(edTuNgay.getText() != null ? Utils.parseDate(edTuNgay.getText().toString()) : null);
         m.setEndDate(edDenNgay.getText() != null ? Utils.parseDate(edDenNgay.getText().toString()) : null);
         m.setFigureBookId(taxInvoice.getFigureBookId() + "");
-
+        m.setPriceId(priceId);
         m.setCustomerNew("-1");
         int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
         List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
@@ -363,6 +370,7 @@ public class AdjustInformationsFragment extends Fragment {
             cu.setSubTotal(dSub + "");
             cu.setTotal(dTotal + "");
             cu.setVAT(dVat + "");
+            cu.setPriceId(priceId);
             cu.save();
         } catch (Exception e) {
             Log.e("ADJ", e.getMessage() + "");

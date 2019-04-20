@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity
                                                         b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
                                                         b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
                                                         b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(), false, b.getAmount(), b.getServiceTypeId(), b.getServiceName(),
-                                                        b.getINDEX_THU(), b.getKIEU());
+                                                        b.getINDEX_THU(), b.getKIEU(), b.getPriceId());
                                                 stt++;
                                                 b.setSTT(stt);
                                                 c.save();
@@ -290,7 +290,8 @@ public class MainActivity extends AppCompatActivity
                 for (final Mobile_Adjust_DB mo : tmp) {
                     final Mobile_Adjust_Informations mobile = new Mobile_Adjust_Informations(mo.getStatus(), mo.getIndexSo(), mo.getType(), mo.getPrice(), mo.getCustomerID(), mo.getCustomerAdd(),
                             mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(),
-                            "1", mo.getAmout(), mo.getAdjustID(), mo.getFigureBookId(), Utils.parseDate(mo.getStartDate()), Utils.parseDate(mo.getEndDate()), mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1");
+                            "1", mo.getAmout(), mo.getAdjustID(), mo.getFigureBookId(), Utils.parseDate(mo.getStartDate()), Utils.parseDate(mo.getEndDate()),
+                            mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1", mo.getPriceId());
                     if (mobile.getType().equals("3")) {
                         Calendar c = Calendar.getInstance();
                         mobile.setMonth(c.get(Calendar.MONTH) + 1);
