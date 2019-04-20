@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -72,6 +73,13 @@ public class AdjustInformationsFragment extends Fragment {
     EditText edDenNgay;
     @BindView(R.id.spnDmucDonGia)
     Spinner spnDmucDonGia;
+
+
+    @BindView(R.id.btnAdjOffline)
+    Button btnAdjOffline;
+    @BindView(R.id.btnAdjInformation)
+    Button btnAdjInformation;
+
 
     // constant
     String TAG = "AdjustInformationsFragment";
@@ -162,6 +170,11 @@ public class AdjustInformationsFragment extends Fragment {
             if (tmp.size() > 0) {
                 edTuNgay.setText(tmp.get(0).TuNgay);
                 edDenNgay.setText(tmp.get(0).DenNgay);
+            }
+
+            if (taxInvoice.isThuOffline() > 0) {
+                btnAdjOffline.setEnabled(false);
+                btnAdjInformation.setEnabled(false);
             }
         }
         return rootView;
@@ -434,6 +447,56 @@ public class AdjustInformationsFragment extends Fragment {
                         Log.e("CHECK PUT", postCheck + "");
                         if (postCheck.equals("OK")) {
                             Toasty.success(getActivity(), "Lưu thông tin khách hàng thành công !", Toasty.LENGTH_LONG, true).show();
+
+                            SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+                            String strEmployeeCode = pref.getString("EMPLOYEECODE", "");
+
+                            List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
+
+                            int ran = new Random().nextInt();
+                            List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
+                            while (tmp.size() > 0) {
+                                ran = new Random().nextInt();
+                                tmp = new Select().all().from(Mobile_Adjust_DB.class).where("AdjustID = ?", ran).execute();
+                            }
+
+                            Mobile_Adjust_DB m = new Mobile_Adjust_DB();
+                            m.setAdjustID(ran + "");
+                            m.setAmout(edSL.getText().toString());
+                            m.setCustomerAdd(edDC.getText().toString());
+                            m.setCustomerID(taxInvoice.getCustomerId());
+                            m.setCustomerName(edTenKH.getText().toString());
+                            m.setEmployeeCode(strEmployeeCode);
+                            m.setIndexSo(edSTT.getText().toString());
+                            m.setPrice(edDonGia.getText().toString());
+                            m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
+                            m.setStatus(false);
+                            m.setDepartmentId(taxInvoice.getDepartmentId());
+                            m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
+                            m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
+                            m.setFigureBookId(taxInvoice.getFigureBookId() + "");
+                            m.setPriceId(priceId);
+                            m.setCustomerNew("-1");
+
+                            int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
+                            taxInvoiceDetailDbList.get(0).setTerm(mTerm);
+                            taxInvoiceDetailDbList.get(0).save();
+
+                            String vat = taxInvoice.getTaxRatio();
+                            BigDecimal a = new BigDecimal(edSL.getText().toString());
+                            BigDecimal b = new BigDecimal(edDonGia.getText().toString());
+                            BigDecimal c = new BigDecimal(mTerm);
+                            BigDecimal dSub = a.multiply(b).multiply(c);
+                            dSub = dSub.setScale(2, RoundingMode.CEILING);
+                            BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
+                            dVat = dVat.setScale(2, RoundingMode.CEILING);
+                            BigDecimal dTotal = dSub.add(dVat);
+                            m.setSubTotal(dSub + "");
+                            m.setTotal(dTotal + "");
+
+                            m.setTax(dVat + "");
+                            m.save();
+
                             checkDayServer = true;
                         } else {
                             Toasty.error(getActivity(), "Lưu thông tin khách hàng không thành công !", Toasty.LENGTH_LONG, true).show();
