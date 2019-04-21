@@ -238,6 +238,7 @@ public class AdjustInformationsFragment extends Fragment {
                 BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
                 dVat = dVat.setScale(2, RoundingMode.CEILING);
                 BigDecimal dTotal = dSub.add(dVat);
+                dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
                 m.setSubTotal(dSub + "");
                 m.setTotal(dTotal + "");
                 m.setTax(dVat + "");
@@ -306,6 +307,7 @@ public class AdjustInformationsFragment extends Fragment {
         BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
         dVat = dVat.setScale(2, RoundingMode.CEILING);
         BigDecimal dTotal = dSub.add(dVat);
+        dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
         m.setSubTotal(dSub + "");
         m.setTotal(dTotal + "");
 
@@ -412,6 +414,7 @@ public class AdjustInformationsFragment extends Fragment {
         BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
         dVat = dVat.setScale(2, RoundingMode.CEILING);
         BigDecimal dTotal = dSub.add(dVat);
+        dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
         m.setSubTotal(dSub + "");
         m.setTotal(dTotal + "");
 
@@ -501,6 +504,7 @@ public class AdjustInformationsFragment extends Fragment {
                             BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
                             dVat = dVat.setScale(2, RoundingMode.CEILING);
                             BigDecimal dTotal = dSub.add(dVat);
+                            dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
                             m.setSubTotal(dSub + "");
                             m.setTotal(dTotal + "");
 

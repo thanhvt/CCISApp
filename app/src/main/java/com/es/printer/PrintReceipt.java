@@ -242,6 +242,7 @@ public class PrintReceipt {
                 BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
                 dVat = dVat.setScale(2, RoundingMode.CEILING);
                 BigDecimal dTotal = dSub.add(dVat);
+                dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
                 bill_taxInvoice.setSubTotal(dSub + "");
                 bill_taxInvoice.setTotal(dTotal + "");
                 bill_taxInvoice.setVAT(dVat + "");
@@ -420,6 +421,7 @@ public class PrintReceipt {
                 BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
                 dVat = dVat.setScale(2, RoundingMode.CEILING);
                 BigDecimal dTotal = dSub.add(dVat);
+                dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
                 bill_taxInvoice.setSubTotal(dSub + "");
                 bill_taxInvoice.setTotal(dTotal + "");
                 bill_taxInvoice.setVAT(dVat + "");
