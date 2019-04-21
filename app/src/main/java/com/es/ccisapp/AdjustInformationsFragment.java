@@ -325,6 +325,9 @@ public class AdjustInformationsFragment extends Fragment {
         cu.setVAT(dVat + "");
         cu.setPriceId(priceId);
         cu.save();
+
+        btnAdjOffline.setEnabled(false);
+        btnAdjInformation.setEnabled(false);
     }
 
     @OnClick(R.id.btnAdjOffline)
@@ -372,6 +375,12 @@ public class AdjustInformationsFragment extends Fragment {
 
     @OnClick(R.id.btnAdjInformation)
     public void btnAdjInformation() {
+
+        List<Mobile_Adjust_DB> tmp = new Select().all().from(Mobile_Adjust_DB.class).where("IS_SUBMIT IS NULL AND CustomerID = '" + taxInvoice.getCustomerId() + "'").execute();
+        if (tmp.size() > 0) {
+            Toasty.warning(getActivity(), "KH này ĐÃ thực hiện thay đổi thông tin và lưu OFFLINE. Đề nghị Anh/Chị duyệt thông tin để đẩy lên server !", Toasty.LENGTH_LONG, true).show();
+            return;
+        }
         SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
         String strEmployeeCode = pref.getString("EMPLOYEECODE", "");
         Mobile_Adjust_Informations m = new Mobile_Adjust_Informations();
@@ -416,7 +425,8 @@ public class AdjustInformationsFragment extends Fragment {
 
         taxInvoiceDetailDbList.get(0).setTerm(mTerm);
         taxInvoiceDetailDbList.get(0).save();
-
+        btnAdjOffline.setEnabled(false);
+        btnAdjInformation.setEnabled(false);
         try {
             List<Bill_TaxInvoiceModel> model = new Select().all().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
             Bill_TaxInvoiceModel cu = model.get(0);

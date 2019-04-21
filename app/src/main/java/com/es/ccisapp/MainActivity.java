@@ -279,6 +279,9 @@ public class MainActivity extends AppCompatActivity
                                 Log.e(TAG, t.toString());
                             }
                         });
+                    } else if (b.isThuOffline() == 2) {
+                        List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
+                        new Delete().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
                     }
                 }
             }

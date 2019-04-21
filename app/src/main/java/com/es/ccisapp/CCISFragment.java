@@ -335,6 +335,13 @@ public class CCISFragment extends Fragment {
                 recyclerView.setAdapter(taxInvoiceAdapter);
                 taxInvoiceAdapter.notifyDataSetChanged();
             }
+            if (lstTaxInvoiceData.size() > 0 && searchView != null && searchView.getQuery() != null && !searchView.getQuery().toString().isEmpty()
+                    && taxInvoiceAdapter != null && taxInvoiceAdapter.getItemCount() > 0
+            ) {
+                taxInvoiceAdapter.getFilter().filter(searchView.getQuery().toString());
+                taxInvoiceAdapter.notifyDataSetChanged();
+            }
+
             try {
                 int daThu = 0;
                 long tienThu = 0L;
