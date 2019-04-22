@@ -108,7 +108,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
 
     @Override
     public int getItemCount() {
-        return lstTaxInvoice.size();
+        return lstTaxInvoice == null ? 0 : lstTaxInvoice.size();
     }
 
 

@@ -336,7 +336,7 @@ public class CCISFragment extends Fragment {
                 taxInvoiceAdapter.notifyDataSetChanged();
             }
             if (lstTaxInvoiceData.size() > 0 && searchView != null && searchView.getQuery() != null && !searchView.getQuery().toString().isEmpty()
-                    && taxInvoiceAdapter != null && taxInvoiceAdapter.getItemCount() > 0
+                    && taxInvoiceAdapter != null && taxInvoiceAdapter.getLstTaxInvoice() != null && taxInvoiceAdapter.getItemCount() > 0
             ) {
                 taxInvoiceAdapter.getFilter().filter(searchView.getQuery().toString());
                 taxInvoiceAdapter.notifyDataSetChanged();
