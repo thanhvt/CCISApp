@@ -509,6 +509,7 @@ public class AdjustInformationsFragment extends Fragment {
                             m.setTotal(dTotal + "");
 
                             m.setTax(dVat + "");
+                            m.setIS_SUBMIT("1");
                             m.save();
 
                             checkDayServer = true;
