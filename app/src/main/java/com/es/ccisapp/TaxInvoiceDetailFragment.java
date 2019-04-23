@@ -163,7 +163,12 @@ public class TaxInvoiceDetailFragment extends Fragment {
                     btnInHD.setText("IN HÓA ĐƠN (đã điều chỉnh t.ttin)");
                 } else {
                     txtVAT.setText(formatNumber(Long.parseLong(taxInvoice.getVAT().substring(0, taxInvoice.getVAT().indexOf(".")))) + " VNĐ");
-                    txtTotal.setText(formatNumber(Long.parseLong(taxInvoice.getTotal().substring(0, taxInvoice.getTotal().indexOf(".")))) + " VNĐ");
+                    if (taxInvoice.getTotal().indexOf(".") != -1) {
+                        txtTotal.setText(formatNumber(Long.parseLong(taxInvoice.getTotal().substring(0, taxInvoice.getTotal().indexOf(".")))) + " VNĐ");
+                    } else {
+                        txtTotal.setText(formatNumber(Long.parseLong(taxInvoice.getTotal())) + " VNĐ");
+                    }
+
                     txtSubTotal.setText(formatNumber(Long.parseLong(taxInvoice.getSubTotal().substring(0, taxInvoice.getSubTotal().indexOf(".")))) + " VNĐ");
                     if (tmp.size() > 0) {
                         txtTuDen.setText(tmp.get(0).TuNgay + " - " + tmp.get(0).DenNgay);

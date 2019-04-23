@@ -173,7 +173,8 @@ public class CCISFragment extends Fragment {
                     if (bill.isThuOffline() > 0) {
                         daThu++;
                         tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
-                        tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
+//                        tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
+                        tongTien += bill.getTotal().indexOf(".") != -1 ? Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf("."))) : Long.parseLong(bill.getTotal());
                     }
                 }
                 txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
@@ -350,7 +351,7 @@ public class CCISFragment extends Fragment {
                     if (bill.isThuOffline() > 0) {
                         daThu++;
                         tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
-                        tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
+                        tongTien += bill.getTotal().indexOf(".") != -1 ? Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf("."))) : Long.parseLong(bill.getTotal());
                     }
                 }
                 txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
@@ -495,7 +496,8 @@ public class CCISFragment extends Fragment {
                                 if (bill.isThuOffline() > 0) {
                                     daThu++;
                                     tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
-                                    tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
+//                                    tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
+                                    tongTien += bill.getTotal().indexOf(".") != -1 ? Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf("."))) : Long.parseLong(bill.getTotal());
                                 }
                             }
                             txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
@@ -535,7 +537,8 @@ public class CCISFragment extends Fragment {
                                                     if (bill.isThuOffline() > 0) {
                                                         daThu++;
                                                         tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
-                                                        tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
+//                                                        tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
+                                                        tongTien += bill.getTotal().indexOf(".") != -1 ? Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf("."))) : Long.parseLong(bill.getTotal());
                                                     }
                                                 }
                                                 txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
