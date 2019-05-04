@@ -42,11 +42,16 @@ public class Mobile_Adjust_Informations implements Serializable {
 
     private String CustomerNew;
 
+    private int PriceId;
+
+    private String TaxCode;
+    private String PhoneNumber;
+    private String Email;
+
+    // ---------------------
     private int Month;
 
     private int Year;
-
-    private int PriceId;
 
 //    public Nullable<int> FigureBookId { get; set; }
 //    public Nullable<System.DateTime> StartDate { get; set; }
@@ -57,7 +62,12 @@ public class Mobile_Adjust_Informations implements Serializable {
 //    public Nullable<int> CustomerNew { get; set; }
 
 
-    public Mobile_Adjust_Informations(boolean status, String index, String type, String price, String customerID, String customerAdd, String departmentId, String employeeCode, String customerName, String $id, String amout, String adjustID, String figureBookId, Date startDate, Date endDate, String subTotal, String tax, String total, String customerNew, int priceId) {
+    public Mobile_Adjust_Informations(boolean status, String index, String type, String price, String customerID, String customerAdd, String departmentId,
+                                      String employeeCode, String customerName, String $id, String amout, String adjustID, String figureBookId,
+                                      Date startDate, Date endDate, String subTotal, String tax, String total, String customerNew, int priceId,
+                                      String taxCode,
+                                      String phoneNumber,
+                                      String email) {
         Status = status;
         Index = index;
         Type = type;
@@ -78,6 +88,33 @@ public class Mobile_Adjust_Informations implements Serializable {
         Total = total;
         CustomerNew = customerNew;
         PriceId = priceId;
+        TaxCode = taxCode;
+        PhoneNumber = phoneNumber;
+        Email = email;
+    }
+
+    public String getTaxCode() {
+        return TaxCode;
+    }
+
+    public void setTaxCode(String taxCode) {
+        TaxCode = taxCode;
+    }
+
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
     }
 
     public int getPriceId() {

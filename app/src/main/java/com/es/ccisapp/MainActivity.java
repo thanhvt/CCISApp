@@ -26,6 +26,8 @@ import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail;
 import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Bill_TaxInvoiceModel;
+import com.es.model.Concus_Customer;
+import com.es.model.Concus_Customer_DB;
 import com.es.model.DonGia;
 import com.es.model.DonGia_DB;
 import com.es.model.Mobile_Adjust_DB;
@@ -205,6 +207,7 @@ public class MainActivity extends AppCompatActivity
                                                 strIDs += b.getTaxInvoiceId() + ",";
                                             }
                                             getDetail(movies);
+                                            getDetailConcus_Customer(movies);
                                             Toasty.success(getApplicationContext(), "Lấy số liệu chưa thu tiền từ Server thành công !", Toasty.LENGTH_LONG, true).show();
                                             nav_itemUp.setEnabled(true);
                                             switchFragment(buildFragment_CCIS(), "ABC");
@@ -294,7 +297,7 @@ public class MainActivity extends AppCompatActivity
                     final Mobile_Adjust_Informations mobile = new Mobile_Adjust_Informations(mo.getStatus(), mo.getIndexSo(), mo.getType(), mo.getPrice(), mo.getCustomerID(), mo.getCustomerAdd(),
                             mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(),
                             "1", mo.getAmout(), mo.getAdjustID(), mo.getFigureBookId(), Utils.parseDate(mo.getStartDate()), Utils.parseDate(mo.getEndDate()),
-                            mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1", mo.getPriceId());
+                            mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1", mo.getPriceId(), mo.getTaxCode(), mo.getPhoneNumber(), mo.getEmail());
                     if (mobile.getType().equals("3")) {
                         Calendar c = Calendar.getInstance();
                         mobile.setMonth(c.get(Calendar.MONTH) + 1);
@@ -376,6 +379,7 @@ public class MainActivity extends AppCompatActivity
                         new Delete().from(Bill_TaxInvoiceDetail_DB.class).execute();
                         new Delete().from(SoGCS_User_DB.class).execute();
                         new Delete().from(DonGia_DB.class).execute();
+                        new Delete().from(Concus_Customer_DB.class).execute();
                         if (bill == null && info == null) {
                             Toasty.success(getApplicationContext(), "Xóa dữ liệu CCIS trên máy điện thoại thành công !", Toasty.LENGTH_LONG, true).show();
                             switchFragment(buildFragment_CCIS(), "ABC");
@@ -551,9 +555,89 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void getDetailConcus_Customer(List<Bill_TaxInvoice> movies) {
+        int tmpLength = movies.size() * 6;
+        int soLanQua = tmpLength / 200;
+        String strID = "";
+        if (soLanQua == 0) {
+            for (Bill_TaxInvoice b : movies) {
+                strID += b.getCustomerCode() + ",";
+            }
+            getListConcus_Customer(strID);
+        } else {
+            for (int i = 0; i < movies.size(); i++) {
+                Bill_TaxInvoice item = movies.get(i);
+                strID += item.getCustomerCode() + ",";
+                if (strID.length() > 200) {
+                    getListConcus_Customer(strID);
+                    strID = "";
+                }
+                if (i == movies.size() - 1 && strID.length() <= 200) {
+                    getListConcus_Customer(strID);
+                }
+            }
+        }
+    }
+
+    public void getListConcus_Customer(String strID) {
+        Call<List<Concus_Customer>> call2 = apiService.getListConcus_Customer(strID);
+        Log.wtf("URL Called", call2.request().url() + "");
+        call2.enqueue(new CustomCallBack<List<Concus_Customer>>(mContext, "Đang lấy số liệu khách hàng từ Server") {
+            @Override
+            public void onResponse(Call<List<Concus_Customer>> call, Response<List<Concus_Customer>> response) {
+
+                if (response != null && response.body() != null) {
+                    List<Concus_Customer> movies = response.body();
+                    if (movies.size() > 0) {
+                        Log.e(TAG, "getListConcus_Customer " + movies.size());
+                        try {
+
+                            ActiveAndroid.beginTransaction();
+                            try {
+                                for (Concus_Customer b : movies) {
+                                    List<Concus_Customer_DB> info = new Select().all().from(Concus_Customer_DB.class).where("CustomerCode = ?", b.CustomerCode).execute();
+                                    if (info.size() == 0) {
+                                        Concus_Customer_DB c = new Concus_Customer_DB(b.CustomerId, b.CustomerCode, b.DepartmentId, b.Name, b.Address, b.InvoiceAddress, b.Fax,
+                                                b.Gender,
+                                                b.Email, b.PhoneNumber, b.TaxCode, b.Ratio, b.BankAccount, b.BankName, b.Status, b.CreateUser, b.OccupationsGroupCode,
+                                                b.PhoneCustomerCare,
+                                                b.PaymentMethodsCode);
+                                        c.save();
+                                    }
+                                }
+                                ActiveAndroid.setTransactionSuccessful();
+                            } finally {
+                                ActiveAndroid.endTransaction();
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    } else {
+                        Toasty.warning(getApplicationContext(), "Không có dữ liệu chi tiết khách hàng !", Toasty.LENGTH_LONG, true).show();
+                    }
+                } else {
+                    Log.e(TAG, response.message());
+                    Toasty.error(getApplicationContext(), "Không có dữ liệu hoặc gặp lỗi trong quá trình lấy dữ liệu khách hàng !", Toasty.LENGTH_LONG, true).show();
+                }
+                this.mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<List<Concus_Customer>> call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.getMessage());
+                if (t.getMessage().contains("Expected BEGIN_ARRAY")) {
+                    Toasty.error(getApplicationContext(), "Không có dữ liệu khách hàng. Đề nghị kiểm tra lại !", Toasty.LENGTH_LONG, true).show();
+                } else {
+                    Toasty.error(getApplicationContext(), "Gặp lỗi trong quá trình lấy dữ liệu !", Toasty.LENGTH_LONG, true).show();
+                }
+                this.mProgressDialog.dismiss();
+            }
+        });
+    }
+
     public void getDetailSoLan(String strID) {
         Call<List<Bill_TaxInvoiceDetail>> call2 = apiService.getList_Bill_TaxInvoiceDetail(strID);
-        Log.wtf("URL Called", call2.request().url() + "");
         call2.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(mContext, "Đang lấy số liệu chưa thu tiền từ Server") {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
@@ -561,7 +645,6 @@ public class MainActivity extends AppCompatActivity
                 if (response != null && response.body() != null) {
                     List<Bill_TaxInvoiceDetail> movies = response.body();
                     if (movies.size() > 0) {
-                        Log.e(TAG, "getDetailSoLan " + movies.size());
                         try {
 
                             ActiveAndroid.beginTransaction();

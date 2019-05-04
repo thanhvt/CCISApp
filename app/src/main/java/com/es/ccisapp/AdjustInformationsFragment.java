@@ -22,6 +22,7 @@ import com.activeandroid.query.Select;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail_DB;
 import com.es.model.Bill_TaxInvoiceModel;
+import com.es.model.Concus_Customer_DB;
 import com.es.model.DonGia_DB;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.Mobile_Adjust_Informations;
@@ -65,8 +66,7 @@ public class AdjustInformationsFragment extends Fragment {
     RadioButton rdTT;
     @BindView(R.id.rdDCHD)
     RadioButton rdDCHD;
-    //    @BindView(R.id.fab)
-//    FloatingActionButton fab;
+
     @BindView(R.id.edTuNgay)
     EditText edTuNgay;
     @BindView(R.id.edDenNgay)
@@ -74,6 +74,14 @@ public class AdjustInformationsFragment extends Fragment {
     @BindView(R.id.spnDmucDonGia)
     Spinner spnDmucDonGia;
 
+    @BindView(R.id.edMST)
+    EditText edMST;
+
+    @BindView(R.id.edPhone)
+    EditText edPhone;
+
+    @BindView(R.id.edEmail)
+    EditText edEmail;
 
     @BindView(R.id.btnAdjOffline)
     Button btnAdjOffline;
@@ -164,6 +172,14 @@ public class AdjustInformationsFragment extends Fragment {
             edDC.setText(taxInvoice.getTaxInvoiceAddress());
             edTenKH.setText(taxInvoice.getCustomerName());
             edSL.setText(taxInvoice.getAmount() + "");
+
+            edMST.setText(taxInvoice.getTaxCode());
+            List<Concus_Customer_DB> customer_dbs = new Select().all().from(Concus_Customer_DB.class).where("CustomerCode = ?", taxInvoice.getCustomerCode()).execute();
+            if (customer_dbs != null && customer_dbs.size() > 0) {
+                edPhone.setText(customer_dbs.get(0).PhoneNumber);
+                edEmail.setText(customer_dbs.get(0).Email);
+            }
+
             //edDonGia.setText(taxInvoice.getSubTotal());
             edDonGia.setText(tmp.get(0).getPrice() + "");
             edSTT.setText(taxInvoice.getINDEX_THU());
@@ -224,6 +240,9 @@ public class AdjustInformationsFragment extends Fragment {
                 m.setFigureBookId(taxInvoice.getFigureBookId() + "");
                 m.setCustomerNew(taxInvoice.getCustomerId());
                 m.setPriceId(priceId);
+                m.setTaxCode(edMST.getText() != null ? edMST.getText().toString() : "");
+                m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
+                m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
 
                 String vat = taxInvoice.getTaxRatio();
                 BigDecimal a = new BigDecimal(edSL.getText().toString());
@@ -293,6 +312,9 @@ public class AdjustInformationsFragment extends Fragment {
         m.setFigureBookId(taxInvoice.getFigureBookId() + "");
         m.setPriceId(priceId);
         m.setCustomerNew("-1");
+        m.setTaxCode(edMST.getText() != null ? edMST.getText().toString() : "");
+        m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
+        m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
 
         int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
         taxInvoiceDetailDbList.get(0).setTerm(mTerm);
@@ -402,6 +424,10 @@ public class AdjustInformationsFragment extends Fragment {
         m.setFigureBookId(taxInvoice.getFigureBookId() + "");
         m.setPriceId(priceId);
         m.setCustomerNew("-1");
+        m.setTaxCode(edMST.getText() != null ? edMST.getText().toString() : "");
+        m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
+        m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
+
         int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
         List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
 
@@ -490,6 +516,9 @@ public class AdjustInformationsFragment extends Fragment {
                             m.setFigureBookId(taxInvoice.getFigureBookId() + "");
                             m.setPriceId(priceId);
                             m.setCustomerNew("-1");
+                            m.setTaxCode(edMST.getText() != null ? edMST.getText().toString() : "");
+                            m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
+                            m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
 
                             int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
                             taxInvoiceDetailDbList.get(0).setTerm(mTerm);

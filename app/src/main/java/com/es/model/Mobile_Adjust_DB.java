@@ -68,10 +68,23 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
     @Column(name = "PriceId")
     private int PriceId;
 
+    @Column(name = "TaxCode")
+    private String TaxCode;
+
+    @Column(name = "PhoneNumber")
+    private String PhoneNumber;
+
+    @Column(name = "Email")
+    private String Email;
+
     public Mobile_Adjust_DB() {
     }
 
-    public Mobile_Adjust_DB(boolean status, String indexSo, String type, String price, String customerID, String customerAdd, String departmentId, String employeeCode, String customerName, String amout, String adjustID, String startDate, String endDate, String figureBookId, String subTotal, String tax, String total, String customerNew, String IS_SUBMIT, int PriceId) {
+    public Mobile_Adjust_DB(boolean status, String indexSo, String type, String price, String customerID, String customerAdd, String departmentId,
+                            String employeeCode, String customerName, String amout, String adjustID, String startDate, String endDate, String figureBookId,
+                            String subTotal, String tax, String total, String customerNew, String IS_SUBMIT, int PriceId, String taxCode,
+                            String phoneNumber,
+                            String email) {
         Status = status;
         IndexSo = indexSo;
         Type = type;
@@ -92,6 +105,33 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
         CustomerNew = customerNew;
         this.IS_SUBMIT = IS_SUBMIT;
         this.PriceId = PriceId;
+        TaxCode = taxCode;
+        PhoneNumber = phoneNumber;
+        Email = email;
+    }
+
+    public String getTaxCode() {
+        return TaxCode;
+    }
+
+    public void setTaxCode(String taxCode) {
+        TaxCode = taxCode;
+    }
+
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
     }
 
     public int getPriceId() {
