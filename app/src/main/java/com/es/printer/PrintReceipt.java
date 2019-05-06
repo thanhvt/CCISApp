@@ -10,6 +10,7 @@ import com.es.ccisapp.R;
 import com.es.model.Bill_TaxInvoice;
 import com.es.model.Bill_TaxInvoiceDetail;
 import com.es.model.Bill_TaxInvoiceDetail_DB;
+import com.es.model.Concus_Customer_DB;
 import com.es.model.Mobile_Adjust_DB;
 import com.es.model.SalesModel;
 import com.es.utils.Utils;
@@ -223,10 +224,19 @@ public class PrintReceipt {
             TEN_CHINHANH = Utils.removeAccent(TEN_CHINHANH);
             TEN_NVTHU = Utils.removeAccent(TEN_NVTHU);
             String term = "";
+            String strMST = "";
             Mobile_Adjust_DB mThayDoi = new Mobile_Adjust_DB();
             List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("CustomerNew = ?", bill_taxInvoice.getCustomerId()).execute();
+            List<Concus_Customer_DB> lstKH = new Select().all().from(Concus_Customer_DB.class).where("CustomerCode = ?", bill_taxInvoice.getCustomerCode()).execute();
+            if (lstKH != null && lstKH.size() > 0) {
+                strMST = lstKH.get(0).TaxCode;
+
+            }
             if (lstDB != null && lstDB.size() > 0) {
                 mThayDoi = lstDB.get(lstDB.size() - 1); // lstDB.get(0);
+
+                strMST = mThayDoi.getTaxCode();
+
                 bill_taxInvoice.setCustomerName(mThayDoi.getCustomerName());
                 bill_taxInvoice.setAddress_Pay(mThayDoi.getCustomerAdd());
                 bill_taxInvoice.setAmount(Double.parseDouble(mThayDoi.getAmout()));
@@ -290,7 +300,8 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("BIEN NHAN THU TIEN DICH VU VSMT");
 
-            String strThangHD = "Thang PH: " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR);
+//            String strThangHD = "Thang PH: " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR);
+            String strThangHD = "Thang PH: " + bill_taxInvoice.getMonth() + "/" + bill_taxInvoice.getYear();
             String strLoai = "Loai: " + (bill_taxInvoice.getServiceTypeId() == 1 ? "SH" : bill_taxInvoice.getServiceTypeId() == 2 ? "KD" : "HD") + " " + strThangHD;
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//CENTER
@@ -306,6 +317,7 @@ public class PrintReceipt {
                             "\nTen KH: " + Utils.removeAccent(bill_taxInvoice.getCustomerName()) +
                             "\nDia chi: " + Utils.removeAccent(bill_taxInvoice.getAddress_Pay()) +
                             "\nMa KH: --- " +
+                            "\nMST: " + strMST +
                             "\nTu: " + (mThayDoi.getStartDate() != null ? mThayDoi.getStartDate() : "") +
                             "\nDen: " + (mThayDoi.getEndDate() != null ? mThayDoi.getEndDate() : ""));
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
@@ -403,10 +415,20 @@ public class PrintReceipt {
             TEN_CHINHANH = Utils.removeAccent(TEN_CHINHANH);
             TEN_NVTHU = Utils.removeAccent(TEN_NVTHU);
 
+            String strMST = "";
+
             Mobile_Adjust_DB mThayDoi = new Mobile_Adjust_DB();
             List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("TYPE != '3' and CustomerID = ?", bill_taxInvoice.getCustomerId()).execute();
+            List<Concus_Customer_DB> lstKH = new Select().all().from(Concus_Customer_DB.class).where("CustomerCode = ?", bill_taxInvoice.getCustomerCode()).execute();
+            if (lstKH != null && lstKH.size() > 0) {
+                strMST = lstKH.get(0).TaxCode;
+            }
+
             if (lstDB != null && lstDB.size() > 0) {
-                mThayDoi = lstDB.get(lstDB.size() - 1); // lstDB.get(0);
+                mThayDoi = lstDB.get(lstDB.size() - 1);
+
+                strMST = mThayDoi.getTaxCode();
+
                 bill_taxInvoice.setCustomerName(mThayDoi.getCustomerName());
                 bill_taxInvoice.setAddress_Pay(mThayDoi.getCustomerAdd());
                 bill_taxInvoice.setAmount(Double.parseDouble(mThayDoi.getAmout()));
@@ -491,7 +513,8 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("BIEN NHAN THU TIEN DICH VU VSMT");
 
-            String strThangHD = "Thang PH: " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR);
+//            String strThangHD = "Thang PH: " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR);
+            String strThangHD = "Thang PH: " + bill_taxInvoice.getMonth() + "/" + bill_taxInvoice.getYear();
             String strLoai = "Loai: " + (bill_taxInvoice.getServiceTypeId() == 1 ? "SH" : bill_taxInvoice.getServiceTypeId() == 2 ? "KD" : "HD") + " " + strThangHD;
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//CENTER
@@ -507,6 +530,7 @@ public class PrintReceipt {
                             "\nTen KH: " + Utils.removeAccent(bill_taxInvoice.getCustomerName()) +
                             "\nDia chi: " + Utils.removeAccent(bill_taxInvoice.getAddress_Pay()) +
                             "\nMa KH: " + bill_taxInvoice.getCustomerCode() +
+                            "\nMST: " + strMST +
                             "\nTu: " + (mThayDoi.getStartDate() != null ? mThayDoi.getStartDate() : "") +
                             "\nDen: " + (mThayDoi.getEndDate() != null ? mThayDoi.getEndDate() : ""));
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
