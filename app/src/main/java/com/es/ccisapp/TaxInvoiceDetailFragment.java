@@ -117,6 +117,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
             taxInvoice =
                     (Bill_TaxInvoice) getArguments().getSerializable("TAX");
             try {
+
                 List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
                 Log.e(TAG, "Bill_TaxInvoiceDetail_DB: " + tmp.size());
 

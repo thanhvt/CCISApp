@@ -9,7 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.es.ccisapp.R;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -30,7 +32,21 @@ public class Utils {
     public static final String Login_Fragment = "Login_Fragment";
     public static final String SignUp_Fragment = "SignUp_Fragment";
     public static final String ForgotPassword_Fragment = "ForgotPassword_Fragment";
+    private static final String DECIMAL_FORMAT = "###,###,###.#";
 
+    public static String formatValue(String strIn) {
+        try {
+            BigDecimal value = new BigDecimal(strIn);
+            DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+            formatSymbols.setDecimalSeparator('.');
+            formatSymbols.setGroupingSeparator(' ');
+            DecimalFormat formatter = new DecimalFormat(DECIMAL_FORMAT, formatSymbols);
+            return formatter.format(value);
+        } catch (Exception e) {
+            return strIn;
+        }
+
+    }
 
     public static int CalculateTotalPartialMonth(Date d2, Date d1) {
         try {
