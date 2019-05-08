@@ -167,8 +167,16 @@ public class MainActivity extends AppCompatActivity
             builder.setTitle(R.string.app_name);
             builder.setIcon(R.drawable.logo);
             List<Bill_TaxInvoiceModel> info = new Select().all().from(Bill_TaxInvoiceModel.class).where("IsThuOffline = ?", true).execute();
+            List<Mobile_Adjust_DB> adjThayDoi = new Select().all().from(Mobile_Adjust_DB.class).execute();
             if (info.size() > 0) {
                 builder.setMessage("Đã thu tiền " + info.size() + " khách hàng. Đề nghị đẩy dữ liệu lên Server trước khi lấy dữ liệu mới để đảm bảo an toàn thông tin !");
+                builder.setPositiveButton("Quay lại", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+            } else if (adjThayDoi.size() > 0) {
+                builder.setMessage("Đã thay đổi thông tin " + adjThayDoi.size() + " khách hàng. Đề nghị Duyệt dữ liệu lên Server trước khi lấy dữ liệu mới để đảm bảo an toàn thông tin !");
                 builder.setPositiveButton("Quay lại", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();

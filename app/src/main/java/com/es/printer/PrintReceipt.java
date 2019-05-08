@@ -355,9 +355,9 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             strXFix = "Tong tien";
-            strVat = Utils.formatValue(mThayDoi.getTotal());
-            Log.e(TAG, "format " + strVat);
-//            strVat = mThayDoi.getTotal();
+//            strVat = Utils.formatValue(mThayDoi.getTotal());
+//            Log.e(TAG, "format " + strVat);
+            strVat = mThayDoi.getTotal();
             so0 = 32 - strXFix.length() - strVat.length();
             for (int i = 0; i < so0; i++) {
                 strXFix += " ";
@@ -569,9 +569,9 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             strXFix = "Tong tien";
-            strVat = Utils.formatValue(bill_taxInvoice.getTotal());
-            Log.e(TAG, "format " + strVat);
-//            strVat = bill_taxInvoice.getTotal();
+//            strVat = Utils.formatValue(bill_taxInvoice.getTotal());
+//            Log.e(TAG, "format " + strVat);
+            strVat = bill_taxInvoice.getTotal();
             so0 = 32 - strXFix.length() - strVat.length();
             for (int i = 0; i < so0; i++) {
                 strXFix += " ";
