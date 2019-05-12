@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -19,6 +22,12 @@ public class RetrofitInstance {
      * Create an instance of Retrofit object
      */
     public static Retrofit getRetrofitInstance(Context mContext) {
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(3000, TimeUnit.SECONDS)
+                .writeTimeout(3000, TimeUnit.SECONDS)
+                .readTimeout(3000, TimeUnit.SECONDS)
+                .build();
+
         String root = BASE_URL;
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         String IP_SERVICE = sharedPrefs.getString("IP_SERVICE", "0");
@@ -28,7 +37,7 @@ public class RetrofitInstance {
         }
         if (retrofit == null || !def.equals(root)) {
 
-            retrofit = new retrofit2.Retrofit.Builder()
+            retrofit = new retrofit2.Retrofit.Builder().client(okHttpClient)
                     .baseUrl(def)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
