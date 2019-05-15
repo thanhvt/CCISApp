@@ -78,6 +78,7 @@ public class Utils {
     }
 
     public static Date parseDate(String sDate) {
+        sDate = sDate.replace(" ", "");
         Date dateReturn = null;
         try {
             SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");

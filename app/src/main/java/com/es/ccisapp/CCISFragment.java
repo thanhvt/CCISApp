@@ -473,6 +473,9 @@ public class CCISFragment extends Fragment {
                                         billTaxInvoiceModel.setThuOffline(1);
                                         billTaxInvoiceModel.save();
                                         Log.e(TAG + " update ", "1");
+                                        b.setThuOffline(1);
+                                        taxInvoiceAdapter.notifyDataSetChanged();
+                                        Toasty.success(getActivity(), "Thu tiền offline khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
                                     } else {
                                         Toasty.error(getActivity(), "Đã thu tiền khách hàng " + b.getCustomerName() + ", không được thu lại lần nữa !", Toasty.LENGTH_LONG, true).show();
 //                                        Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
@@ -484,9 +487,6 @@ public class CCISFragment extends Fragment {
 //                                        c.save();
 //                                        Log.e(TAG + " insert ", "2");
                                     }
-                                    b.setThuOffline(1);
-                                    taxInvoiceAdapter.notifyDataSetChanged();
-                                    Toasty.success(getActivity(), "Thu tiền offline khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
                                 }
                             }
 
