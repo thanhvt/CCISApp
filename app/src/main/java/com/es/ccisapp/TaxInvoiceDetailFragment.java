@@ -117,7 +117,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
             taxInvoice =
                     (Bill_TaxInvoice) getArguments().getSerializable("TAX");
             try {
-                btnInHD.setVisibility(taxInvoice.isThuOffline() == 0 ? View.GONE : View.INVISIBLE);
+                btnInHD.setEnabled(taxInvoice.isThuOffline() == 0 ? false : true);
                 List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
                 Log.e(TAG, "Bill_TaxInvoiceDetail_DB: " + tmp.size());
 
