@@ -355,14 +355,14 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             strXFix = "Tong tien";
-//            strVat = Utils.formatValue(mThayDoi.getTotal());
-//            Log.e(TAG, "format " + strVat);
+            String strTienFormat = Utils.formatValue(mThayDoi.getTotal());
+            Log.e(TAG, "format " + strTienFormat);
             strVat = mThayDoi.getTotal();
-            so0 = 32 - strXFix.length() - strVat.length();
+            so0 = 32 - strXFix.length() - strTienFormat.length();
             for (int i = 0; i < so0; i++) {
                 strXFix += " ";
             }
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(strXFix + strVat);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(strXFix + strTienFormat);
             Double d = Double.parseDouble(strVat);
             String tienChu = Utils.numberToString(d);
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
@@ -569,14 +569,14 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             strXFix = "Tong tien";
-//            strVat = Utils.formatValue(bill_taxInvoice.getTotal());
-//            Log.e(TAG, "format " + strVat);
+            String strTienFormat = Utils.formatValue(bill_taxInvoice.getTotal());
+            Log.e(TAG, "format " + strTienFormat);
             strVat = bill_taxInvoice.getTotal();
-            so0 = 32 - strXFix.length() - strVat.length();
+            so0 = 32 - strXFix.length() - strTienFormat.length();
             for (int i = 0; i < so0; i++) {
                 strXFix += " ";
             }
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(strXFix + strVat);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(strXFix + strTienFormat);
             Double d = Double.parseDouble(strVat);
             String tienChu = Utils.numberToString(d);
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();

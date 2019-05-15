@@ -110,7 +110,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_taxinvoicedetail, container, false);
         ButterKnife.bind(this, rootView);
-
+        btnInHD.setVisibility(View.GONE);
 
         if (getArguments() != null) {
             content = getArguments().getString(EXTRA_DATA);

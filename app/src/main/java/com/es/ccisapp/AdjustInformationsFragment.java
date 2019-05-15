@@ -235,8 +235,8 @@ public class AdjustInformationsFragment extends Fragment {
                 m.setType("3");
                 m.setStatus(false);
                 m.setDepartmentId(taxInvoice.getDepartmentId());
-                m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
-                m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
+                m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString().replace(" ", "") : "");
+                m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString().replace(" ", "") : "");
                 m.setFigureBookId(taxInvoice.getFigureBookId() + "");
                 m.setCustomerNew(taxInvoice.getCustomerId());
                 m.setPriceId(priceId);
@@ -307,8 +307,8 @@ public class AdjustInformationsFragment extends Fragment {
         m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
-        m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
-        m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
+        m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString().replace(" ", "") : "");
+        m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString().replace(" ", "") : "");
         m.setFigureBookId(taxInvoice.getFigureBookId() + "");
         m.setPriceId(priceId);
         m.setCustomerNew("-1");
@@ -419,8 +419,8 @@ public class AdjustInformationsFragment extends Fragment {
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
 
-        m.setStartDate(edTuNgay.getText() != null ? Utils.parseDate(edTuNgay.getText().toString()) : null);
-        m.setEndDate(edDenNgay.getText() != null ? Utils.parseDate(edDenNgay.getText().toString()) : null);
+        m.setStartDate(edTuNgay.getText() != null ? Utils.parseDate(edTuNgay.getText().toString().replace(" ", "")) : null);
+        m.setEndDate(edDenNgay.getText() != null ? Utils.parseDate(edDenNgay.getText().toString().replace(" ", "")) : null);
         m.setFigureBookId(taxInvoice.getFigureBookId() + "");
         m.setPriceId(priceId);
         m.setCustomerNew("-1");
@@ -511,8 +511,8 @@ public class AdjustInformationsFragment extends Fragment {
                             m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
                             m.setStatus(false);
                             m.setDepartmentId(taxInvoice.getDepartmentId());
-                            m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString() : "");
-                            m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString() : "");
+                            m.setStartDate(edTuNgay.getText() != null ? edTuNgay.getText().toString().replace(" ", "") : "");
+                            m.setEndDate(edDenNgay.getText() != null ? edDenNgay.getText().toString().replace(" ", "") : "");
                             m.setFigureBookId(taxInvoice.getFigureBookId() + "");
                             m.setPriceId(priceId);
                             m.setCustomerNew("-1");

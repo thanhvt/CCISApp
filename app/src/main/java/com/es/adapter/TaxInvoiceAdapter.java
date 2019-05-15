@@ -81,7 +81,7 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
     @Override
     public void onBindViewHolder(TaxInvoiceHolder holder, final int position) {
         holder.movieTitle.setText(lstTaxInvoice.get(position).getSTT() + ". " + lstTaxInvoice.get(position).getCustomerCode() + " - " + lstTaxInvoice.get(position).getCustomerName());
-        holder.data.setText("Đơn giá: " + lstTaxInvoice.get(position).getSubTotal() + " VAT: " + lstTaxInvoice.get(position).getVAT());
+        holder.data.setText("Tổng tiền: " + lstTaxInvoice.get(position).getTotal());
         holder.movieDescription.setText(lstTaxInvoice.get(position).getTaxInvoiceAddress());
         holder.isChecked.setChecked(lstTaxInvoice.get(position).isChecked());
         holder.txtOffline.setVisibility(lstTaxInvoice.get(position).isThuOffline() > 0 ? View.VISIBLE : View.INVISIBLE);
