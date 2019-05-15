@@ -469,19 +469,20 @@ public class CCISFragment extends Fragment {
                             for (final Bill_TaxInvoice b : stList) {
                                 if (b.isChecked()) {
                                     Bill_TaxInvoiceModel billTaxInvoiceModel = new Select().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).executeSingle();
-                                    if (billTaxInvoiceModel != null) {
+                                    if (billTaxInvoiceModel != null && billTaxInvoiceModel.isThuOffline() == 0) {
                                         billTaxInvoiceModel.setThuOffline(1);
                                         billTaxInvoiceModel.save();
                                         Log.e(TAG + " update ", "1");
                                     } else {
-                                        Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
-                                                b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
-                                                b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
-                                                b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                                                b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(),
-                                                1, b.getAmount(), b.getServiceTypeId(), b.getServiceName(), b.getINDEX_THU(), b.getKIEU(), b.getPriceId());
-                                        c.save();
-                                        Log.e(TAG + " insert ", "2");
+                                        Toasty.error(getActivity(), "Đã thu tiền khách hàng " + b.getCustomerName() + ", không được thu lại lần nữa !", Toasty.LENGTH_LONG, true).show();
+//                                        Bill_TaxInvoiceModel c = new Bill_TaxInvoiceModel(b.getTaxCode(), b.getCustomerCode(),
+//                                                b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(),
+//                                                b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
+//                                                b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
+//                                                b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(),
+//                                                1, b.getAmount(), b.getServiceTypeId(), b.getServiceName(), b.getINDEX_THU(), b.getKIEU(), b.getPriceId());
+//                                        c.save();
+//                                        Log.e(TAG + " insert ", "2");
                                     }
                                     b.setThuOffline(1);
                                     taxInvoiceAdapter.notifyDataSetChanged();
@@ -524,27 +525,30 @@ public class CCISFragment extends Fragment {
 //                                                List<Bill_TaxInvoiceModel> info = new Delete().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
 //                                                new Delete().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).execute();
                                                 Bill_TaxInvoiceModel billTaxInvoiceModel = new Select().from(Bill_TaxInvoiceModel.class).where("TaxInvoiceId = ?", b.getTaxInvoiceId()).executeSingle();
-                                                billTaxInvoiceModel.setThuOffline(2);
-                                                billTaxInvoiceModel.save();
-                                                b.setThuOffline(2);
-                                                taxInvoiceAdapter.notifyDataSetChanged();
-                                                Toasty.success(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
+                                                if (billTaxInvoiceModel != null && billTaxInvoiceModel.isThuOffline() == 0) {
+                                                    billTaxInvoiceModel.setThuOffline(2);
+                                                    billTaxInvoiceModel.save();
+                                                    b.setThuOffline(2);
+                                                    taxInvoiceAdapter.notifyDataSetChanged();
+                                                    Toasty.success(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " thành công !", Toasty.LENGTH_LONG, true).show();
 
-                                                int daThu = 0;
-                                                long tienThu = 0L;
-                                                long tongTien = 0L;
-                                                for (Bill_TaxInvoice bill : stList) {
-                                                    if (bill.isThuOffline() > 0) {
-                                                        daThu++;
-                                                        tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
-//                                                        tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
-                                                        tongTien += bill.getTotal().indexOf(".") != -1 ? Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf("."))) : Long.parseLong(bill.getTotal());
+                                                    int daThu = 0;
+                                                    long tienThu = 0L;
+                                                    long tongTien = 0L;
+                                                    for (Bill_TaxInvoice bill : stList) {
+                                                        if (bill.isThuOffline() > 0) {
+                                                            daThu++;
+                                                            tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+//                                                          tongTien += Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf(".")));
+                                                            tongTien += bill.getTotal().indexOf(".") != -1 ? Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf("."))) : Long.parseLong(bill.getTotal());
+                                                        }
                                                     }
+                                                    txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
+//                                                  txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
+                                                    txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
+                                                } else {
+                                                    Toasty.error(getActivity(), "Đã thu tiền khách hàng " + b.getCustomerName() + ", không được thu lại lần nữa !", Toasty.LENGTH_LONG, true).show();
                                                 }
-                                                txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
-//                                              txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
-                                                txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
-
                                             } else {
                                                 Toasty.error(getActivity(), "Thu tiền khách hàng " + b.getCustomerName() + " không thành công. Đề nghị kiểm tra lại dữ liệu !", Toasty.LENGTH_LONG, true).show();
                                             }

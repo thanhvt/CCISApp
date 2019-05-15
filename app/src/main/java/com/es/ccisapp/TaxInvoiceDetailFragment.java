@@ -110,14 +110,14 @@ public class TaxInvoiceDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_taxinvoicedetail, container, false);
         ButterKnife.bind(this, rootView);
-        btnInHD.setVisibility(View.GONE);
+
 
         if (getArguments() != null) {
             content = getArguments().getString(EXTRA_DATA);
             taxInvoice =
                     (Bill_TaxInvoice) getArguments().getSerializable("TAX");
             try {
-
+                btnInHD.setVisibility(taxInvoice.isThuOffline() == 0 ? View.GONE : View.INVISIBLE);
                 List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
                 Log.e(TAG, "Bill_TaxInvoiceDetail_DB: " + tmp.size());
 
