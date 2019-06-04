@@ -136,15 +136,19 @@ public class TaxInvoiceAdapter extends RecyclerView.Adapter<TaxInvoiceAdapter.Ta
                 int count = filteredList.size();
                 for (int i = 0; i < count; i++) {
                     Bill_TaxInvoice item = filteredList.get(i);
-                    String maKH = item.getCustomerCode().toLowerCase();
-                    String name = item.getCustomerName().toLowerCase();
-                    String strCase = item.getAddress_Pay().toLowerCase();
-                    String dchi = item.getTaxInvoiceAddress().toLowerCase();
-                    if (name.equalsIgnoreCase(data) || name.contains(data)
-                            || strCase.equalsIgnoreCase(data) || strCase.contains(data)
-                            || dchi.equalsIgnoreCase(data) || dchi.contains(data)
-                            || maKH.equalsIgnoreCase(data) || maKH.contains(data))
-                        nList.add(item);
+                    try {
+                        String maKH = item.getCustomerCode().toLowerCase();
+                        String name = item.getCustomerName().toLowerCase();
+                        String strCase = item.getAddress_Pay().toLowerCase();
+                        String dchi = item.getTaxInvoiceAddress().toLowerCase();
+                        if (name.equalsIgnoreCase(data) || name.contains(data)
+                                || strCase.equalsIgnoreCase(data) || strCase.contains(data)
+                                || dchi.equalsIgnoreCase(data) || dchi.contains(data)
+                                || maKH.equalsIgnoreCase(data) || maKH.contains(data))
+                            nList.add(item);
+                    } catch (Exception e) {
+
+                    }
                 }
                 results.count = nList.size();
                 results.values = nList;
