@@ -243,24 +243,50 @@ public class PrintReceipt {
 
                 int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(mThayDoi.getEndDate()), Utils.parseDate(mThayDoi.getStartDate()));
                 term = mTerm + "";
-                String vat = bill_taxInvoice.getTaxRatio();
-                BigDecimal a = new BigDecimal(mThayDoi.getAmout());
-                BigDecimal b = new BigDecimal(mThayDoi.getPrice());
-                BigDecimal c = new BigDecimal(term);
-                BigDecimal dSub = a.multiply(b).multiply(c);
-                dSub = dSub.setScale(2, RoundingMode.CEILING);
-                BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
-                dVat = dVat.setScale(2, RoundingMode.CEILING);
-                BigDecimal dTotal = dSub.add(dVat);
-                dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
+
+                BigDecimal vat = new BigDecimal(bill_taxInvoice.getTaxRatio());
+                BigDecimal soLuong = new BigDecimal(mThayDoi.getAmout());
+                BigDecimal donGia = new BigDecimal(mThayDoi.getPrice());
+                BigDecimal soThang = new BigDecimal(term);
+
+                // '=ROUND(A4*(1+C4/100)/1000,0)*1000
+                BigDecimal tmpBig = vat.divide(new BigDecimal((100)));
+                tmpBig = tmpBig.add(new BigDecimal(1));
+                tmpBig = tmpBig.multiply(donGia);
+                tmpBig = tmpBig.divide(new BigDecimal((1000)));
+                tmpBig = tmpBig.setScale(0, RoundingMode.HALF_UP);
+                tmpBig = tmpBig.multiply(new BigDecimal((1000)));
+
+                BigDecimal cotAn = tmpBig;
+
+                BigDecimal dTotal = cotAn.multiply(soLuong).multiply(soThang);
+
+                //=ROUND(H4/(1+ C4/100),0)
+                BigDecimal tmpBig2 = vat.divide(new BigDecimal((100)));
+                tmpBig2 = tmpBig2.add(new BigDecimal(1));
+                tmpBig2 = dTotal.divide(tmpBig2, 0, RoundingMode.HALF_UP);
+//                tmpBig2 = tmpBig2.setScale(0, RoundingMode.HALF_UP);
+
+                BigDecimal dSub = tmpBig2;
+
+                BigDecimal dVat = dTotal.subtract(dSub);
+                ////////////////////////////////////////////////////////
+
+//                String vat = bill_taxInvoice.getTaxRatio();
+//                BigDecimal a = new BigDecimal(mThayDoi.getAmout());
+//                BigDecimal b = new BigDecimal(mThayDoi.getPrice());
+//                BigDecimal c = new BigDecimal(term);
+//                BigDecimal dSub = a.multiply(b).multiply(c);
+//                dSub = dSub.setScale(2, RoundingMode.CEILING);
+//                BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
+//                dVat = dVat.setScale(2, RoundingMode.CEILING);
+//                BigDecimal dTotal = dSub.add(dVat);
+//                dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
+
+
                 bill_taxInvoice.setSubTotal(dSub + "");
                 bill_taxInvoice.setTotal(dTotal + "");
                 bill_taxInvoice.setVAT(dVat + "");
-//                for (Bill_TaxInvoiceDetail_DB item : lstDetail) {
-//                    item.setAmount(Double.parseDouble(mThayDoi.getAmout()));
-//                    item.setTotal(dSub.doubleValue());
-//                    item.setPrice(b.doubleValue());
-//                }
 
             }
             Log.e(TAG, bill_taxInvoice.toString());
@@ -435,39 +461,55 @@ public class PrintReceipt {
                 bill_taxInvoice.setAddress_Pay(mThayDoi.getCustomerAdd());
                 bill_taxInvoice.setAmount(Double.parseDouble(mThayDoi.getAmout()));
 
+                BigDecimal vat = new BigDecimal(bill_taxInvoice.getTaxRatio());
+                BigDecimal soLuong = new BigDecimal(mThayDoi.getAmout());
+                BigDecimal donGia = new BigDecimal(mThayDoi.getPrice());
+                BigDecimal soThang = new BigDecimal(lstDetail.get(0).getTerm());
 
-                String vat = bill_taxInvoice.getTaxRatio();
-                BigDecimal a = new BigDecimal(mThayDoi.getAmout());
-                BigDecimal b = new BigDecimal(mThayDoi.getPrice());
-                BigDecimal c = new BigDecimal(lstDetail.get(0).getTerm());
-                BigDecimal dSub = a.multiply(b).multiply(c);
-                dSub = dSub.setScale(2, RoundingMode.CEILING);
-                BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
-                dVat = dVat.setScale(2, RoundingMode.CEILING);
-                BigDecimal dTotal = dSub.add(dVat);
-                dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
+                // '=ROUND(A4*(1+C4/100)/1000,0)*1000
+                BigDecimal tmpBig = vat.divide(new BigDecimal((100)));
+                tmpBig = tmpBig.add(new BigDecimal(1));
+                tmpBig = tmpBig.multiply(donGia);
+                tmpBig = tmpBig.divide(new BigDecimal((1000)));
+                tmpBig = tmpBig.setScale(0, RoundingMode.HALF_UP);
+                tmpBig = tmpBig.multiply(new BigDecimal((1000)));
+
+                BigDecimal cotAn = tmpBig;
+
+                BigDecimal dTotal = cotAn.multiply(soLuong).multiply(soThang);
+
+                //=ROUND(H4/(1+ C4/100),0)
+                BigDecimal tmpBig2 = vat.divide(new BigDecimal((100)));
+                tmpBig2 = tmpBig2.add(new BigDecimal(1));
+                tmpBig2 = dTotal.divide(tmpBig2, 0, RoundingMode.HALF_UP);
+//                tmpBig2 = tmpBig2.setScale(0, RoundingMode.HALF_UP);
+
+                BigDecimal dSub = tmpBig2;
+
+                BigDecimal dVat = dTotal.subtract(dSub);
+                ////////////////////////////////////////////////////////
+
+
+//                String vat = bill_taxInvoice.getTaxRatio();
+//                BigDecimal a = new BigDecimal(mThayDoi.getAmout());
+//                BigDecimal b = new BigDecimal(mThayDoi.getPrice());
+//                BigDecimal c = new BigDecimal(lstDetail.get(0).getTerm());
+//                BigDecimal dSub = a.multiply(b).multiply(c);
+//                dSub = dSub.setScale(2, RoundingMode.CEILING);
+//                BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
+//                dVat = dVat.setScale(2, RoundingMode.CEILING);
+//                BigDecimal dTotal = dSub.add(dVat);
+//                dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
+
+
                 bill_taxInvoice.setSubTotal(dSub + "");
                 bill_taxInvoice.setTotal(dTotal + "");
                 bill_taxInvoice.setVAT(dVat + "");
                 for (Bill_TaxInvoiceDetail_DB item : lstDetail) {
                     item.setAmount(Double.parseDouble(mThayDoi.getAmout()));
                     item.setTotal(dSub.doubleValue());
-                    item.setPrice(b.doubleValue());
+                    item.setPrice(donGia.doubleValue());
                 }
-//                String vat = bill_taxInvoice.getTaxRatio();
-//
-//                Double dSub = Double.parseDouble(lstDB.get(lstDB.size() - 1).getPrice());
-//                Double dVat = dSub * Double.parseDouble(vat) / 100;
-//                Double dTotal = dSub + dVat;
-//
-//                bill_taxInvoice.setSubTotal(Math.round(dSub) + "");
-//                bill_taxInvoice.setTotal(Math.round(dTotal) + "");
-
-//            if (!m.getPrice().equals("")){
-//                bill_taxInvoice.setSubTotal(m.getPrice());
-//                Double d = Double.parseDouble(m.getPrice());
-//                Double total = d * 1.01;
-//            }
 
             } else {
 //                List<Bill_TaxInvoiceDetail_DB> tmp = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
