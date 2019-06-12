@@ -250,7 +250,6 @@ public class PrintReceipt {
                 BigDecimal soThang = new BigDecimal(term);
 
                 BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);
-                ;
                 dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
                 BigDecimal tmpBig = vat.divide(new BigDecimal((100)));
                 tmpBig = tmpBig.add(new BigDecimal(1));
@@ -466,7 +465,6 @@ public class PrintReceipt {
                 BigDecimal soThang = new BigDecimal(lstDetail.get(0).getTerm());
 
                 BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);
-                ;
                 dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
                 BigDecimal tmpBig = vat.divide(new BigDecimal((100)));
                 tmpBig = tmpBig.add(new BigDecimal(1));

@@ -136,7 +136,6 @@ public class TaxInvoiceDetailFragment extends Fragment {
                     BigDecimal soThang = new BigDecimal(tmp.get(0).getTerm());
 
                     BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);
-                    ;
                     dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
                     BigDecimal tmpBig = vat.divide(new BigDecimal((100)));
                     tmpBig = tmpBig.add(new BigDecimal(1));
