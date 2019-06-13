@@ -589,7 +589,7 @@ public class MainActivity extends AppCompatActivity
 
     public void getListConcus_Customer(String strID) {
         Call<List<Concus_Customer>> call2 = apiService.getListConcus_Customer(strID);
-        Log.wtf("URL Called", call2.request().url() + "");
+
         call2.enqueue(new CustomCallBack<List<Concus_Customer>>(mContext, "Đang lấy số liệu khách hàng từ Server") {
             @Override
             public void onResponse(Call<List<Concus_Customer>> call, Response<List<Concus_Customer>> response) {
@@ -646,6 +646,7 @@ public class MainActivity extends AppCompatActivity
 
     public void getDetailSoLan(String strID) {
         Call<List<Bill_TaxInvoiceDetail>> call2 = apiService.getList_Bill_TaxInvoiceDetail(strID);
+        Log.wtf("URL Called", call2.request().url() + "");
         call2.enqueue(new CustomCallBack<List<Bill_TaxInvoiceDetail>>(mContext, "Đang lấy số liệu chưa thu tiền từ Server") {
             @Override
             public void onResponse(Call<List<Bill_TaxInvoiceDetail>> call, Response<List<Bill_TaxInvoiceDetail>> response) {
@@ -663,6 +664,7 @@ public class MainActivity extends AppCompatActivity
                                         Bill_TaxInvoiceDetail_DB c = new Bill_TaxInvoiceDetail_DB(b.TaxInvoiceDetailId, b.DepartmentId, b.Term, b.TaxInvoiceId, b.CustomerId, b.CustomerCode, b.ServiceTypeId, b.ServiceName,
                                                 b.FigureBookId, b.Month, b.Year, b.Total, b.ContractDetailId, b.CreateUser, b.Amount, b.Price, b.TypeOfUnit, b.TuNgay, b.DenNgay);
                                         c.save();
+                                        Log.e(TAG, b.getTuNgay() + " - " + b.getDenNgay() + " - " + b.getTerm());
                                     }
                                 }
                                 ActiveAndroid.setTransactionSuccessful();

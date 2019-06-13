@@ -231,7 +231,7 @@ public class AdjustInformationsFragment extends Fragment {
                 m.setCustomerName(edTenKH.getText().toString());
                 m.setEmployeeCode(strEmployeeCode);
                 m.setIndexSo(edSTT.getText().toString());
-                m.setPrice(edDonGia.getText().toString());
+
                 m.setType("3");
                 m.setStatus(false);
                 m.setDepartmentId(taxInvoice.getDepartmentId());
@@ -272,6 +272,10 @@ public class AdjustInformationsFragment extends Fragment {
 //                BigDecimal dSub = tmpBig2;
                 BigDecimal dVat = dTotal.subtract(dSub);
 
+                BigDecimal tmpBig3 = (soLuong).multiply(soThang);
+                tmpBig3 = dSub.divide(tmpBig3, 3, RoundingMode.HALF_UP);
+                m.setPrice(tmpBig3.toString());
+                Log.e(TAG, tmpBig3.toString());
 
 //                BigDecimal dSub = soLuong.multiply(donGia).multiply(soThang);
 //                dSub = dSub.setScale(2, RoundingMode.CEILING);
@@ -329,7 +333,6 @@ public class AdjustInformationsFragment extends Fragment {
         m.setCustomerName(edTenKH.getText().toString());
         m.setEmployeeCode(strEmployeeCode);
         m.setIndexSo(edSTT.getText().toString());
-        m.setPrice(edDonGia.getText().toString());
         m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
@@ -371,7 +374,10 @@ public class AdjustInformationsFragment extends Fragment {
 //
 //                BigDecimal dSub = tmpBig2;
         BigDecimal dVat = dTotal.subtract(dSub);
-
+        BigDecimal tmpBig3 = (soLuong).multiply(soThang);
+        tmpBig3 = dSub.divide(tmpBig3, 3, RoundingMode.HALF_UP);
+        m.setPrice(tmpBig3.toString());
+        Log.e(TAG, tmpBig3.toString());
 
 //        String vat = taxInvoice.getTaxRatio();
 //        BigDecimal a = new BigDecimal(edSL.getText().toString());
@@ -593,7 +599,6 @@ public class AdjustInformationsFragment extends Fragment {
                             m.setCustomerName(edTenKH.getText().toString());
                             m.setEmployeeCode(strEmployeeCode);
                             m.setIndexSo(edSTT.getText().toString());
-                            m.setPrice(edDonGia.getText().toString());
                             m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
                             m.setStatus(false);
                             m.setDepartmentId(taxInvoice.getDepartmentId());
@@ -635,7 +640,10 @@ public class AdjustInformationsFragment extends Fragment {
 //
 //                BigDecimal dSub = tmpBig2;
                             BigDecimal dVat = dTotal.subtract(dSub);
-
+                            BigDecimal tmpBig3 = (soLuong).multiply(soThang);
+                            tmpBig3 = dSub.divide(tmpBig3, 3, RoundingMode.HALF_UP);
+                            m.setPrice(tmpBig3.toString());
+                            Log.e(TAG, tmpBig3.toString());
 
 //                            String vat = taxInvoice.getTaxRatio();
 //                            BigDecimal a = new BigDecimal(edSL.getText().toString());

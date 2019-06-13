@@ -41,7 +41,7 @@ public class Bill_TaxInvoiceDetail_DB extends Model implements Serializable {
     @Column(name = "TypeOfUnit")
     public String TypeOfUnit;
     @Column(name = "Term")
-    public int Term;
+    public double Term;
     @Column(name = "TuNgay")
     public String TuNgay;
     @Column(name = "DenNgay")
@@ -201,11 +201,11 @@ public class Bill_TaxInvoiceDetail_DB extends Model implements Serializable {
         TypeOfUnit = typeOfUnit;
     }
 
-    public int getTerm() {
+    public double getTerm() {
         return Term;
     }
 
-    public void setTerm(int term) {
+    public void setTerm(double term) {
         Term = term;
     }
 
@@ -229,7 +229,7 @@ public class Bill_TaxInvoiceDetail_DB extends Model implements Serializable {
         Term = term;
     }
 
-    public Bill_TaxInvoiceDetail_DB(double taxInvoiceDetailId, int departmentId, int term, double taxInvoiceId, int customerId, String customerCode, int serviceTypeId, String serviceName, int figureBookId, int month, int year, double total, int contractDetailId, int createUser, double amount, double price, String typeOfUnit, String tuNgay, String denNgay) {
+    public Bill_TaxInvoiceDetail_DB(double taxInvoiceDetailId, int departmentId, double term, double taxInvoiceId, int customerId, String customerCode, int serviceTypeId, String serviceName, int figureBookId, int month, int year, double total, int contractDetailId, int createUser, double amount, double price, String typeOfUnit, String tuNgay, String denNgay) {
         TaxInvoiceDetailId = taxInvoiceDetailId;
         DepartmentId = departmentId;
         TaxInvoiceId = taxInvoiceId;

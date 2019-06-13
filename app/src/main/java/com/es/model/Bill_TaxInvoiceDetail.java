@@ -20,7 +20,7 @@ public class Bill_TaxInvoiceDetail implements Serializable {
     public double Amount;
     public double Price;
     public String TypeOfUnit;
-    public int Term;
+    public double Term;
     public String TuNgay;
     public String DenNgay;
 
@@ -194,15 +194,15 @@ public class Bill_TaxInvoiceDetail implements Serializable {
         TypeOfUnit = typeOfUnit;
     }
 
-    public int getTerm() {
+    public double getTerm() {
         return Term;
     }
 
-    public void setTerm(int term) {
+    public void setTerm(double term) {
         Term = term;
     }
 
-    public Bill_TaxInvoiceDetail(double taxInvoiceDetailId, int departmentId, double taxInvoiceId, int customerId, String customerCode, int serviceTypeId, String serviceName, int figureBookId, int month, int year, double total, int contractDetailId, int createUser, double amount, double price, String typeOfUnit, int term, String tuNgay, String denNgay) {
+    public Bill_TaxInvoiceDetail(double taxInvoiceDetailId, int departmentId, double taxInvoiceId, int customerId, String customerCode, int serviceTypeId, String serviceName, int figureBookId, int month, int year, double total, int contractDetailId, int createUser, double amount, double price, String typeOfUnit, double term, String tuNgay, String denNgay) {
         TaxInvoiceDetailId = taxInvoiceDetailId;
         DepartmentId = departmentId;
         TaxInvoiceId = taxInvoiceId;
