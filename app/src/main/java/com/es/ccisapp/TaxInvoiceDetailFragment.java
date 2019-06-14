@@ -132,7 +132,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
 
                     BigDecimal vat = new BigDecimal(taxInvoice.getTaxRatio());
                     BigDecimal soLuong = new BigDecimal(taxInvoice.getAmount());
-                    BigDecimal donGia = new BigDecimal(m.getPrice());
+                    BigDecimal donGia = new BigDecimal(m.getGiaSauThue());
                     BigDecimal soThang = new BigDecimal(tmp.get(0).getTerm());
 
                     BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);

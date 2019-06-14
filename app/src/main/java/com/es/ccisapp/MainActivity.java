@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity
                     final Mobile_Adjust_Informations mobile = new Mobile_Adjust_Informations(mo.getStatus(), mo.getIndexSo(), mo.getType(), mo.getPrice(), mo.getCustomerID(), mo.getCustomerAdd(),
                             mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(),
                             "1", mo.getAmout(), mo.getAdjustID(), mo.getFigureBookId(), Utils.parseDate(mo.getStartDate()), Utils.parseDate(mo.getEndDate()),
-                            mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1", mo.getPriceId(), mo.getTaxCode(), mo.getPhoneNumber(), mo.getEmail());
+                            mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1", mo.getPriceId(), mo.getTaxCode(), mo.getPhoneNumber(), mo.getEmail(), mo.getGiaSauThue());
                     if (mobile.getType().equals("3")) {
                         Calendar c = Calendar.getInstance();
                         mobile.setMonth(c.get(Calendar.MONTH) + 1);

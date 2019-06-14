@@ -241,13 +241,13 @@ public class PrintReceipt {
                 bill_taxInvoice.setAddress_Pay(mThayDoi.getCustomerAdd());
                 bill_taxInvoice.setAmount(Double.parseDouble(mThayDoi.getAmout()));
 
-                int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(mThayDoi.getEndDate()), Utils.parseDate(mThayDoi.getStartDate()));
+                BigDecimal mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(mThayDoi.getEndDate()), Utils.parseDate(mThayDoi.getStartDate()));
                 term = mTerm + "";
 
                 BigDecimal vat = new BigDecimal(bill_taxInvoice.getTaxRatio());
                 BigDecimal soLuong = new BigDecimal(mThayDoi.getAmout());
-                BigDecimal donGia = new BigDecimal(mThayDoi.getPrice());
-                BigDecimal soThang = new BigDecimal(term);
+                BigDecimal donGia = new BigDecimal(mThayDoi.getGiaSauThue());
+                BigDecimal soThang = (mTerm);
 
                 BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);
                 dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
@@ -461,7 +461,7 @@ public class PrintReceipt {
 
                 BigDecimal vat = new BigDecimal(bill_taxInvoice.getTaxRatio());
                 BigDecimal soLuong = new BigDecimal(mThayDoi.getAmout());
-                BigDecimal donGia = new BigDecimal(mThayDoi.getPrice());
+                BigDecimal donGia = new BigDecimal(mThayDoi.getGiaSauThue());
                 BigDecimal soThang = new BigDecimal(lstDetail.get(0).getTerm());
 
                 BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);

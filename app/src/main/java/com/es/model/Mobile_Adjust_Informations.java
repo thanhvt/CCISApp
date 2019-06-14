@@ -47,6 +47,7 @@ public class Mobile_Adjust_Informations implements Serializable {
     private String TaxCode;
     private String PhoneNumber;
     private String Email;
+    private String GiaSauThue;
 
     // ---------------------
     private int Month;
@@ -67,7 +68,8 @@ public class Mobile_Adjust_Informations implements Serializable {
                                       Date startDate, Date endDate, String subTotal, String tax, String total, String customerNew, int priceId,
                                       String taxCode,
                                       String phoneNumber,
-                                      String email) {
+                                      String email,
+                                      String GiaSauThue) {
         Status = status;
         Index = index;
         Type = type;
@@ -91,6 +93,15 @@ public class Mobile_Adjust_Informations implements Serializable {
         TaxCode = taxCode;
         PhoneNumber = phoneNumber;
         Email = email;
+        this.GiaSauThue = GiaSauThue;
+    }
+
+    public String getGiaSauThue() {
+        return GiaSauThue;
+    }
+
+    public void setGiaSauThue(String giaSauThue) {
+        GiaSauThue = giaSauThue;
     }
 
     public String getTaxCode() {
@@ -303,6 +314,33 @@ public class Mobile_Adjust_Informations implements Serializable {
 
     @Override
     public String toString() {
-        return "ClassPojo [Status = " + Status + ", Index = " + Index + ", Type = " + Type + ", Price = " + Price + ", CustomerID = " + CustomerID + ", CustomerAdd = " + CustomerAdd + ", DepartmentId = " + DepartmentId + ", EmployeeCode = " + EmployeeCode + ", CustomerName = " + CustomerName + ", $id = " + $id + ", Amout = " + Amout + ", AdjustID = " + AdjustID + "]";
+        return "Mobile_Adjust_Informations{" +
+                "Status=" + Status +
+                ", Index='" + Index + '\'' +
+                ", Type='" + Type + '\'' +
+                ", Price='" + Price + '\'' +
+                ", CustomerID='" + CustomerID + '\'' +
+                ", CustomerAdd='" + CustomerAdd + '\'' +
+                ", DepartmentId='" + DepartmentId + '\'' +
+                ", EmployeeCode='" + EmployeeCode + '\'' +
+                ", CustomerName='" + CustomerName + '\'' +
+                ", $id='" + $id + '\'' +
+                ", Amout='" + Amout + '\'' +
+                ", AdjustID='" + AdjustID + '\'' +
+                ", FigureBookId='" + FigureBookId + '\'' +
+                ", StartDate=" + StartDate +
+                ", EndDate=" + EndDate +
+                ", SubTotal='" + SubTotal + '\'' +
+                ", Tax='" + Tax + '\'' +
+                ", Total='" + Total + '\'' +
+                ", CustomerNew='" + CustomerNew + '\'' +
+                ", PriceId=" + PriceId +
+                ", TaxCode='" + TaxCode + '\'' +
+                ", PhoneNumber='" + PhoneNumber + '\'' +
+                ", Email='" + Email + '\'' +
+                ", GiaSauThue='" + GiaSauThue + '\'' +
+                ", Month=" + Month +
+                ", Year=" + Year +
+                '}';
     }
 }

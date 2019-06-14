@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.es.ccisapp.R;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.Normalizer;
@@ -45,28 +46,47 @@ public class Utils {
         } catch (Exception e) {
             return strIn;
         }
-
     }
 
-    public static int CalculateTotalPartialMonth(Date d2, Date d1) {
+    public static BigDecimal CalculateTotalPartialMonth(Date d2, Date d1) {
         try {
             Calendar c2 = Calendar.getInstance();
             c2.setTime(d2);
 
             Calendar c1 = Calendar.getInstance();
             c1.setTime(d1);
+
             double monthsApart = Math.abs(12 * (c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR)) + c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH)) - 1;
             int daysInMonth1 = c1.getActualMaximum(Calendar.DATE);
-            ;// DateTime.DaysInMonth(d1.Year, d1.Month);
             int daysInMonth2 = c2.getActualMaximum(Calendar.DATE);
-            ; // DateTime.DaysInMonth(d2.Year, d2.Month);
 
-            double dayPercentage = ((double) (daysInMonth1 - c1.get(Calendar.DAY_OF_MONTH) + 1) / (double) daysInMonth1) + (c2.get(Calendar.DAY_OF_MONTH) / daysInMonth2);
-            return (int) Math.round((monthsApart + dayPercentage) < 1 ? 1 : (monthsApart + dayPercentage));
+            double dayPercentage = ((daysInMonth1 - c1.get(Calendar.DAY_OF_MONTH) + 1) / (double) daysInMonth1) + (c2.get(Calendar.DAY_OF_MONTH) / daysInMonth2);
+
+            BigDecimal bigDay = new BigDecimal(dayPercentage);
+            bigDay.setScale(2, RoundingMode.HALF_UP);
+            return bigDay.add(new BigDecimal(monthsApart));
         } catch (Exception ex) {
-            return 0;
+            return new BigDecimal(0);
         }
     }
+
+//    public static int CalculateTotalPartialMonth(Date d2, Date d1) {
+//        try {
+//            Calendar c2 = Calendar.getInstance();
+//            c2.setTime(d2);
+//
+//            Calendar c1 = Calendar.getInstance();
+//            c1.setTime(d1);
+//            double monthsApart = Math.abs(12 * (c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR)) + c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH)) - 1;
+//            int daysInMonth1 = c1.getActualMaximum(Calendar.DATE);
+//            int daysInMonth2 = c2.getActualMaximum(Calendar.DATE);
+//
+//            double dayPercentage = ((double) (daysInMonth1 - c1.get(Calendar.DAY_OF_MONTH) + 1) / (double) daysInMonth1) + (c2.get(Calendar.DAY_OF_MONTH) / daysInMonth2);
+//            return (int) Math.round((monthsApart + dayPercentage) < 1 ? 1 : (monthsApart + dayPercentage));
+//        } catch (Exception ex) {
+//            return 0;
+//        }
+//    }
 
     public static String removeAccent(String s) {
 

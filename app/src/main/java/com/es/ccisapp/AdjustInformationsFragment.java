@@ -231,7 +231,7 @@ public class AdjustInformationsFragment extends Fragment {
                 m.setCustomerName(edTenKH.getText().toString());
                 m.setEmployeeCode(strEmployeeCode);
                 m.setIndexSo(edSTT.getText().toString());
-
+                m.setGiaSauThue(edDonGia.getText().toString());
                 m.setType("3");
                 m.setStatus(false);
                 m.setDepartmentId(taxInvoice.getDepartmentId());
@@ -244,11 +244,11 @@ public class AdjustInformationsFragment extends Fragment {
                 m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
                 m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
 
-                int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
+                BigDecimal mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
                 BigDecimal vat = new BigDecimal(taxInvoice.getTaxRatio());
                 BigDecimal soLuong = new BigDecimal(edSL.getText().toString());
                 BigDecimal donGia = new BigDecimal(edDonGia.getText().toString());
-                BigDecimal soThang = new BigDecimal(mTerm);
+                BigDecimal soThang = (mTerm);
 
 
                 BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);
@@ -344,15 +344,15 @@ public class AdjustInformationsFragment extends Fragment {
         m.setTaxCode(edMST.getText() != null ? edMST.getText().toString() : "");
         m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
         m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
-
-        int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
-        taxInvoiceDetailDbList.get(0).setTerm(mTerm);
+        m.setGiaSauThue(edDonGia.getText().toString());
+        BigDecimal mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
+        taxInvoiceDetailDbList.get(0).setTerm(mTerm.doubleValue());
         taxInvoiceDetailDbList.get(0).save();
 
         BigDecimal vat = new BigDecimal(taxInvoice.getTaxRatio());
         BigDecimal soLuong = new BigDecimal(edSL.getText().toString());
         BigDecimal donGia = new BigDecimal(edDonGia.getText().toString());
-        BigDecimal soThang = new BigDecimal(mTerm);
+        BigDecimal soThang = (mTerm);
 
         BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);
         dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
@@ -481,7 +481,7 @@ public class AdjustInformationsFragment extends Fragment {
         m.setType(rdTT.isChecked() ? "0" : rdDC.isChecked() ? "1" : "2");
         m.setStatus(false);
         m.setDepartmentId(taxInvoice.getDepartmentId());
-
+        m.setGiaSauThue(edDonGia.getText().toString());
         m.setStartDate(edTuNgay.getText() != null ? Utils.parseDate(edTuNgay.getText().toString().replace(" ", "")) : null);
         m.setEndDate(edDenNgay.getText() != null ? Utils.parseDate(edDenNgay.getText().toString().replace(" ", "")) : null);
         m.setFigureBookId(taxInvoice.getFigureBookId() + "");
@@ -491,14 +491,14 @@ public class AdjustInformationsFragment extends Fragment {
         m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
         m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
 
-        int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
+        BigDecimal mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
         List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
 
 
         BigDecimal vat = new BigDecimal(taxInvoice.getTaxRatio());
         BigDecimal soLuong = new BigDecimal(edSL.getText().toString());
         BigDecimal donGia = new BigDecimal(edDonGia.getText().toString());
-        BigDecimal soThang = new BigDecimal(mTerm);
+        BigDecimal soThang = (mTerm);
 
         BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);
         dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
@@ -544,7 +544,7 @@ public class AdjustInformationsFragment extends Fragment {
 
         insertData(m);
 
-        taxInvoiceDetailDbList.get(0).setTerm(mTerm);
+        taxInvoiceDetailDbList.get(0).setTerm(mTerm.doubleValue());
         taxInvoiceDetailDbList.get(0).save();
         btnAdjOffline.setEnabled(false);
         btnAdjInformation.setEnabled(false);
@@ -610,15 +610,15 @@ public class AdjustInformationsFragment extends Fragment {
                             m.setTaxCode(edMST.getText() != null ? edMST.getText().toString() : "");
                             m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
                             m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
-
-                            int mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
-                            taxInvoiceDetailDbList.get(0).setTerm(mTerm);
+                            m.setGiaSauThue(edDonGia.getText().toString());
+                            BigDecimal mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
+                            taxInvoiceDetailDbList.get(0).setTerm(mTerm.doubleValue());
                             taxInvoiceDetailDbList.get(0).save();
 
                             BigDecimal vat = new BigDecimal(taxInvoice.getTaxRatio());
                             BigDecimal soLuong = new BigDecimal(edSL.getText().toString());
                             BigDecimal donGia = new BigDecimal(edDonGia.getText().toString());
-                            BigDecimal soThang = new BigDecimal(mTerm);
+                            BigDecimal soThang = (mTerm);
 
                             BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);
                             dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
