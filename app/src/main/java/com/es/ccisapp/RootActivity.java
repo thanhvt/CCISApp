@@ -73,7 +73,7 @@ public class RootActivity extends AppCompatActivity {
             editor.commit();
         }
         ActiveAndroid.initialize(getApplication());
-
+        Log.e("PATHHHH", ActiveAndroid.getDatabase().getPath());
         ButterKnife.bind(this);
         fragmentManager = getSupportFragmentManager();
 

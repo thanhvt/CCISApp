@@ -377,7 +377,7 @@ public class AdjustInformationsFragment extends Fragment {
         BigDecimal tmpBig3 = (soLuong).multiply(soThang);
         tmpBig3 = dSub.divide(tmpBig3, 3, RoundingMode.HALF_UP);
         m.setPrice(tmpBig3.toString());
-        Log.e(TAG, tmpBig3.toString());
+
 
 //        String vat = taxInvoice.getTaxRatio();
 //        BigDecimal a = new BigDecimal(edSL.getText().toString());
@@ -398,7 +398,7 @@ public class AdjustInformationsFragment extends Fragment {
 
 
         m.save();
-
+        Log.e(TAG, dSub + " - " + dVat + " - " + dTotal + " - " + soLuong + " - " + soThang + " - " + m.getPrice() + " - " + tmpBig3.toString());
         Toasty.success(getActivity(), "Lưu thông tin offline thành công. Duyệt thông tin để đẩy dữ liệu lên Server !", Toasty.LENGTH_LONG, true).show();
         Log.e("Adjust_Informations", m.toString());
 

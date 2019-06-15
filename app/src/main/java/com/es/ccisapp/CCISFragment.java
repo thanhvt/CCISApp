@@ -279,26 +279,27 @@ public class CCISFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        lstTaxInvoiceData.clear();  //Reset before update adapter to avoid duplication of list
-        List<Bill_TaxInvoiceModel> lstDB = new Select().all().from(Bill_TaxInvoiceModel.class).execute();
-        if (lstDB.size() == 0) {
-            recyclerView.setVisibility(View.GONE);
-            txtEmpty.setVisibility(View.VISIBLE);
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
-            txtEmpty.setVisibility(View.GONE);
-            int stt = 0;
-            for (Bill_TaxInvoiceModel b : lstDB) {
-                b.setChecked(false);
-                stt++;
+        try {
+            lstTaxInvoiceData.clear();  //Reset before update adapter to avoid duplication of list
+            List<Bill_TaxInvoiceModel> lstDB = new Select().all().from(Bill_TaxInvoiceModel.class).execute();
+            if (lstDB.size() == 0) {
+                recyclerView.setVisibility(View.GONE);
+                txtEmpty.setVisibility(View.VISIBLE);
+            } else {
+                recyclerView.setVisibility(View.VISIBLE);
+                txtEmpty.setVisibility(View.GONE);
+                int stt = 0;
+                for (Bill_TaxInvoiceModel b : lstDB) {
+                    b.setChecked(false);
+                    stt++;
 
-                List<Mobile_Adjust_DB> lstDieuChinh = new Select().all().from(Mobile_Adjust_DB.class).where("TYPE != '3' and CustomerID = ?", b.getCustomerId()).execute();
-                if (lstDieuChinh != null && lstDieuChinh.size() > 0) {
-                    Mobile_Adjust_DB m = lstDieuChinh.get(lstDieuChinh.size() - 1);
-                    b.setCustomerName(m.getCustomerName());
-                    b.setAddress_Pay(m.getCustomerAdd());
-                    b.setAmount(Double.parseDouble(m.getAmout()));
-                    b.setSubTotal(m.getPrice());
+                    List<Mobile_Adjust_DB> lstDieuChinh = new Select().all().from(Mobile_Adjust_DB.class).where("TYPE != '3' and CustomerID = ?", b.getCustomerId()).execute();
+                    if (lstDieuChinh != null && lstDieuChinh.size() > 0) {
+                        Mobile_Adjust_DB m = lstDieuChinh.get(lstDieuChinh.size() - 1);
+                        b.setCustomerName(m.getCustomerName());
+                        b.setAddress_Pay(m.getCustomerAdd());
+                        b.setAmount(Double.parseDouble(m.getAmout()));
+                        b.setSubTotal(m.getPrice());
 //                    String vat = taxInvoice.getTaxRatio();
 //                    Double dSub = Double.parseDouble(lstDieuChinh.get(lstDieuChinh.size() - 1).getPrice());
 //                    Double dVat = dSub * Double.parseDouble(vat) / 100;
@@ -306,62 +307,66 @@ public class CCISFragment extends Fragment {
 //                    txtVAT.setText(formatNumber(Math.round(dVat)) + " VNĐ");
 //                    txtSubTotal.setText(formatNumber(Math.round(dSub)) + " VNĐ (đã điều chỉnh)");
 //                    txtTotal.setText(formatNumber(Math.round(dTotal)) + " VNĐ");
+                    }
+
+                    lstTaxInvoiceData.add(new Bill_TaxInvoice(b.getTaxCode(), b.getCustomerCode(),
+                            b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(), "1",
+                            b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
+                            b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
+                            b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(),
+                            b.isThuOffline(), stt, b.getAmount(), b.getServiceTypeId(), b.getServiceName(), b.getINDEX_THU(), b.getKIEU(), b.getPriceId()));
                 }
 
-                lstTaxInvoiceData.add(new Bill_TaxInvoice(b.getTaxCode(), b.getCustomerCode(),
-                        b.getBankName(), b.getMonth(), b.getSerialNumber(), b.getYear(), b.getCustomerId(), b.getDepartmentId(), "1",
-                        b.getTaxInvoiceAddress(), b.getTaxInvoiceId(), b.getIdDevice(), b.getContractId(), b.getFigureBookId(), b.getSerialCode(),
-                        b.getCustomerName(), b.getCustomerCode_Pay(), b.getSubTotal(), b.getAddress_Pay(), b.getBankAccount(), b.getVAT(),
-                        b.getTaxRatio(), b.getCustomerId_Pay(), b.getBillType(), b.getCustomerName_Pay(), b.getTotal(), b.isChecked(),
-                        b.isThuOffline(), stt, b.getAmount(), b.getServiceTypeId(), b.getServiceName(), b.getINDEX_THU(), b.getKIEU(), b.getPriceId()));
-            }
 
-
-            if (spnSo.getSelectedItemPosition() > 0) {
-                List<Bill_TaxInvoice> lstTmp = new ArrayList<Bill_TaxInvoice>();
-                for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
-                    for (SoGCS_User_DB item : info) {
-                        if (item.getBookCode().equals(spnSo.getSelectedItem().toString().split(":")[0])) {
-                            if (bill.getFigureBookId() == item.getFigureBookId()) {
-                                lstTmp.add(bill);
+                if (spnSo.getSelectedItemPosition() > 0) {
+                    List<Bill_TaxInvoice> lstTmp = new ArrayList<Bill_TaxInvoice>();
+                    for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
+                        for (SoGCS_User_DB item : info) {
+                            if (item.getBookCode().equals(spnSo.getSelectedItem().toString().split(":")[0])) {
+                                if (bill.getFigureBookId() == item.getFigureBookId()) {
+                                    lstTmp.add(bill);
+                                }
                             }
                         }
                     }
+                    taxInvoiceAdapter = new TaxInvoiceAdapter(lstTmp, R.layout.list_taxinvoice, getContext());
+                    recyclerView.setAdapter(taxInvoiceAdapter);
+                    taxInvoiceAdapter.notifyDataSetChanged();
+                } else {
+                    taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
+                    recyclerView.setAdapter(taxInvoiceAdapter);
+                    taxInvoiceAdapter.notifyDataSetChanged();
                 }
-                taxInvoiceAdapter = new TaxInvoiceAdapter(lstTmp, R.layout.list_taxinvoice, getContext());
-                recyclerView.setAdapter(taxInvoiceAdapter);
-                taxInvoiceAdapter.notifyDataSetChanged();
-            } else {
-                taxInvoiceAdapter = new TaxInvoiceAdapter(lstTaxInvoiceData, R.layout.list_taxinvoice, getContext());
-                recyclerView.setAdapter(taxInvoiceAdapter);
-                taxInvoiceAdapter.notifyDataSetChanged();
-            }
-            if (lstTaxInvoiceData.size() > 0 && searchView != null && searchView.getQuery() != null && !searchView.getQuery().toString().isEmpty()
-                    && taxInvoiceAdapter != null && taxInvoiceAdapter.getLstTaxInvoice() != null && taxInvoiceAdapter.getItemCount() > 0
-            ) {
-                taxInvoiceAdapter.getFilter().filter(searchView.getQuery().toString());
-                taxInvoiceAdapter.notifyDataSetChanged();
-            }
+                if (lstTaxInvoiceData.size() > 0 && searchView != null && searchView.getQuery() != null && !searchView.getQuery().toString().isEmpty()
+                        && taxInvoiceAdapter != null && taxInvoiceAdapter.getLstTaxInvoice() != null && taxInvoiceAdapter.getItemCount() > 0
+                ) {
+                    taxInvoiceAdapter.getFilter().filter(searchView.getQuery().toString());
+                    taxInvoiceAdapter.notifyDataSetChanged();
+                }
 
-            try {
-                int daThu = 0;
-                long tienThu = 0L;
-                long tongTien = 0L;
-                for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
-                    if (bill.isThuOffline() > 0) {
-                        daThu++;
-                        tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
-                        tongTien += bill.getTotal().indexOf(".") != -1 ? Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf("."))) : Long.parseLong(bill.getTotal());
+                try {
+                    int daThu = 0;
+                    long tienThu = 0L;
+                    long tongTien = 0L;
+                    for (Bill_TaxInvoice bill : lstTaxInvoiceData) {
+                        if (bill.isThuOffline() > 0) {
+                            daThu++;
+                            tienThu += Long.parseLong(bill.getSubTotal().substring(0, bill.getSubTotal().indexOf(".")));
+                            tongTien += bill.getTotal().indexOf(".") != -1 ? Long.parseLong(bill.getTotal().substring(0, bill.getTotal().indexOf("."))) : Long.parseLong(bill.getTotal());
+                        }
                     }
-                }
-                txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
+                    txtSoKH.setText("Đã thu: " + daThu + "/" + lstTaxInvoiceData.size() + " KH");
 //                txtTienThu.setText("Tiền thu: " + formatNumber(tienThu) + " VNĐ");
-                txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
-            } catch (Exception e) {
+                    txtTienCoVAT.setText("Tổng tiền: " + formatNumber(tongTien) + " VNĐ");
+                } catch (Exception e) {
+
+                }
 
             }
+        } catch (Exception e) {
 
         }
+
     }
 
     private SearchView searchView;

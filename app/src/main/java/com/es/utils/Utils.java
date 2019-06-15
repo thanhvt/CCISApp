@@ -60,10 +60,10 @@ public class Utils {
             int daysInMonth1 = c1.getActualMaximum(Calendar.DATE);
             int daysInMonth2 = c2.getActualMaximum(Calendar.DATE);
 
-            double dayPercentage = ((daysInMonth1 - c1.get(Calendar.DAY_OF_MONTH) + 1) / (double) daysInMonth1) + (c2.get(Calendar.DAY_OF_MONTH) / daysInMonth2);
+            double dayPercentage = ((double) (daysInMonth1 - c1.get(Calendar.DAY_OF_MONTH) + 1) / daysInMonth1) + ((double) c2.get(Calendar.DAY_OF_MONTH) / daysInMonth2);
 
             BigDecimal bigDay = new BigDecimal(dayPercentage);
-            bigDay.setScale(2, RoundingMode.HALF_UP);
+            bigDay = bigDay.setScale(2, RoundingMode.HALF_UP);
             return bigDay.add(new BigDecimal(monthsApart));
         } catch (Exception ex) {
             return new BigDecimal(0);

@@ -701,7 +701,7 @@ public class PrintReceipt {
             for (int i = 0; i < kc; i++) {
                 strX += " ";
             }
-        }
+        } else strX = strX.substring(0, doDaiChoPhep);
         return strX;
     }
 

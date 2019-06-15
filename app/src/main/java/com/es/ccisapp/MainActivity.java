@@ -39,8 +39,10 @@ import com.es.network.RetrofitInstance;
 import com.es.utils.CustomCallBack;
 import com.es.utils.Utils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -89,6 +91,11 @@ public class MainActivity extends AppCompatActivity
         switchFragment(buildFragment_CCIS(), "ABC");
         apiService =
                 RetrofitInstance.getRetrofitInstance(getApplicationContext()).create(CCISDataService.class);
+
+        Date d1 = new Date(2019, 0, 15);
+        Date d2 = new Date(2019, 2, 15);
+        BigDecimal b = Utils.CalculateTotalPartialMonth(d2, d1);
+        Log.e(TAG + " -- ", b.toString());
     }
 
     private CCISFragment buildFragment_CCIS() {
@@ -297,6 +304,7 @@ public class MainActivity extends AppCompatActivity
                             mo.getDepartmentId(), mo.getEmployeeCode(), mo.getCustomerName(),
                             "1", mo.getAmout(), mo.getAdjustID(), mo.getFigureBookId(), Utils.parseDate(mo.getStartDate()), Utils.parseDate(mo.getEndDate()),
                             mo.getSubTotal(), mo.getTax(), mo.getTotal(), "-1", mo.getPriceId(), mo.getTaxCode(), mo.getPhoneNumber(), mo.getEmail(), mo.getGiaSauThue());
+                    Log.e(TAG, mobile.toString());
                     if (mobile.getType().equals("3")) {
                         Calendar c = Calendar.getInstance();
                         mobile.setMonth(c.get(Calendar.MONTH) + 1);
