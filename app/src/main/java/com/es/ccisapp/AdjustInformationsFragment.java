@@ -181,7 +181,13 @@ public class AdjustInformationsFragment extends Fragment {
             }
 
             //edDonGia.setText(taxInvoice.getSubTotal());
-            edDonGia.setText(tmp.get(0).getPrice() + "");
+            List<DonGia_DB> info = new Select().all().from(DonGia_DB.class).execute();
+            for (DonGia_DB d : info) {
+                if (d.getPriceId() == taxInvoice.getPriceId()) {
+                    edDonGia.setText(d.getPrice() + "");
+                }
+            }
+//            edDonGia.setText(tmp.get(0).getPrice() + "");
             edSTT.setText(taxInvoice.getINDEX_THU());
             if (tmp.size() > 0) {
                 edTuNgay.setText(tmp.get(0).TuNgay);
@@ -283,7 +289,6 @@ public class AdjustInformationsFragment extends Fragment {
 //                dVat = dVat.setScale(2, RoundingMode.CEILING);
 //                BigDecimal dTotal = dSub.add(dVat);
 //                dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
-
 
 
                 m.setSubTotal(dSub + "");
