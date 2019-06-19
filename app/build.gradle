@@ -6,8 +6,8 @@ android {
         applicationId "com.es.ccisapp"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 50
-        versionName "50.0"
+        versionCode 51
+        versionName "51.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true

@@ -135,37 +135,26 @@ public class TaxInvoiceDetailFragment extends Fragment {
                     BigDecimal donGia = new BigDecimal(m.getGiaSauThue());
                     BigDecimal soThang = new BigDecimal(tmp.get(0).getTerm());
 
+//                    BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);
+//                    dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
+//                    BigDecimal tmpBig = vat.divide(new BigDecimal((100)));
+//                    tmpBig = tmpBig.add(new BigDecimal(1));
+//                    tmpBig = dTotal.divide(tmpBig, 0, RoundingMode.HALF_UP);
+//                    BigDecimal dSub = tmpBig;
+//                    BigDecimal dVat = dTotal.subtract(dSub);
+
+                    //////////////////////////////////////////////
                     BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);
                     dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
-                    BigDecimal tmpBig = vat.divide(new BigDecimal((100)));
-                    tmpBig = tmpBig.add(new BigDecimal(1));
-                    tmpBig = dTotal.divide(tmpBig, 0, RoundingMode.HALF_UP);
-                    BigDecimal dSub = tmpBig;
 
-//                tmpBig = tmpBig.divide(new BigDecimal((1000)));
-//                tmpBig = tmpBig.setScale(0, RoundingMode.HALF_UP);
-//                tmpBig = tmpBig.multiply(new BigDecimal((1000)));
-//
-//                BigDecimal cotAn = tmpBig;
-//                BigDecimal dTotal = cotAn.multiply(soLuong).multiply(soThang);
-//
-//                BigDecimal tmpBig2 = vat.divide(new BigDecimal((100)));
-//                tmpBig2 = tmpBig2.add(new BigDecimal(1));
-//                tmpBig2 = dTotal.divide(tmpBig2, 0, RoundingMode.HALF_UP);
-//
-//                BigDecimal dSub = tmpBig2;
+                    BigDecimal tmpBig3 = vat.divide(new BigDecimal((100)));
+                    tmpBig3 = tmpBig3.add(new BigDecimal(1));
+                    tmpBig3 = donGia.divide(tmpBig3, 3, RoundingMode.HALF_UP);
+
+                    BigDecimal dSub = tmpBig3.multiply(soLuong).multiply(soThang);
+                    dSub = dSub.setScale(0, RoundingMode.HALF_UP);
                     BigDecimal dVat = dTotal.subtract(dSub);
-
-//                    String vat = taxInvoice.getTaxRatio();
-//                    BigDecimal a = new BigDecimal(taxInvoice.getAmount());
-//                    BigDecimal b = new BigDecimal(m.getPrice());
-//                    BigDecimal c = new BigDecimal(tmp.get(0).getTerm());
-//                    BigDecimal dSub = a.multiply(b).multiply(c);
-//                    dSub = dSub.setScale(2, RoundingMode.CEILING);
-//                    BigDecimal dVat = dSub.multiply(new BigDecimal(vat)).divide(new BigDecimal(100));
-//                    dVat = dVat.setScale(2, RoundingMode.CEILING);
-//                    BigDecimal dTotal = dSub.add(dVat);
-
+                    //////////////////////////////////////////////
 
                     m.setSubTotal(dSub + "");
                     m.setTotal(dTotal + "");
