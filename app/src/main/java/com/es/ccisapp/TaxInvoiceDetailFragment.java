@@ -256,6 +256,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                 txtTinhTrangThu.setText("Đã thu offline");
                 btnThuOff.setEnabled(false);
                 btnThuTien.setEnabled(false);
+                taxInvoice.setThuOffline(1);
                 Toasty.success(getActivity(), "Thu tiền offline khách hàng " + txtTenKH.getText() + " thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
                 kieu = 0;
                 btnInHD();
@@ -303,6 +304,7 @@ public class TaxInvoiceDetailFragment extends Fragment {
                             txtTinhTrangThu.setText("Đã thu online");
                             btnThuOff.setEnabled(false);
                             btnThuTien.setEnabled(false);
+                            taxInvoice.setThuOffline(2);
                             Toasty.success(getActivity(), "Đã thu tiền và đẩy dữ liệu khách hàng " + txtTenKH.getText() + " lên server thành công. Đề nghị in biên nhận !", Toasty.LENGTH_LONG, true).show();
                             kieu = 1;
                             btnInHD();

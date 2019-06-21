@@ -640,4 +640,9 @@ public class AdjustInformationsFragment extends Fragment {
 
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

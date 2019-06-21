@@ -560,15 +560,15 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //50 * 0.125mm
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal font
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Dv|SL |S.th|Don gia  |Thanh tien");
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Dv|SL|S.th|Don gia   |Thanh tien");
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("--|---|----|---------|----------");
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("--|--|----|----------|----------");
             for (Bill_TaxInvoiceDetail_DB de : lstDetail) {
                 BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
                 BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(bill_taxInvoice.getKIEU() + "|" +
-                        inThat(3, (de.getAmount() + "").length(), de.getAmount() + "") + "|" +
+                        inThat(2, ((int) de.getAmount() + "").length(), (int) de.getAmount() + "") + "|" +
                         inThat(4, (de.getTerm() + "").length(), de.getTerm() + "") + "|" +
-                        inThat(9, (de.getPrice() + "").length(), de.getPrice() + "") + "|" +
+                        inThat(10, (de.getPrice() + "").length(), de.getPrice() + "") + "|" +
                         inThat(10, (de.getTotal() + "").length(), de.getTotal() + ""));
             }
 
