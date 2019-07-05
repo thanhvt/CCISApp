@@ -545,7 +545,7 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);//CENTER
             //BT_Write() method will initiate the printer to start printing.
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(
-                    "\nID HD: " + bill_taxInvoice.getContractId() +
+                    "\nID HD: " + bill_taxInvoice.getTaxInvoiceId() +
                             "\nTen KH: " + Utils.removeAccent(bill_taxInvoice.getCustomerName()) +
                             "\nDia chi: " + Utils.removeAccent(bill_taxInvoice.getAddress_Pay()) +
                             "\nMa KH: " + bill_taxInvoice.getCustomerCode() +

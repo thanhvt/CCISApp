@@ -187,7 +187,6 @@ public class AdjustInformationsFragment extends Fragment {
                     edDonGia.setText(d.getPrice() + "");
                 }
             }
-//            edDonGia.setText(tmp.get(0).getPrice() + "");
             edSTT.setText(taxInvoice.getINDEX_THU());
             if (tmp.size() > 0) {
                 edTuNgay.setText(tmp.get(0).TuNgay);
@@ -333,6 +332,8 @@ public class AdjustInformationsFragment extends Fragment {
         m.setGiaSauThue(edDonGia.getText().toString());
         BigDecimal mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
         taxInvoiceDetailDbList.get(0).setTerm(mTerm.doubleValue());
+        taxInvoiceDetailDbList.get(0).TuNgay = m.getStartDate();
+        taxInvoiceDetailDbList.get(0).DenNgay = m.getEndDate();
         taxInvoiceDetailDbList.get(0).save();
 
         BigDecimal vat = new BigDecimal(taxInvoice.getTaxRatio());
