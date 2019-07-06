@@ -186,6 +186,8 @@ public class PrintReceipt {
         } else {
             if (kieu == 3) {
                 printKHMoi(context, bill_taxInvoice);
+            } else if (kieu == 4) {
+                printResultCK(context, bill_taxInvoice, lstDetailDB);
             } else {
                 printResult(context, bill_taxInvoice, lstDetailDB);
             }
@@ -663,6 +665,242 @@ public class PrintReceipt {
 //        BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("\nXin cam on");
 //
 //
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+        } catch (Exception e) {
+            Log.e("Err in HD ", e.getMessage());
+        }
+
+        return true;
+    }
+
+    public static boolean printResultCK(Context context, Bill_TaxInvoice bill_taxInvoice, List<Bill_TaxInvoiceDetail_DB> lstDetail) {
+        try {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+            String TEN_CTY = sharedPrefs.getString("TEN_CTY", "Chưa cấu hình");
+            String TEN_CHINHANH = sharedPrefs.getString("TEN_CHINHANH", "Chưa cấu hình");
+            String TEN_NVTHU = sharedPrefs.getString("TEN_NVTHU", "Chưa cấu hình");
+            String SDT = sharedPrefs.getString("SDT", "Chưa cấu hình");
+            String SDT_CSKH = sharedPrefs.getString("SDT_CSKH", "Chưa cấu hình");
+
+            SharedPreferences pref = context.getSharedPreferences("LOGIN", 0);
+            String strBank = pref.getString("BANK", "");
+            String strAccount = pref.getString("ACCOUNT", "");
+
+            TEN_CTY = Utils.removeAccent(TEN_CTY);
+            TEN_CHINHANH = Utils.removeAccent(TEN_CHINHANH);
+            TEN_NVTHU = Utils.removeAccent(TEN_NVTHU);
+
+            String strMST = "";
+
+            Mobile_Adjust_DB mThayDoi = new Mobile_Adjust_DB();
+            List<Mobile_Adjust_DB> lstDB = new Select().all().from(Mobile_Adjust_DB.class).where("TYPE != '3' and CustomerID = ?", bill_taxInvoice.getCustomerId()).execute();
+            List<Concus_Customer_DB> lstKH = new Select().all().from(Concus_Customer_DB.class).where("CustomerCode = ?", bill_taxInvoice.getCustomerCode()).execute();
+            if (lstKH != null && lstKH.size() > 0) {
+                strMST = lstKH.get(0).TaxCode;
+            }
+
+            if (lstDB != null && lstDB.size() > 0) {
+                mThayDoi = lstDB.get(lstDB.size() - 1);
+
+                strMST = mThayDoi.getTaxCode();
+
+                bill_taxInvoice.setCustomerName(mThayDoi.getCustomerName());
+                bill_taxInvoice.setAddress_Pay(mThayDoi.getCustomerAdd());
+                bill_taxInvoice.setAmount(Double.parseDouble(mThayDoi.getAmout()));
+
+                BigDecimal vat = new BigDecimal(bill_taxInvoice.getTaxRatio());
+                BigDecimal soLuong = new BigDecimal(mThayDoi.getAmout());
+                BigDecimal donGia = new BigDecimal(mThayDoi.getGiaSauThue());
+                BigDecimal soThang = new BigDecimal(lstDetail.get(0).getTerm());
+
+                BigDecimal dTotal = donGia.multiply(soLuong).multiply(soThang);
+                dTotal = dTotal.setScale(0, RoundingMode.HALF_UP);
+
+                BigDecimal tmpBig3 = vat.divide(new BigDecimal((100)));
+                tmpBig3 = tmpBig3.add(new BigDecimal(1));
+                tmpBig3 = donGia.divide(tmpBig3, 3, RoundingMode.HALF_UP);
+
+                BigDecimal dSub = tmpBig3.multiply(soLuong).multiply(soThang);
+                dSub = dSub.setScale(0, RoundingMode.HALF_UP);
+                BigDecimal dVat = dTotal.subtract(dSub);
+
+
+                bill_taxInvoice.setSubTotal(dSub + "");
+                bill_taxInvoice.setTotal(dTotal + "");
+                bill_taxInvoice.setVAT(dVat + "");
+                for (Bill_TaxInvoiceDetail_DB item : lstDetail) {
+                    item.setAmount(Double.parseDouble(mThayDoi.getAmout()));
+                    item.setTotal(dSub.doubleValue());
+                    item.setPrice(Double.parseDouble(mThayDoi.getPrice()));
+                }
+
+            } else {
+                mThayDoi.setStartDate(lstDetail.get(0).TuNgay);
+                mThayDoi.setEndDate(lstDetail.get(0).DenNgay);
+            }
+            Log.e(TAG, bill_taxInvoice.toString());
+            if (BluetoothPrinterActivity.BLUETOOTH_PRINTER.IsNoConnection()) {
+                return false;
+            }
+
+            double totalBill = 0.00, netBill = 0.00, totalVat = 0.00;
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.Begin();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//CENTER
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //30 * 0.125mm
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(TEN_CTY);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//CENTER
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //30 * 0.125mm
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("CHI NHANH: " + TEN_CHINHANH);
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);
+            Calendar cal = Calendar.getInstance();
+            String time = cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.YEAR);
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//CENTER
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //30 * 0.125mm
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("THONG BAO");
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//CENTER
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //30 * 0.125mm
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("NOP TIEN DICH VU VSMT");
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//CENTER
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //30 * 0.125mm
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("QUA HINH THUC CHUYEN KHOAN");
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//CENTER
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //30 * 0.125mm
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("(Khong co tac dung thanh toan)");
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);//CENTER
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //30 * 0.125mm
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("So tai khoan: " + strAccount);
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);//CENTER
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //30 * 0.125mm
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Tai: " + Utils.removeAccent(strBank));
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);//CENTER
+            //BT_Write() method will initiate the printer to start printing.
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(
+                    "\nID HD: " + bill_taxInvoice.getTaxInvoiceId() +
+                            "\nTen KH: " + Utils.removeAccent(bill_taxInvoice.getCustomerName()) +
+                            "\nDia chi: " + Utils.removeAccent(bill_taxInvoice.getAddress_Pay()) +
+                            "\nMa KH: " + bill_taxInvoice.getCustomerCode() +
+                            "\nMST: " + strMST +
+                            "\nTu: " + (mThayDoi.getStartDate() != null ? mThayDoi.getStartDate() : "") +
+                            "\nDen: " + (mThayDoi.getEndDate() != null ? mThayDoi.getEndDate() : ""));
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);//RIGHT
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //50 * 0.125mm
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal font
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Dv|SL|S.th|Don gia   |Thanh tien");
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("--|--|----|----------|----------");
+            for (Bill_TaxInvoiceDetail_DB de : lstDetail) {
+                BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+                BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(bill_taxInvoice.getKIEU() + "|" +
+                        inThat(2, ((int) de.getAmount() + "").length(), (int) de.getAmount() + "") + "|" +
+                        inThat(4, (de.getTerm() + "").length(), de.getTerm() + "") + "|" +
+                        inThat(10, (de.getPrice() + "").length(), de.getPrice() + "") + "|" +
+                        inThat(10, (de.getTotal() + "").length(), de.getTotal() + ""));
+            }
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            String strXFix = "Thue GTGT " + bill_taxInvoice.getTaxRatio() + "%";
+            String strVat = bill_taxInvoice.getVAT();
+            int so0 = 32 - strXFix.length() - strVat.length();
+            for (int i = 0; i < so0; i++) {
+                strXFix += " ";
+            }
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(strXFix + strVat);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            strXFix = "Tong tien";
+            String strTienFormat = Utils.formatValue(bill_taxInvoice.getTotal());
+            Log.e(TAG, "format " + strTienFormat);
+            strVat = bill_taxInvoice.getTotal();
+            so0 = 32 - strXFix.length() - strTienFormat.length();
+            for (int i = 0; i < so0; i++) {
+                strXFix += " ";
+            }
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(strXFix + strTienFormat);
+            Double d = Double.parseDouble(strVat);
+            String tienChu = Utils.numberToString(d);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(tienChu);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//center
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal font
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write(context.getResources().getString(R.string.print_line));
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);//1: Center, 0: LEFT
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("NV thu: " + Utils.removeAccent(TEN_NVTHU));
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("SDT: " + Utils.removeAccent(SDT));
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("SDT CSKH: " + Utils.removeAccent(SDT_CSKH));
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);//CENTER
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetLineSpacing((byte) 30);    //30 * 0.125mm
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetFontEnlarge((byte) 0x00);//normal
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Ngay: " + time);
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 1);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Chua thu tien");
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Thong tin tra cuu truy cap tai: urenco.com.vn");
+
+
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);
+            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("(Ghi chu: danh cho ho kinh doanh)");
+
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();

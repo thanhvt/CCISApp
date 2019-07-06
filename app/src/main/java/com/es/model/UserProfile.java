@@ -14,7 +14,8 @@ public class UserProfile implements Serializable {
     private String GenderId;
     private String DepartmentId;
     private String EmployeeCode;
-
+    private String AccountNumber;
+    private String BankName;
 
     public UserProfile() {
     }
@@ -47,6 +48,22 @@ public class UserProfile implements Serializable {
                 ", GenderId='" + GenderId + '\'' +
                 ", DepartmentId='" + DepartmentId + '\'' +
                 '}';
+    }
+
+    public String getAccountNumber() {
+        return AccountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        AccountNumber = accountNumber;
+    }
+
+    public String getBankName() {
+        return BankName;
+    }
+
+    public void setBankName(String bankName) {
+        BankName = bankName;
     }
 
     public String getEmployeeCode() {

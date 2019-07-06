@@ -64,7 +64,7 @@
             android:value="CCIS_DB.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="16" />
+            android:value="18" />
         <meta-data
             android:name="AA_MODELS"
             android:value="com.es.model.Bill_TaxInvoiceModel, com.es.model.Mobile_Adjust_DB,

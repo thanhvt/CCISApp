@@ -49,6 +49,8 @@ public class Mobile_Adjust_Informations implements Serializable {
     private String Email;
     private String GiaSauThue;
 
+    private String PaymentMethodsCode;
+
     // ---------------------
     private int Month;
 
@@ -69,7 +71,8 @@ public class Mobile_Adjust_Informations implements Serializable {
                                       String taxCode,
                                       String phoneNumber,
                                       String email,
-                                      String GiaSauThue) {
+                                      String GiaSauThue,
+                                      String PaymentMethodsCode) {
         Status = status;
         Index = index;
         Type = type;
@@ -94,6 +97,15 @@ public class Mobile_Adjust_Informations implements Serializable {
         PhoneNumber = phoneNumber;
         Email = email;
         this.GiaSauThue = GiaSauThue;
+        this.PaymentMethodsCode = PaymentMethodsCode;
+    }
+
+    public String getPaymentMethodsCode() {
+        return PaymentMethodsCode;
+    }
+
+    public void setPaymentMethodsCode(String paymentMethodsCode) {
+        PaymentMethodsCode = paymentMethodsCode;
     }
 
     public String getGiaSauThue() {
@@ -339,8 +351,11 @@ public class Mobile_Adjust_Informations implements Serializable {
                 ", PhoneNumber='" + PhoneNumber + '\'' +
                 ", Email='" + Email + '\'' +
                 ", GiaSauThue='" + GiaSauThue + '\'' +
+                ", PaymentMethodsCode='" + PaymentMethodsCode + '\'' +
                 ", Month=" + Month +
                 ", Year=" + Year +
                 '}';
     }
 }
+
+

@@ -80,6 +80,9 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
     @Column(name = "GiaSauThue")
     private String GiaSauThue;
 
+    @Column(name = "PaymentMethodsCode")
+    private String PaymentMethodsCode;
+
     public Mobile_Adjust_DB() {
     }
 
@@ -88,7 +91,8 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
                             String subTotal, String tax, String total, String customerNew, String IS_SUBMIT, int PriceId, String taxCode,
                             String phoneNumber,
                             String email,
-                            String GiaSauThue) {
+                            String GiaSauThue,
+                            String PaymentMethodsCode) {
         Status = status;
         IndexSo = indexSo;
         Type = type;
@@ -113,6 +117,15 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
         PhoneNumber = phoneNumber;
         Email = email;
         this.GiaSauThue = GiaSauThue;
+        this.PaymentMethodsCode = PaymentMethodsCode;
+    }
+
+    public String getPaymentMethodsCode() {
+        return PaymentMethodsCode;
+    }
+
+    public void setPaymentMethodsCode(String paymentMethodsCode) {
+        PaymentMethodsCode = paymentMethodsCode;
     }
 
     public String getGiaSauThue() {
@@ -338,6 +351,7 @@ public class Mobile_Adjust_DB extends Model implements Serializable {
                 ", PhoneNumber='" + PhoneNumber + '\'' +
                 ", Email='" + Email + '\'' +
                 ", GiaSauThue='" + GiaSauThue + '\'' +
+                ", PaymentMethodsCode='" + PaymentMethodsCode + '\'' +
                 '}';
     }
 }

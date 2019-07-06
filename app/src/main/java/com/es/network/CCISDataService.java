@@ -33,8 +33,8 @@ public interface CCISDataService {
     @GET("getBill_TaxInvoice/{status}/{userid}")
     Call<List<Bill_TaxInvoice>> getBill_TaxInvoice(@Path("status") int status, @Path("userid") int userid);
 
-    @GET("ThuTien/{id}")
-    Call<Integer> ThuTien(@Path("id") int id);
+    @GET("ThuTien/{id}/{userid}")
+    Call<Integer> ThuTien(@Path("id") int id, @Path("userid") int userid);
 
     @GET("ThuTienLo/{ids}")
     Call<Integer> ThuTienLo(@Path("ids") String ids);

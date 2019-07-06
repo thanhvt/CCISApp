@@ -37,6 +37,16 @@
         android:text="@string/print_btn" />
 
     <Button
+        android:id="@+id/btn_inhdck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_connect_bluetooth_device"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:text="Mẫu in CK" />
+
+    <Button
         android:id="@+id/btn_inhd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

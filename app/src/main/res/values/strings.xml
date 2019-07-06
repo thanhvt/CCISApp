@@ -74,6 +74,14 @@
         <item>-1</item>
     </string-array>
 
+    <string-array name="pthuc_ttoan">
+        <item>Chọn ...</item>
+        <item>Chuyển khoản</item>
+        <item>Thanh toán điện tử</item>
+        <item>Tiền mặt</item>
+        <item>Tiền mặt hoặc chuyển khoản</item>
+    </string-array>
+
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
 

@@ -94,7 +94,8 @@ public class CCISActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        SharedPreferences pref = getSharedPreferences("LOGIN", 0);
+        int strUSERID = pref.getInt("USERID", -1);
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_thutien) {
             if (taxInvoiceAdapter != null) {
@@ -103,7 +104,7 @@ public class CCISActivity extends AppCompatActivity {
                 for (final Bill_TaxInvoice b : stList) {
                     if (b.isChecked()) {
                         Log.e(TAG, b.toString());
-                        Call<Integer> call = apiService.ThuTien((b.getTaxInvoiceId()));
+                        Call<Integer> call = apiService.ThuTien(b.getTaxInvoiceId(), strUSERID);
                         call.enqueue(new CustomCallBack<Integer>(this) {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {

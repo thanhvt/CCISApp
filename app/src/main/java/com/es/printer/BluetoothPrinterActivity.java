@@ -49,6 +49,8 @@ public class BluetoothPrinterActivity extends AppCompatActivity {
 Bill_TaxInvoice taxInvoice;
     int kieu;
     Button btnPrintInHD;
+
+    Button btnInCK;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +95,14 @@ Bill_TaxInvoice taxInvoice;
         mBtnPrint.setOnClickListener(mBtnPrintTestOnClickListener);
         btnPrintInHD = (Button) findViewById(R.id.btn_inhd);
         btnPrintInHD.setOnClickListener(mBtnPrintOnClickListener);
+
+        btnInCK = (Button) findViewById(R.id.btn_inhdck);
+        btnInCK.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PrintReceipt.printBillFromOrder(BluetoothPrinterActivity.this, taxInvoice, 4);
+            }
+        });
 //        mImgPosPrinter = (ImageView)findViewById(R.id.printer_imgPOSPrinter);
     }
 

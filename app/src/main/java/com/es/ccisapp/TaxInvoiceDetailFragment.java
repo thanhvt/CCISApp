@@ -3,6 +3,7 @@ package com.es.ccisapp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -278,14 +279,15 @@ public class TaxInvoiceDetailFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.app_name);
         builder.setIcon(R.drawable.logo);
-
+        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+        final int strUSERID = pref.getInt("USERID", -1);
         builder.setMessage("Anh/Chị xác nhận thu tiền khách hàng " + taxInvoice.getCustomerName() + ". Kiểm tra lại kỹ thông tin trước khi đồng ý.");
         builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
                 CCISDataService apiService =
                         RetrofitInstance.getRetrofitInstance(getActivity().getApplicationContext()).create(CCISDataService.class);
-                Call<Integer> call = apiService.ThuTien((taxInvoice.getTaxInvoiceId()));
+                Call<Integer> call = apiService.ThuTien(taxInvoice.getTaxInvoiceId(), strUSERID);
                 call.enqueue(new CustomCallBack<Integer>(getActivity()) {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {

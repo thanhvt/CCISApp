@@ -2,6 +2,7 @@ package com.es.ccisapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -514,12 +515,13 @@ public class CCISFragment extends Fragment {
                     builder.setNegativeButton("Thu online", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
-
+                            SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", 0);
+                            final int strUSERID = pref.getInt("USERID", -1);
                             final List<Bill_TaxInvoice> stList = taxInvoiceAdapter.getLstTaxInvoice();
                             for (final Bill_TaxInvoice b : stList) {
                                 if (b.isChecked()) {
                                     Log.e(TAG, b.toString());
-                                    Call<Integer> call = apiService.ThuTien((b.getTaxInvoiceId()));
+                                    Call<Integer> call = apiService.ThuTien(b.getTaxInvoiceId(), strUSERID);
                                     call.enqueue(new CustomCallBack<Integer>(getActivity()) {
                                         @Override
                                         public void onResponse(Call<Integer> call, Response<Integer> response) {

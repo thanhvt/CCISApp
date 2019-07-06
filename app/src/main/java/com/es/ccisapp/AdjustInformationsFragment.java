@@ -74,6 +74,9 @@ public class AdjustInformationsFragment extends Fragment {
     @BindView(R.id.spnDmucDonGia)
     Spinner spnDmucDonGia;
 
+    @BindView(R.id.spnDmucThanhToan)
+    Spinner spnDmucThanhToan;
+
     @BindView(R.id.edMST)
     EditText edMST;
 
@@ -137,7 +140,6 @@ public class AdjustInformationsFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         spnDmucDonGia.setAdapter(adapter);
-//        spnDmucDonGia.setTag();
         spnDmucDonGia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -152,6 +154,21 @@ public class AdjustInformationsFragment extends Fragment {
 
             }
         });
+
+//        spnDmucThanhToan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                if (i > 0) {
+//                    edDonGia.setText(spnDmucDonGia.getSelectedItem().toString().substring(spnDmucDonGia.getSelectedItem().toString().indexOf(": ") + 2));
+//                    priceId = Integer.parseInt(spnDmucDonGia.getSelectedItem().toString().substring(0, spnDmucDonGia.getSelectedItem().toString().indexOf(". ")));
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
     }
 
     @Override
@@ -248,6 +265,13 @@ public class AdjustInformationsFragment extends Fragment {
                 m.setTaxCode(edMST.getText() != null ? edMST.getText().toString() : "");
                 m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
                 m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
+                String pthuc = spnDmucThanhToan.getSelectedItemPosition() == 0 ? "" :
+                        spnDmucThanhToan.getSelectedItemPosition() == 1 ? "CK" :
+                                spnDmucThanhToan.getSelectedItemPosition() == 2 ? "DT" :
+                                        spnDmucThanhToan.getSelectedItemPosition() == 3 ? "TM" : "TM/CK";
+                m.setPaymentMethodsCode(pthuc);
+
+
 
                 BigDecimal mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
                 BigDecimal vat = new BigDecimal(taxInvoice.getTaxRatio());
@@ -329,6 +353,12 @@ public class AdjustInformationsFragment extends Fragment {
         m.setTaxCode(edMST.getText() != null ? edMST.getText().toString() : "");
         m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
         m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
+        String pthuc = spnDmucThanhToan.getSelectedItemPosition() == 0 ? "" :
+                spnDmucThanhToan.getSelectedItemPosition() == 1 ? "CK" :
+                        spnDmucThanhToan.getSelectedItemPosition() == 2 ? "DT" :
+                                spnDmucThanhToan.getSelectedItemPosition() == 3 ? "TM" : "TM/CK";
+        m.setPaymentMethodsCode(pthuc);
+
         m.setGiaSauThue(edDonGia.getText().toString());
         BigDecimal mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
         taxInvoiceDetailDbList.get(0).setTerm(mTerm.doubleValue());
@@ -468,6 +498,12 @@ public class AdjustInformationsFragment extends Fragment {
         m.setTaxCode(edMST.getText() != null ? edMST.getText().toString() : "");
         m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
         m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
+        String pthuc = spnDmucThanhToan.getSelectedItemPosition() == 0 ? "" :
+                spnDmucThanhToan.getSelectedItemPosition() == 1 ? "CK" :
+                        spnDmucThanhToan.getSelectedItemPosition() == 2 ? "DT" :
+                                spnDmucThanhToan.getSelectedItemPosition() == 3 ? "TM" : "TM/CK";
+        m.setPaymentMethodsCode(pthuc);
+
 
         BigDecimal mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
         List<Bill_TaxInvoiceDetail_DB> taxInvoiceDetailDbList = new Select().all().from(Bill_TaxInvoiceDetail_DB.class).where("TaxInvoiceId = ?", taxInvoice.getTaxInvoiceId()).execute();
@@ -577,6 +613,12 @@ public class AdjustInformationsFragment extends Fragment {
                             m.setTaxCode(edMST.getText() != null ? edMST.getText().toString() : "");
                             m.setPhoneNumber(edPhone.getText() != null ? edPhone.getText().toString() : "");
                             m.setEmail(edEmail.getText() != null ? edEmail.getText().toString() : "");
+                            String pthuc = spnDmucThanhToan.getSelectedItemPosition() == 0 ? "" :
+                                    spnDmucThanhToan.getSelectedItemPosition() == 1 ? "CK" :
+                                            spnDmucThanhToan.getSelectedItemPosition() == 2 ? "DT" :
+                                                    spnDmucThanhToan.getSelectedItemPosition() == 3 ? "TM" : "TM/CK";
+                            m.setPaymentMethodsCode(pthuc);
+
                             m.setGiaSauThue(edDonGia.getText().toString());
                             BigDecimal mTerm = Utils.CalculateTotalPartialMonth(Utils.parseDate(edDenNgay.getText().toString()), Utils.parseDate(edTuNgay.getText().toString()));
                             taxInvoiceDetailDbList.get(0).setTerm(mTerm.doubleValue());
