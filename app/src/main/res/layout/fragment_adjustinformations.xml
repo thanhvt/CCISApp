@@ -209,17 +209,18 @@
 
                 <TextView
                     android:id="@+id/textView45"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginRight="10dp"
                     android:text="Thanh toán"
                     android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spnDmucThanhToan"
                     android:layout_width="wrap_content"
-                    android:layout_weight="2"
                     android:drawSelectorOnTop="true"
+                    android:layout_weight="1"
                     android:entries="@array/pthuc_ttoan"
                     android:layout_height="50dp" />
             </LinearLayout>

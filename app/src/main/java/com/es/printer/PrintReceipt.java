@@ -896,11 +896,6 @@ public class PrintReceipt {
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("Thong tin tra cuu truy cap tai: urenco.com.vn");
 
-
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.SetAlignMode((byte) 0);
-            BluetoothPrinterActivity.BLUETOOTH_PRINTER.BT_Write("(Ghi chu: danh cho ho kinh doanh)");
-
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();
             BluetoothPrinterActivity.BLUETOOTH_PRINTER.LF();

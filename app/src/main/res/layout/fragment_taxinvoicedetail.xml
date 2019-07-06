@@ -277,6 +277,11 @@
         android:layout_height="wrap_content"
         android:text="In hóa đơn" />
 
+    <Button
+        android:id="@+id/btnInHDCK"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="In mẫu chuyển khoản" />
     <!--<Button-->
     <!--android:id="@+id/btnGuiSMS"-->
     <!--android:layout_width="match_parent"-->

@@ -84,6 +84,12 @@ Bill_TaxInvoice taxInvoice;
             taxInvoice =
                     (Bill_TaxInvoice) getIntent().getExtras().getSerializable("TAX");
             kieu = getIntent().getExtras().getInt("KIEU");
+
+            if (kieu == 4) {
+                btnPrintInHD.setVisibility(View.INVISIBLE);
+            } else {
+                btnInCK.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

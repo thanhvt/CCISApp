@@ -346,6 +346,17 @@ public class TaxInvoiceDetailFragment extends Fragment {
         startActivity(intent);
     }
 
+    @OnClick(R.id.btnInHDCK)
+    public void btnInHDCK() {
+        Intent intent = new Intent(getActivity().getApplicationContext(), BluetoothPrinterActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("TAX", taxInvoice);
+        bundle.putInt("KIEU", 4);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+
 //    @OnClick(R.id.btnGuiSMS)
 //    public void btnGuiSMS() {
 //        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
